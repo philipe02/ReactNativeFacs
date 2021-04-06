@@ -5,9 +5,9 @@ import { Header } from "react-native-elements";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { styles } from "./src/style/style";
-import Ideias from "./src/components/Ideias";
-import Usuario from "./src/components/Usuario";
-import Feed from "./src/components/Feed";
+import Ideias from "./src/views/Ideias";
+import Usuario from "./src/views/Usuario";
+import Feed from "./src/views/Feed";
 
 
 const Drawer = createDrawerNavigator();
