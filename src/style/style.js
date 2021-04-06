@@ -7,8 +7,17 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   headerText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 20,
     paddingTop: 7,
-  },
+  }, 
+  bgImage: {
+    width:370,
+    height:600,
+    justifyContent:'center',
+  }, 
+  body:{
+    flex:1,
+    justifyContent:'center'
+  }
 });

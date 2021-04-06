@@ -1,13 +1,14 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, ImageBackground } from "react-native";
 import { Header } from "react-native-elements";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import { styles } from "./style/style";
-import Ideias from "./components/Ideias";
-import Usuario from "./components/Usuario";
-import Feed from "./components/Feed";
+import { styles } from "./src/style/style";
+import Ideias from "./src/components/Ideias";
+import Usuario from "./src/components/Usuario";
+import Feed from "./src/components/Feed";
+
 
 const Drawer = createDrawerNavigator();
 
@@ -15,10 +16,10 @@ const TelaInicial = ({ navigation }) => {
   return (
     <>
       <Header
-        containerStyle={{ height: 80 }}
+        containerStyle={{ height: 80, backgroundColor:"#1281AB" }}
         leftComponent={{
           icon: "menu",
-          color: "#fff",
+          color: "#D16E0B",
           onPress: navigation.openDrawer,
           size: 40,
         }}
@@ -28,15 +29,19 @@ const TelaInicial = ({ navigation }) => {
         }}
         rightComponent={{
           icon: "home",
-          color: "#fff",
+          color: "#D16E0B",
           size: 40,
           onPress: () => navigation.navigate("Inicio"),
         }}
       />
-      <View style={styles.container}>
-        <Text>Tela inicial</Text>
+      <View style={styles.body}>
+        <ImageBackground source={require('./src/images/fundo1.png')} style={styles.bgImage}>
+          <View style={styles.container}>
+            <Text>Tela inicial</Text>
+          </View>
+          <StatusBar style="light" />
+        </ImageBackground>
       </View>
-      <StatusBar style="light" />
     </>
   );
 };
