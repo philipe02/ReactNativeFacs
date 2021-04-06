@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { View, Text } from "react-native";
 import { Header } from "react-native-elements";
+import { Icon } from "react-native-elements";
 import { styles } from "../style/style";
 
 const Usuario = ({ navigation }) => {
@@ -27,7 +28,7 @@ const Usuario = ({ navigation }) => {
         }}
       />
       <View style={styles.container}>
-        <Text>Tela usuário</Text>
+        <Icon name="home" type={"font-awesome"} size={40} />
       </View>
       <StatusBar style="light" />
     </>
