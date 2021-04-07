@@ -19,5 +19,13 @@ export const styles = StyleSheet.create({
   body:{
     flex:1,
     justifyContent:'center'
+  },
+  tituloInput: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginLeft: 8,
+    marginBottom: 2,
+    marginTop:10,
+    color:'#000',
   }
 });

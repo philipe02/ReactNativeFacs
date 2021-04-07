@@ -1,41 +1,64 @@
-import { StatusBar } from "expo-status-bar";
+//tela vai ter as rotas da telas de Ideias
 import React from "react";
-import { View, Text, ImageBackground } from "react-native";
-import { Header } from "react-native-elements";
-import { styles } from "../style/style";
+import {createStackNavigator} from '@react-navigation/stack'
+import IdeiasFormulario from '../components/IdeiasFormulario'
+import IdeiasLista from '../components/IdeiasLista'
+import {Button, Icon} from 'react-native-elements'
 
-const Ideias = ({ navigation }) => {
-  return (
-    <>
-      <Header
-        containerStyle={{ height: 80, backgroundColor: "#1281AB" }}
-        leftComponent={{
-          icon: "menu",
-          color: "#D16E0B",
-          onPress: navigation.openDrawer,
-          size: 40,
-        }}
-        centerComponent={{
-          text: "Tela de ideias",
-          style: styles.headerText,
-        }}
-        rightComponent={{
-          icon: "home",
-          color: "#D16E0B",
-          size: 40,
-          onPress: () => navigation.navigate("Inicio"),
-        }}
-      />
-      <View style={styles.body}>
-        <ImageBackground source={require('../images/fundo1.png')} style={styles.bgImage}>
-          <View style={styles.container}>
-            <Text>Tela ideias</Text>
-          </View>
-          <StatusBar style="light" />
-        </ImageBackground>
-      </View>
-    </>
-  );
-};
+const Stack = createStackNavigator()
 
-export default Ideias;
+export default props => {
+  return(
+      <Stack.Navigator 
+        initialRouteName="IdeiasLista"
+      >
+        <Stack.Screen 
+          name="IdeiasLista"
+          component={IdeiasLista}
+          options={({navigation}) => {
+            return {
+              title: "Suas Ideias",
+              headerStyle: {
+                backgroundColor: "#1281AB"
+              },
+              headerTitleAlign:'center',
+              headerRight: () => (
+                <Button
+                  onPress={() => navigation.navigate("IdeiasFormulario")}
+                  type="clear"
+                  icon={<Icon name="add" size={40} color="#D16E0B"/>}
+                />
+              ),
+              headerLeft: () => (
+                <Button 
+                  onPress={() => navigation.navigate("Inicio")}
+                  type="clear"
+                  icon={<Icon name="home" size={40} color="#D16E0B"/>}
+                />
+              )
+            }
+          }}
+        />
+        <Stack.Screen 
+         name="IdeiasFormulario"
+         component={IdeiasFormulario}
+         options={({navigation}) => {
+           return {
+             title: "Cadastro de Ideias",
+             headerStyle: {
+               backgroundColor: "#1281AB"
+             },
+             headerTitleAlign:'center',
+             headerLeft: () => (
+               <Button 
+                 onPress={() => navigation.navigate("IdeiasLista")}
+                 type="clear"
+                 icon={<Icon name="arrowleft" type="antdesign" size={40} color="#D16E0B"/>}
+               />
+             )
+           }
+         }}
+        />
+    </Stack.Navigator>
+  )
+}

@@ -9,7 +9,6 @@ import Ideias from "./src/views/Ideias";
 import Usuario from "./src/views/Usuario";
 import Feed from "./src/views/Feed";
 
-
 const Drawer = createDrawerNavigator();
 
 const TelaInicial = ({ navigation }) => {
