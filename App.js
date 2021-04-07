@@ -9,14 +9,13 @@ import Ideias from "./src/views/Ideias";
 import Usuario from "./src/views/Usuario";
 import Feed from "./src/views/Feed";
 
-
 const Drawer = createDrawerNavigator();
 
 const TelaInicial = ({ navigation }) => {
   return (
     <>
       <Header
-        containerStyle={{ height: 80, backgroundColor:"#1281AB" }}
+        containerStyle={{ height: 80, backgroundColor: "#1281AB" }}
         leftComponent={{
           icon: "menu",
           color: "#D16E0B",
@@ -35,7 +34,10 @@ const TelaInicial = ({ navigation }) => {
         }}
       />
       <View style={styles.body}>
-        <ImageBackground source={require('./src/images/fundo1.png')} style={styles.bgImage}>
+        <ImageBackground
+          source={require("./src/images/fundo1.png")}
+          style={styles.bgImage}
+        >
           <View style={styles.container}>
             <Text>Tela inicial</Text>
           </View>
@@ -52,7 +54,7 @@ export default function App() {
       <Drawer.Navigator initialRouteName="Inicio">
         <Drawer.Screen name="Inicio" component={TelaInicial} />
         <Drawer.Screen name="Ideias" component={Ideias} />
-        <Drawer.Screen name="Usuario" component={Usuario} />
+        <Drawer.Screen name="Usuários" component={Usuario} />
         <Drawer.Screen name="Feed" component={Feed} />
       </Drawer.Navigator>
     </NavigationContainer>
