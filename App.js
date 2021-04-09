@@ -8,6 +8,7 @@ import { styles } from "./src/style/style";
 import Ideias from "./src/views/Ideias";
 import Usuario from "./src/views/Usuario";
 import Feed from "./src/views/Feed";
+import Login from "./src/components/Login";
 
 const Drawer = createDrawerNavigator();
 
@@ -51,8 +52,8 @@ const TelaInicial = ({ navigation }) => {
 export default function App() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Inicio">
-        <Drawer.Screen name="Inicio" component={TelaInicial} />
+      <Drawer.Navigator initialRouteName="Login">
+        <Drawer.Screen name="Login" component={Login} />
         <Drawer.Screen name="Ideias" component={Ideias} />
         <Drawer.Screen name="Usuários" component={Usuario} />
         <Drawer.Screen name="Feed" component={Feed} />

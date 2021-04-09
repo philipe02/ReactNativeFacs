@@ -23,11 +23,14 @@ const Feed = ({ navigation }) => {
           icon: "home",
           color: "#D16E0B",
           size: 40,
-          onPress: () => navigation.navigate("Inicio"),
+          onPress: () => navigation.navigate("Login"),
         }}
       />
       <View style={styles.body}>
-        <ImageBackground source={require('../images/fundo1.png')} style={styles.bgImage}>
+        <ImageBackground
+          source={require("../images/fundo1.png")}
+          style={styles.bgImage}
+        >
           <View style={styles.container}>
             <Text>Tela feed</Text>
           </View>
