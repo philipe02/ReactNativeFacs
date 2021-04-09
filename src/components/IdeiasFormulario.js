@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, {useState} from "react";
 import { View, Text, ImageBackground} from "react-native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { styles } from "../style/style";
 import { Input } from "react-native-elements"
 import  { Picker }  from '@react-native-picker/picker';
@@ -8,23 +9,23 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import {Icon} from 'react-native-elements'
 
 const Ideias = ({route, navigation}) => {
-  const [titulo, setTitulo] = useState('');
 
   const initialFormState = {
+    titulo:"",
     desc: "", 
     setor: "Selecione um setor", 
     tema: "Selecione o tema abordado", 
-    benefMal: ""
+    benefMalef: ""
   }
     
   const [form, setForm] = useState(initialFormState)
   
   const handleChance = (value, name) => {
-      setForm({...form, [name]: value})
+    setForm({...form, [name]: value})
   }
 
     return (
-        <View style={styles.body}>
+        <KeyboardAwareScrollView>
           <ImageBackground source={require('../images/fundo1.png')} style={styles.bgImage}>
             <View style={styles.container}>
 
@@ -44,7 +45,7 @@ const Ideias = ({route, navigation}) => {
                 errorStyle={{
                   height:0
                 }}
-                
+                onChangeText={(text) => {handleChance(text, "titulo")}}
               />
 
               <Text style={styles.tituloInput}>Descrição: </Text>
@@ -63,10 +64,11 @@ const Ideias = ({route, navigation}) => {
                 }}
                 multiline={true}
                 numberOfLines={4}
-                maxLength={200}
+                maxLength={150}
                 errorStyle={{
                   height:0
                 }}
+                onChangeText={(text) => {handleChance(text, "desc")}}
               />
 
               <Text style={styles.tituloInput}>Benefícios/Malefícios: </Text>
@@ -84,10 +86,11 @@ const Ideias = ({route, navigation}) => {
                 }}
                 multiline={true}
                 numberOfLines={5}
-                maxLength={300}
+                maxLength={200}
                 errorStyle={{
                   height:0
                 }}
+                onChangeText={(text) => {handleChance(text, "benefMalef")}}
               />
 
               <Text style={styles.tituloInput}>Tema: </Text>
@@ -123,7 +126,7 @@ const Ideias = ({route, navigation}) => {
             </View>
             <StatusBar style="light" />
           </ImageBackground>
-        </View>
+          </KeyboardAwareScrollView>
     );
 };
   
