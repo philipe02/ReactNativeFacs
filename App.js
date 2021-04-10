@@ -1,50 +1,61 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { Text, View, ImageBackground } from "react-native";
-import { Header } from "react-native-elements";
+import React, { useState } from "react";
+import { View, ImageBackground, Image, TouchableOpacity } from "react-native";
+import { Input, Button, Text } from "react-native-elements";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { styles } from "./src/style/style";
 import Ideias from "./src/views/Ideias";
-import Usuario from "./src/views/Usuario";
+import Usuario, { ValidarUsuario } from "./src/views/Usuario";
 import Feed from "./src/views/Feed";
-import Login from "./src/components/Login";
+import FormUsuario from "./src/components/FormUsuario";
 
 const Drawer = createDrawerNavigator();
 
-const TelaInicial = ({ navigation }) => {
+const Login = ({ navigation }) => {
+  const [user, setUser] = useState({ email: "", password: "" });
   return (
     <>
-      <Header
-        containerStyle={{ height: 80, backgroundColor: "#1281AB" }}
-        leftComponent={{
-          icon: "menu",
-          color: "#D16E0B",
-          onPress: navigation.openDrawer,
-          size: 40,
-        }}
-        centerComponent={{
-          text: "Tela inicial",
-          style: styles.headerText,
-        }}
-        rightComponent={{
-          icon: "home",
-          color: "#D16E0B",
-          size: 40,
-          onPress: () => navigation.navigate("Inicio"),
-        }}
-      />
-      <View style={styles.body}>
-        <ImageBackground
-          source={require("./src/images/fundo1.png")}
-          style={styles.bgImage}
-        >
-          <View style={styles.container}>
-            <Text>Tela inicial</Text>
-          </View>
-          <StatusBar style="light" />
-        </ImageBackground>
-      </View>
+      <ImageBackground
+        source={require("./src/images/fundo1.png")}
+        style={styles.bgImage}
+      >
+        <View style={styles.login}>
+          <Image
+            source={require("./src/images/logo1.1.png")}
+            style={styles.loginLogo}
+          />
+          <Input
+            placeholder={"Digite seu email"}
+            inputStyle={styles.input}
+            containerStyle={styles.inputContainer}
+            errorStyle={{ height: 0 }}
+            onChangeText={(text) => setUser({ ...user, email: text })}
+          />
+          <Input
+            placeholder={"Digite sua senha"}
+            inputStyle={styles.input}
+            containerStyle={styles.inputContainer}
+            errorStyle={{ height: 0 }}
+            secureTextEntry={true}
+            onChangeText={(text) => setUser({ ...user, password: text })}
+          />
+          <Button
+            title={"ACESSAR"}
+            buttonStyle={styles.loginBtn}
+            containerStyle={styles.loginBtnContainer}
+            onPress={() => ValidarUsuario(user, navigation)}
+          />
+          <Button
+            title={"Cadastre-se"}
+            type="clear"
+            titleStyle={styles.registerBtn}
+            containerStyle={styles.registerBtnContainer}
+            onPress={() => navigation.navigate("Criar Usuário")}
+          />
+        </View>
+      </ImageBackground>
+      <StatusBar style="light" />
     </>
   );
 };
@@ -57,6 +68,7 @@ export default function App() {
         <Drawer.Screen name="Ideias" component={Ideias} />
         <Drawer.Screen name="Usuários" component={Usuario} />
         <Drawer.Screen name="Feed" component={Feed} />
+        <Drawer.Screen name="Criar Usuário" component={FormUsuario} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

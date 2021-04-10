@@ -36,6 +36,8 @@ export const styles = StyleSheet.create({
   },
   loginBtn: { backgroundColor: "#293241", height: 45 },
   loginBtnContainer: { width: "75%" },
+  registerBtn: { color: "#E37B09", fontSize: 18 },
+  registerBtnContainer: { margin: 20, marginTop: 30 },
   input: { backgroundColor: "#fff", height: 45, width: "80%", paddingLeft: 15 },
   inputContainer: { width: "80%", padding: 10 },
   form: {

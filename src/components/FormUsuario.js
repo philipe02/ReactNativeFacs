@@ -1,6 +1,7 @@
+import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { View, Text } from "react-native";
-import { Input, Button } from "react-native-elements";
+import { View, Text, ImageBackground } from "react-native";
+import { Input, Button, Header } from "react-native-elements";
 import { styles } from "../style/style";
 
 const FormUsuario = ({ navigation }) => {
