@@ -8,12 +8,12 @@ import { styles } from "./src/style/style";
 import Ideias from "./src/views/Ideias";
 import Usuario, { ValidarUsuario } from "./src/views/Usuario";
 import Feed from "./src/views/Feed";
-import FormUsuario from "./src/components/FormUsuario";
+import TelaCadastroUsuario from "./src/components/CadastroUsuario";
 
 const Drawer = createDrawerNavigator();
 
 const Login = ({ navigation }) => {
-  const [user, setUser] = useState({ email: "", password: "" });
+  const [user, setUser] = useState({});
   return (
     <>
       <ImageBackground
@@ -30,7 +30,7 @@ const Login = ({ navigation }) => {
             inputStyle={styles.input}
             containerStyle={styles.inputContainer}
             errorStyle={{ height: 0 }}
-            onChangeText={(text) => setUser({ ...user, email: text })}
+            onChangeText={(email) => setUser({ ...user, email })}
           />
           <Input
             placeholder={"Digite sua senha"}
@@ -38,7 +38,7 @@ const Login = ({ navigation }) => {
             containerStyle={styles.inputContainer}
             errorStyle={{ height: 0 }}
             secureTextEntry={true}
-            onChangeText={(text) => setUser({ ...user, password: text })}
+            onChangeText={(password) => setUser({ ...user, password })}
           />
           <Button
             title={"ACESSAR"}
@@ -51,7 +51,7 @@ const Login = ({ navigation }) => {
             type="clear"
             titleStyle={styles.registerBtn}
             containerStyle={styles.registerBtnContainer}
-            onPress={() => navigation.navigate("Criar Usuário")}
+            onPress={() => navigation.navigate("Criar Usuário", navigation)}
           />
         </View>
       </ImageBackground>
@@ -68,7 +68,7 @@ export default function App() {
         <Drawer.Screen name="Ideias" component={Ideias} />
         <Drawer.Screen name="Usuários" component={Usuario} />
         <Drawer.Screen name="Feed" component={Feed} />
-        <Drawer.Screen name="Criar Usuário" component={FormUsuario} />
+        <Drawer.Screen name="Criar Usuário" component={TelaCadastroUsuario} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

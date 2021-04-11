@@ -44,6 +44,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     justifyContent: "center",
+    alignItems: "center",
   },
   formText: {
     color: "#fff",

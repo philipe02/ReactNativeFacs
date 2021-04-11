@@ -4,8 +4,9 @@ import { View, Text, ImageBackground } from "react-native";
 import { Input, Button, Header } from "react-native-elements";
 import { styles } from "../style/style";
 
-const FormUsuario = ({ navigation }) => {
+const FormUsuario = ({ navigation, route }) => {
   const [user, setUser] = useState({});
+  const drawerNavigation = route.params;
   return (
     <>
       <ImageBackground
@@ -21,7 +22,7 @@ const FormUsuario = ({ navigation }) => {
           leftComponent={{
             icon: "menu",
             color: "#D16E0B",
-            onPress: navigation.openDrawer,
+            onPress: drawerNavigation.openDrawer,
             size: 40,
           }}
           centerComponent={{
@@ -32,18 +33,10 @@ const FormUsuario = ({ navigation }) => {
             icon: "home",
             color: "#D16E0B",
             size: 40,
-            onPress: () => navigation.navigate("Login"),
+            onPress: () => drawerNavigation.navigate("Login"),
           }}
         />
         <View style={styles.form}>
-          <Text style={styles.formText}>Username</Text>
-          <Input
-            inputStyle={styles.formText}
-            autoCorrect={false}
-            onChangeText={(username) => setUser({ ...user, username })}
-            placeholder="Insira o username"
-            value={user.username}
-          />
           <Text style={styles.formText}>Email</Text>
           <Input
             inputStyle={styles.formText}
