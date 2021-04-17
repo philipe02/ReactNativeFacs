@@ -9,6 +9,7 @@ import Ideias from "./src/views/Ideias";
 import Usuario, { ValidarUsuario } from "./src/views/Usuario";
 import Feed from "./src/views/Feed";
 import TelaCadastroUsuario from "./src/components/CadastroUsuario";
+import { UsersProvider } from "./src/context/UsersContext";
 
 const Drawer = createDrawerNavigator();
 
@@ -51,7 +52,7 @@ const Login = ({ navigation }) => {
             type="clear"
             titleStyle={styles.registerBtn}
             containerStyle={styles.registerBtnContainer}
-            onPress={() => navigation.navigate("Criar Usuário", navigation)}
+            onPress={() => navigation.navigate("Criar Usuário", { navigation })}
           />
         </View>
       </ImageBackground>
@@ -62,14 +63,16 @@ const Login = ({ navigation }) => {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Login">
-        <Drawer.Screen name="Login" component={Login} />
-        <Drawer.Screen name="Ideias" component={Ideias} />
-        <Drawer.Screen name="Usuários" component={Usuario} />
-        <Drawer.Screen name="Feed" component={Feed} />
-        <Drawer.Screen name="Criar Usuário" component={TelaCadastroUsuario} />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <UsersProvider>
+      <NavigationContainer>
+        <Drawer.Navigator initialRouteName="Login">
+          <Drawer.Screen name="Login" component={Login} />
+          <Drawer.Screen name="Ideias" component={Ideias} />
+          <Drawer.Screen name="Usuários" component={Usuario} />
+          <Drawer.Screen name="Feed" component={Feed} />
+          <Drawer.Screen name="Criar Usuário" component={TelaCadastroUsuario} />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </UsersProvider>
   );
 }

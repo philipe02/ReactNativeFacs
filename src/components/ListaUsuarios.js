@@ -1,10 +1,66 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { View, Text, ImageBackground } from "react-native";
-import { Header } from "react-native-elements";
+import React, { useContext } from "react";
+import { View, Text, ImageBackground, FlatList, Alert } from "react-native";
+import { Header, ListItem, Button, Icon } from "react-native-elements";
+import UsersContext from "../context/UsersContext";
 import { styles } from "../style/style";
 
 const ListaUsuario = ({ navigation }) => {
+  const { state, dispatch } = useContext(UsersContext);
+
+  const confirmUserDeletion = (user) => {
+    Alert.alert("Excluir usuário", "Deseja excluir o usuário?", [
+      {
+        text: "Sim",
+        onPress() {
+          dispatch();
+        },
+      },
+      { text: "Não" },
+    ]);
+  };
+
+  const getActions = (usuario) => {
+    return (
+      <>
+        <Button
+          onPress={() =>
+            navigation.navigate("Detalhe Usuário", { navigation, usuario })
+          }
+          type="clear"
+          icon={<Icon name="edit" size={25} color="orange" />}
+        />
+        <Button
+          onPress={() => confirmUserDeletion(usuario)}
+          type="clear"
+          icon={<Icon name="delete" size={25} color="red" />}
+        />
+      </>
+    );
+  };
+
+  const itemUsuario = ({ item: usuario }) => {
+    return (
+      <ListItem
+        key={usuario.key}
+        bottomDivider
+        onPress={() => {
+          navigation.navigate("Detalhe Usuário", { navigation, usuario });
+        }}
+      >
+        <ListItem.Content>
+          <ListItem.Title style={{ fontSize: 20 }}>
+            {usuario.name}
+          </ListItem.Title>
+          <ListItem.Subtitle style={{ fontSize: 15 }}>
+            {usuario.email}
+          </ListItem.Subtitle>
+        </ListItem.Content>
+        {getActions(usuario)}
+      </ListItem>
+    );
+  };
+
   return (
     <>
       <ImageBackground
@@ -12,11 +68,7 @@ const ListaUsuario = ({ navigation }) => {
         style={styles.bgImage}
       >
         <Header
-          containerStyle={{
-            height: 80,
-            backgroundColor: "#1281AB",
-            borderBottomColor: "#1281AB",
-          }}
+          containerStyle={styles.headerContainer}
           leftComponent={{
             icon: "menu",
             color: "#D16E0B",
@@ -35,6 +87,11 @@ const ListaUsuario = ({ navigation }) => {
           }}
         />
         <View style={styles.form}></View>
+        <FlatList
+          keyExtractor={(user) => user.key.toString()}
+          data={state.usuarios}
+          renderItem={itemUsuario}
+        />
       </ImageBackground>
       <StatusBar style="light" />
     </>

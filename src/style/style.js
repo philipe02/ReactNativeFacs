@@ -7,8 +7,13 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  headerContainer: {
+    height: 90,
+    backgroundColor: "#293241",
+    borderBottomColor: "#293241",
+  },
   headerText: {
-    color: "#D16E0B",
+    color: "#fff",
     fontSize: 25,
     paddingTop: 7,
     fontWeight: "bold",
@@ -58,6 +63,15 @@ export const styles = StyleSheet.create({
     bottom: 30,
   },
   formSaveBtn: {
-    backgroundColor: "#1281AB",
+    backgroundColor: "#293241",
+  },
+  formBack: {
+    position: "absolute",
+    width: 100,
+    left: 25,
+    bottom: 30,
+  },
+  formBackBtn: {
+    backgroundColor: "tomato",
   },
 });

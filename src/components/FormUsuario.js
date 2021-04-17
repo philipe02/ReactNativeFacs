@@ -5,8 +5,8 @@ import { Input, Button, Header } from "react-native-elements";
 import { styles } from "../style/style";
 
 const FormUsuario = ({ navigation, route }) => {
-  const [user, setUser] = useState({});
-  const drawerNavigation = route.params;
+  const [user, setUser] = useState(route.params.usuario);
+  const drawerNavigation = route.params.navigation;
   return (
     <>
       <ImageBackground
@@ -14,11 +14,7 @@ const FormUsuario = ({ navigation, route }) => {
         style={styles.bgImage}
       >
         <Header
-          containerStyle={{
-            height: 80,
-            backgroundColor: "#1281AB",
-            borderBottomColor: "#1281AB",
-          }}
+          containerStyle={styles.headerContainer}
           leftComponent={{
             icon: "menu",
             color: "#D16E0B",
@@ -52,10 +48,16 @@ const FormUsuario = ({ navigation, route }) => {
             value={user.password}
           />
           <Button
+            containerStyle={styles.formBack}
+            buttonStyle={styles.formBackBtn}
+            title="Voltar"
+            onPress={() => navigation.navigate("Lista Usuário")}
+          />
+          <Button
             containerStyle={styles.formSave}
             buttonStyle={styles.formSaveBtn}
             title="Salvar"
-            onPress={() => navigation.navigate("ListaUsuario")}
+            onPress={() => navigation.navigate("Lista Usuário")}
           />
         </View>
       </ImageBackground>

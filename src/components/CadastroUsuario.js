@@ -1,20 +1,29 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, ImageBackground, Alert } from "react-native";
 import { Input, Button, Header } from "react-native-elements";
+import UsersContext, { UsersProvider } from "../context/UsersContext";
 import { styles } from "../style/style";
-import { CadastrarUsuario } from "../views/Usuario";
 
 const TelaCadastroUsuario = ({ navigation, route }) => {
   const [user, setUser] = useState({});
+  const { dispatch } = useContext(UsersContext);
   const drawerNavigation = route.params;
   return (
-    <>
+    <UsersProvider>
       <ImageBackground
         source={require("../images/fundo1.png")}
         style={styles.bgImage}
       >
         <View style={styles.form}>
+          <Text style={styles.formText}>Nome</Text>
+          <Input
+            inputStyle={styles.input}
+            containerStyle={styles.inputContainer}
+            onChangeText={(name) => setUser({ ...user, name })}
+            placeholder="Digite seu nome"
+            value={user.name}
+          />
           <Text style={styles.formText}>Email</Text>
           <Input
             inputStyle={styles.input}
@@ -48,17 +57,16 @@ const TelaCadastroUsuario = ({ navigation, route }) => {
             containerStyle={styles.loginBtnContainer}
             title="Cadastrar"
             onPress={() => {
-              if (CadastrarUsuario(user)) {
-                setUser({});
-                Alert.alert("Usuário registrado!");
-                navigation.goBack();
-              }
+              dispatch({ type: "cadastrar", payload: user });
+              setUser({});
+              Alert.alert("Usuário registrado!");
+              navigation.goBack();
             }}
           />
         </View>
       </ImageBackground>
       <StatusBar style="light" />
-    </>
+    </UsersProvider>
   );
 };
 

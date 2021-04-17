@@ -8,7 +8,7 @@ const Ideias = ({ navigation }) => {
   return (
     <>
       <Header
-        containerStyle={{ height: 80, backgroundColor: "#1281AB" }}
+        containerStyle={styles.headerContainer}
         leftComponent={{
           icon: "menu",
           color: "#D16E0B",
