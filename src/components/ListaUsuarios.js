@@ -13,7 +13,7 @@ const ListaUsuario = ({ navigation }) => {
       {
         text: "Sim",
         onPress() {
-          dispatch();
+          dispatch({ type: "excluir", payload: user });
         },
       },
       { text: "Não" },

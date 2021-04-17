@@ -5,10 +5,22 @@ import { Input, Button, Header } from "react-native-elements";
 import UsersContext, { UsersProvider } from "../context/UsersContext";
 import { styles } from "../style/style";
 
-const TelaCadastroUsuario = ({ navigation, route }) => {
+const TelaCadastroUsuario = ({ navigation }) => {
   const [user, setUser] = useState({});
   const { dispatch } = useContext(UsersContext);
-  const drawerNavigation = route.params;
+
+  const handleCadastro = () => {
+    if (!user.name || user.name === "") {
+      Alert.alert("Nome obrigatório");
+    } else if (!user.email || user.email === "") {
+      Alert.alert("E-mail obrigatório");
+    } else if (user.name && user.name != "" && user.email && user.email != "") {
+      dispatch({ type: "cadastrar", payload: user });
+      setUser({});
+      Alert.alert("Usuário registrado!");
+      navigation.goBack();
+    }
+  };
   return (
     <UsersProvider>
       <ImageBackground
@@ -56,12 +68,7 @@ const TelaCadastroUsuario = ({ navigation, route }) => {
             buttonStyle={styles.loginBtn}
             containerStyle={styles.loginBtnContainer}
             title="Cadastrar"
-            onPress={() => {
-              dispatch({ type: "cadastrar", payload: user });
-              setUser({});
-              Alert.alert("Usuário registrado!");
-              navigation.goBack();
-            }}
+            onPress={handleCadastro}
           />
         </View>
       </ImageBackground>

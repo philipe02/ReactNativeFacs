@@ -1,12 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, ImageBackground } from "react-native";
 import { Input, Button, Header } from "react-native-elements";
+import UsersContext from "../context/UsersContext";
 import { styles } from "../style/style";
 
 const FormUsuario = ({ navigation, route }) => {
   const [user, setUser] = useState(route.params.usuario);
   const drawerNavigation = route.params.navigation;
+  const { dispatch } = useContext(UsersContext);
+  const handleEditar = () => {
+    dispatch({ type: "editar", payload: user });
+    navigation.goBack();
+  };
   return (
     <>
       <ImageBackground
@@ -57,7 +63,7 @@ const FormUsuario = ({ navigation, route }) => {
             containerStyle={styles.formSave}
             buttonStyle={styles.formSaveBtn}
             title="Salvar"
-            onPress={() => navigation.navigate("Lista Usuário")}
+            onPress={handleEditar}
           />
         </View>
       </ImageBackground>

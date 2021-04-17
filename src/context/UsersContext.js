@@ -1,5 +1,4 @@
 import React, { createContext, useReducer } from "react";
-import Usuarios from "../components/Usuarios";
 
 const initialState = {
   usuarioAtual: {},
@@ -23,7 +22,7 @@ const actions = {
   },
   editar(state, usuarioEditado) {
     let listaUsuarios = state.usuarios;
-    listaUsuarios.map((user) =>
+    listaUsuarios = listaUsuarios.map((user) =>
       user.key === usuarioEditado.key ? usuarioEditado : user
     );
     return { ...state, usuarios: listaUsuarios };
