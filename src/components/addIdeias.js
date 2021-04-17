@@ -1,34 +1,44 @@
 import { StatusBar } from "expo-status-bar";
 import React, {useState} from "react";
-import { View, Text, ImageBackground} from "react-native";
+import { View, Text, ImageBackground, TouchableOpacity, Modal } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { styles } from "../style/style";
 import { Input } from "react-native-elements"
 import  { Picker }  from '@react-native-picker/picker';
-import { TouchableOpacity } from "react-native-gesture-handler";
-import {Icon} from 'react-native-elements'
 
-const Ideias = ({route, navigation}) => {
+const addIdeias = ({props}) => {
 
-  const initialFormState = {
+  const initialIdeiasState = {
     titulo:"",
     desc: "", 
     setor: "Selecione um setor", 
     tema: "Selecione o tema abordado", 
     benefMalef: ""
   }
-    
-  const [form, setForm] = useState(initialFormState)
-  
+
+  const [ideia, setIdeia] = useState(initialIdeiasState)
+  const { openIdeiaModal, closeIdeiaModal } = props
+
   const handleChance = (value, name) => {
-    setForm({...form, [name]: value})
+    setIdeia({...ideia, [name]: value})
+  }
+
+  const addIdeia = async () => {
+    props.addIdeia(ideia); 
+    props.closeModal();
+
   }
 
     return (
         <KeyboardAwareScrollView>
           <ImageBackground source={require('../images/fundo1.png')} style={styles.bgImage}>
             <View style={styles.container}>
-
+              <Modal 
+                animationType="fade" 
+                transparent={true} 
+                visible={openIdeiaModal}
+                onRequestClose={closeIdeiaModal}  
+              >
               <Text style={styles.tituloInput}>Título: </Text>
               <Input
                 placeholder="Como você chama essa ideia ?"
@@ -73,7 +83,7 @@ const Ideias = ({route, navigation}) => {
 
               <Text style={styles.tituloInput}>Benefícios/Malefícios: </Text>
               <Input
-                placeholder="Quais seriam os benefícios/malefícos que essa ideia pode resolver?"
+                placeholder="Quais seriam os benefícios/malefícos que essa ideia pode resolver/trazer?"
                 inputStyle={{
                   paddingLeft:10, 
                   paddingTop:2,
@@ -100,7 +110,7 @@ const Ideias = ({route, navigation}) => {
                 style={{ height: 40, width: 345, backgroundColor:'#fff'}}
               >
                 <Picker.Item label="Selecione o tema abordado" value="temaPadrao"/>
-                <Picker.Item label="Recursos Humanos" value="Recursos Humanos"/>
+                <Picker.Item label="Recursos Humanos" value="recursoshumanos"/>
                 <Picker.Item label="TI" value="TI"/>
                 <Picker.Item label="Administração" value="adm"/>
                 <Picker.Item label="Finanças" value="financas"/>
@@ -112,17 +122,27 @@ const Ideias = ({route, navigation}) => {
                 onValueChange={(itemValue) => handleChance(itemValue, "setor")}
                 style={{ height: 40, width: 345, backgroundColor:'#fff'}}
                 >
-                <Picker.Item label="Selecione um setor" value="1setor" />
-                <Picker.Item label="Setor 1" value="2setor"/>
-                <Picker.Item label="Setor 2" value="3setor"/>
-                <Picker.Item label="Setor 3" value="4setor"/>
-                <Picker.Item label="Setor 4" value="5setor"/>
+                <Picker.Item label="Selecione um setor" value="setorPadrao" />
+                <Picker.Item label="Área de Pessoas" value="pessoas"/>
+                <Picker.Item label="Tecnologia da informação" value="tinformação"/>
+                <Picker.Item label="Gerência e gestão" value="gestao"/>
+                <Picker.Item label="Contabilidade" value="5setor"/>
               </Picker>
-
-              <TouchableOpacity onPress={() => navigation.navigate("IdeiasLista")}>
-                <Icon name="downcircle" type="antdesign" size={40} color="#D16E0B" marginTop={15}/>
-              </TouchableOpacity>
-
+              <View>
+                <TouchableOpacity
+                  onPress={addIdeia}
+                  style={{...styles.botaoAddList, backgroundColor:"#1281AB",}}
+                >
+                <Text style={styles.textBotaoAddList}>Salvar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                onPress={closeModal}
+                style={{...styles.botaoAddList, marginVertical: 0, marginLeft: 10, backgroundColor: "#E76F51"}}
+                >
+                  <Text style={styles.textBotaoAddList}>Cancelar</Text>
+                </TouchableOpacity>              
+              </View>
+              </Modal>  
             </View>
             <StatusBar style="light" />
           </ImageBackground>
@@ -130,4 +150,4 @@ const Ideias = ({route, navigation}) => {
     );
 };
   
-export default Ideias;
+export default addIdeias;

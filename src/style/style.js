@@ -29,14 +29,32 @@ export const styles = StyleSheet.create({
     justifyContent:'center',
     alignContent:'center'  
   }, 
-  botao:{
-    backgroundColor:"#D16E0B",
-    color:"#000",
-    fontWeight: 'bold',
+  botaoAddList:{
     marginTop: 15,
     borderRadius:4,
     fontSize:45, 
     height:45,
-    width:150
+    width:50
+  },
+  textBotaoAddList:{
+    color:"#000",
+    fontWeight: 'bold',
+  },
+  lista:{
+    backgroundColor:"#fff",
+    marginTop:10,
+    borderRadius: 5,
+    width: 340,
+    justifyContent:'center',
+    padding: 5,
+    marginRight:8
+  },
+  tituloIdeia:{
+    fontSize:17,
+    color: "#127289",
+    fontWeight:'700'
+  }, 
+  descLista:{
+    fontSize:15
   }
 });

@@ -1,64 +1,51 @@
-//tela vai ter as rotas da telas de Ideias
-import React from "react";
-import {createStackNavigator} from '@react-navigation/stack'
-import IdeiasFormulario from '../components/IdeiasFormulario'
-import IdeiasLista from '../components/IdeiasLista'
-import {Button, Icon} from 'react-native-elements'
+import React, {useState} from "react";
+import {Text, View, TouchableOpacity, ImageBackground} from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Ionicons } from '@expo/vector-icons';
+import { styles } from "../style/style";
+import addIdeias from '../components/addIdeias'
 
-const Stack = createStackNavigator()
+function ListaIdeia ({}) {
 
-export default props => {
+  const [isAddIdeiaModalOpen, setsAddIsdeiaModalOpen] = useState(false)
+  const [ideias, setIdeias] = useState([])
+
+  const toggleAddIdeia = () => {
+    setsAddIsdeiaModalOpen(!isAddIdeiaModalOpen)
+  }
+
+  const addIdeia = (data) => {
+    setIdeias([data, ...ideias])
+  }
+
   return(
-      <Stack.Navigator 
-        initialRouteName="IdeiasLista"
-      >
-        <Stack.Screen 
-          name="IdeiasLista"
-          component={IdeiasLista}
-          options={({navigation}) => {
-            return {
-              title: "Suas Ideias",
-              headerStyle: {
-                backgroundColor: "#1281AB"
-              },
-              headerTitleAlign:'center',
-              headerRight: () => (
-                <Button
-                  onPress={() => navigation.navigate("IdeiasFormulario")}
-                  type="clear"
-                  icon={<Icon name="add" size={40} color="#D16E0B"/>}
-                />
-              ),
-              headerLeft: () => (
-                <Button 
-                  onPress={() => navigation.navigate("Inicio")}
-                  type="clear"
-                  icon={<Icon name="home" size={40} color="#D16E0B"/>}
-                />
-              )
-            }
-          }}
-        />
-        <Stack.Screen 
-         name="IdeiasFormulario"
-         component={IdeiasFormulario}
-         options={({navigation}) => {
-           return {
-             title: "Cadastro de Ideias",
-             headerStyle: {
-               backgroundColor: "#1281AB"
-             },
-             headerTitleAlign:'center',
-             headerLeft: () => (
-               <Button 
-                 onPress={() => navigation.navigate("IdeiasLista")}
-                 type="clear"
-                 icon={<Icon name="arrowleft" type="antdesign" size={40} color="#D16E0B"/>}
-               />
-             )
-           }
-         }}
-        />
-    </Stack.Navigator>
+    <KeyboardAwareScrollView>
+      <ImageBackground source={require('../images/fundo1.png')} style={styles.bgImage}>
+        <View style={styles.container}>
+          <Text>Suas ideias</Text>
+
+          <TouchableOpacity
+            onPress={toggleAddIdeia}
+            style={styles.button}
+          >
+            <Ionicons name="md-add-circle" size={30} color="black" />
+          </TouchableOpacity>
+
+          {ideias.map((data, index) => 
+            <View style={styles.lista}>
+              <Text style={styles.tituloIdeia}>{data.titulo}</Text>
+              <Text>{data.desc}</Text>
+            </View>  
+          )}
+
+            {isAddIdeiaModalOpen ? <addIdeias 
+            isOpen={isAddIdeiaModalOpen}
+            closeModal={toggleAddIdeia}
+            addIdeias={addIdeia}
+          /> : null}
+        </View>
+  </ImageBackground>
+    </KeyboardAwareScrollView>
   )
 }
+export default ListaIdeia
