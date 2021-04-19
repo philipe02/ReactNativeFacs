@@ -1,17 +1,17 @@
 import React, {useState} from "react";
-import {Text, View, TouchableOpacity, ImageBackground} from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {Text, View, TouchableOpacity, ScrollView, ImageBackground} from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
+import { Header } from "react-native-elements";
 import { styles } from "../style/style";
-import addIdeias from '../components/addIdeias'
+import AddIdeias from '../components/AddIdeias'
 
 function ListaIdeia ({}) {
 
-  const [isAddIdeiaModalOpen, setsAddIsdeiaModalOpen] = useState(false)
+  const [isAddIdeiaModalOpen, setIsAddIdeiaModalOpen] = useState(false)
   const [ideias, setIdeias] = useState([])
 
   const toggleAddIdeia = () => {
-    setsAddIsdeiaModalOpen(!isAddIdeiaModalOpen)
+    setIsAddIdeiaModalOpen(!isAddIdeiaModalOpen)
   }
 
   const addIdeia = (data) => {
@@ -19,33 +19,47 @@ function ListaIdeia ({}) {
   }
 
   return(
-    <KeyboardAwareScrollView>
-      <ImageBackground source={require('../images/fundo1.png')} style={styles.bgImage}>
-        <View style={styles.container}>
-          <Text>Suas ideias</Text>
+    <>
+    <Header
+      containerStyle={{ height: 80, backgroundColor: "#1D1D1D" }}
+      leftComponent={{
+        icon: "menu",
+        color: "#fff",
 
-          <TouchableOpacity
-            onPress={toggleAddIdeia}
-            style={styles.button}
-          >
-            <Ionicons name="md-add-circle" size={30} color="black" />
-          </TouchableOpacity>
+        size: 40,
+      }}
+      centerComponent={{
+        text: "Suas ideias",
+        style: styles.headerText,
+      }}
+    />
+    <ScrollView>
+        <ImageBackground source={require('../images/fundo1.png')} style={styles.bgImage}>
+          <View style={styles.container}>
 
-          {ideias.map((data, index) => 
-            <View style={styles.lista}>
-              <Text style={styles.tituloIdeia}>{data.titulo}</Text>
-              <Text>{data.desc}</Text>
-            </View>  
-          )}
+            <TouchableOpacity
+              onPress={toggleAddIdeia}
+              style={styles.button}
+            >
+              <Ionicons name="md-add-circle" size={50} color="black" />
+            </TouchableOpacity>
 
-            {isAddIdeiaModalOpen ? <addIdeias 
-            isOpen={isAddIdeiaModalOpen}
-            closeModal={toggleAddIdeia}
-            addIdeias={addIdeia}
-          /> : null}
-        </View>
-  </ImageBackground>
-    </KeyboardAwareScrollView>
+            {ideias.map((data, index) => 
+              <View style={styles.lista}>
+                <Text style={styles.tituloIdeia}>{data.titulo}</Text>
+                <Text>{data.desc}</Text>
+              </View>  
+            )}
+
+              {isAddIdeiaModalOpen ? <AddIdeias 
+              isOpen={isAddIdeiaModalOpen}
+              closeIdeiaModal={toggleAddIdeia}
+              addIdeias={addIdeia}
+            /> : null}
+          </View>
+        </ImageBackground>
+    </ScrollView>  
+    </>
   )
 }
 export default ListaIdeia

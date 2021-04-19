@@ -7,9 +7,10 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   headerText: {
-    color: "#000",
+    color: "#FFFFFF",
     fontSize: 20,
     paddingTop: 7,
+    fontWeight:'700'
   }, 
   bgImage: {
     width:370,
@@ -25,20 +26,24 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     color:'#000',
-    textAlign:'center',
-    justifyContent:'center',
-    alignContent:'center'  
+    textAlign:'left',
+    marginLeft:10
   }, 
   botaoAddList:{
-    marginTop: 15,
+    marginTop: 25,
+    marginBottom:25,
     borderRadius:4,
     fontSize:45, 
     height:45,
-    width:50
+    width:95,
+    marginLeft: 20, 
+    
   },
   textBotaoAddList:{
-    color:"#000",
+    color:"#FFFFFF",
     fontWeight: 'bold',
+    textAlign:'center',
+    padding:13
   },
   lista:{
     backgroundColor:"#fff",
