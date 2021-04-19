@@ -29,21 +29,42 @@ export const styles = StyleSheet.create({
     textAlign:'left',
     marginLeft:10
   }, 
-  botaoAddList:{
-    marginTop: 25,
+  botaoContainer:{
+    marginTop: 25,   
     marginBottom:25,
-    borderRadius:4,
-    fontSize:45, 
+    flexDirection:'row'
+  },
+  botaoAddList:{
     height:45,
     width:95,
     marginLeft: 20, 
-    
+    borderRadius:5,
+  },
+  botaoaddIdeia:{
+    position: 'absolute',
+    width: 48,
+    height:48,
+    backgroundColor: '#1D1D1D',
+    alignItems:'center',
+    justifyContent:'center',
+    borderRadius:30,
+    right: 25,
+    bottom:35,
+    elevation:2,
+    zIndex: 9,
+    shadowColor:'#000',
+    shadowOpacity: 0.2,
+    shadowOffset:{
+      width:1,
+      height:3
+    }
   },
   textBotaoAddList:{
     color:"#FFFFFF",
     fontWeight: 'bold',
     textAlign:'center',
-    padding:13
+    padding:13,
+    fontSize:15, 
   },
   lista:{
     backgroundColor:"#fff",
@@ -60,6 +81,6 @@ export const styles = StyleSheet.create({
     fontWeight:'700'
   }, 
   descLista:{
-    fontSize:15
+    fontSize:14
   }
 });

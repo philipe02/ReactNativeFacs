@@ -1,9 +1,9 @@
 import { StatusBar } from "expo-status-bar";
 import React, {useState} from "react";
-import { View, Text, ImageBackground, TouchableOpacity, Modal, ScrollView } from "react-native";
+import { View, Text, ImageBackground, TouchableOpacity, Modal} from "react-native";
 import { styles } from "../style/style";
-import { Header } from "react-native-elements";
-import { Input } from "react-native-elements"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Header, Input  } from "react-native-elements";
 import {Picker} from '@react-native-picker/picker';
 
 const AddIdeias = (props) => {
@@ -29,8 +29,8 @@ const AddIdeias = (props) => {
   }
 
     return (
-        <ScrollView>
             <View style={styles.container}>
+
               <Modal 
                 animationType="fase" 
                 transparent={false} 
@@ -38,7 +38,7 @@ const AddIdeias = (props) => {
                 onRequestClose={closeIdeiaModal}  
               >
                 <Header
-                  containerStyle={{ height: 60, backgroundColor: "#1D1D1D" }}
+                  containerStyle={{ height: 50, backgroundColor: "#1D1D1D" }}
                   centerComponent={{
                     text: "Suas ideias",
                     style: styles.headerText,
@@ -53,7 +53,7 @@ const AddIdeias = (props) => {
                     paddingTop:2,
                     backgroundColor:'#fff',
                     borderRadius:4,
-                    margin:2, 
+                    marginRight:8
                   }}
                   containerStyle={{
                     justifyContent:'center',
@@ -72,7 +72,7 @@ const AddIdeias = (props) => {
                     backgroundColor:'#fff',
                     borderRadius:4,
                     justifyContent:'center',
-                    margin:2
+                    marginRight:8
                   }}
                   containerStyle={{
                     justifyContent:'center',
@@ -94,7 +94,7 @@ const AddIdeias = (props) => {
                     paddingTop:2,
                     backgroundColor:'#fff',
                     borderRadius:4,
-                    margin:2
+                    marginRight:8
                   }}
                   containerStyle={{
                     justifyContent:'center',
@@ -134,7 +134,7 @@ const AddIdeias = (props) => {
                   <Picker.Item label="Contabilidade" value="contabilidade"/>
                 </Picker>
 
-                <View>
+                <View style={styles.botaoContainer}>
                   <TouchableOpacity
                     onPress={addIdeia}
                     style={{...styles.botaoAddList, backgroundColor:"#1281AB",}}
@@ -144,18 +144,15 @@ const AddIdeias = (props) => {
 
                   <TouchableOpacity
                   onPress={closeIdeiaModal}
-                  style={{...styles.botaoAddList, marginVertical: 0, position:'absolute', right: 20, backgroundColor: "#E76F51"}}
+                  style={{...styles.botaoAddList, marginVertical: 0, position:'absolute', right: 30, backgroundColor: "#E76F51"}}
                   >
                     <Text style={styles.textBotaoAddList}>Cancelar</Text>
                   </TouchableOpacity>              
                 </View>
-                </ImageBackground>
-              </Modal>  
-            </View>
-
-            <StatusBar style="light" />
-        </ScrollView>
-
+                <StatusBar style="light"/>
+              </ImageBackground>
+            </Modal> 
+          </View>
     );
 };
   

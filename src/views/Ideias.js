@@ -1,9 +1,11 @@
 import React, {useState} from "react";
-import {Text, View, TouchableOpacity, ScrollView, ImageBackground} from 'react-native'
+import {Text, View, TouchableOpacity, ImageBackground, ScrollView} from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
+import { StatusBar } from "expo-status-bar";
 import { Header } from "react-native-elements";
 import { styles } from "../style/style";
 import AddIdeias from '../components/AddIdeias'
+
 
 function ListaIdeia ({}) {
 
@@ -24,8 +26,8 @@ function ListaIdeia ({}) {
       containerStyle={{ height: 80, backgroundColor: "#1D1D1D" }}
       leftComponent={{
         icon: "menu",
-        color: "#fff",
-
+        color: "#E37B09",
+        /* onPress: navigation.openDrawer, */
         size: 40,
       }}
       centerComponent={{
@@ -39,26 +41,27 @@ function ListaIdeia ({}) {
 
             <TouchableOpacity
               onPress={toggleAddIdeia}
-              style={styles.button}
+              style={styles.botaoaddIdeia}
             >
-              <Ionicons name="md-add-circle" size={50} color="black" />
+              <Ionicons name="ios-add" size={50} color="#E37B09" />
             </TouchableOpacity>
 
             {ideias.map((data, index) => 
               <View style={styles.lista}>
                 <Text style={styles.tituloIdeia}>{data.titulo}</Text>
-                <Text>{data.desc}</Text>
+                <Text style={styles.descIdeia}>{data.desc}</Text>
               </View>  
             )}
 
               {isAddIdeiaModalOpen ? <AddIdeias 
-              isOpen={isAddIdeiaModalOpen}
+              openIdeiaModal={isAddIdeiaModalOpen}
               closeIdeiaModal={toggleAddIdeia}
               addIdeias={addIdeia}
             /> : null}
           </View>
+          <StatusBar style="light"/>
         </ImageBackground>
-    </ScrollView>  
+      </ScrollView>  
     </>
   )
 }
