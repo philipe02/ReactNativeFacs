@@ -26,7 +26,18 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-
+  listItemContainer: {
+    backgroundColor: "#fff",
+  },
+  listItemTitulo: {
+    color: "#293241",
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  listItemSubtitulo: {
+    color: "#293241",
+    fontSize: 20,
+  },
   login: {
     flex: 1,
     justifyContent: "center",

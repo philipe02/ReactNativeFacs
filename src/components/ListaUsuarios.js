@@ -25,7 +25,7 @@ const ListaUsuario = ({ navigation }) => {
       <>
         <Button
           onPress={() =>
-            navigation.navigate("Detalhe Usuário", { navigation, usuario })
+            navigation.navigate("Usuário", { usuario, navigation })
           }
           type="clear"
           icon={<Icon name="edit" size={25} color="orange" />}
@@ -44,15 +44,16 @@ const ListaUsuario = ({ navigation }) => {
       <ListItem
         key={usuario.key}
         bottomDivider
+        containerStyle={styles.listItemContainer}
         onPress={() => {
-          navigation.navigate("Detalhe Usuário", { navigation, usuario });
+          navigation.navigate("Usuário", { usuario, navigation });
         }}
       >
         <ListItem.Content>
-          <ListItem.Title style={{ fontSize: 20 }}>
+          <ListItem.Title style={styles.listItemTitulo}>
             {usuario.name}
           </ListItem.Title>
-          <ListItem.Subtitle style={{ fontSize: 15 }}>
+          <ListItem.Subtitle style={styles.listItemSubtitulo}>
             {usuario.email}
           </ListItem.Subtitle>
         </ListItem.Content>
@@ -86,7 +87,6 @@ const ListaUsuario = ({ navigation }) => {
             onPress: () => navigation.navigate("Login"),
           }}
         />
-        <View style={styles.form}></View>
         <FlatList
           keyExtractor={(user) => user.key.toString()}
           data={state.usuarios}

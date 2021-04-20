@@ -1,14 +1,17 @@
 import React, { createContext, useReducer } from "react";
+import users from "../data/users";
 
 const initialState = {
   usuarioAtual: {},
-  usuarios: [],
+  usuarios: users,
 };
 
 const UsersContext = createContext({});
 
 const actions = {
-  teste: "teste",
+  validado(state, usuarioLogin) {
+    return { ...state, usuarioAtual: usuarioLogin };
+  },
   cadastrar(state, usuarioNovo) {
     let listaUsuarios = state.usuarios;
     try {
