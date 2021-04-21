@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
     marginBottom:25,
     flexDirection:'row'
   },
-  botaoAddList:{
+  botaoSalveCancel:{
     height:45,
     width:95,
     marginLeft: 20, 
@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
     justifyContent:'center',
     borderRadius:30,
     right: 25,
-    bottom:35,
+    bottom:25,
     elevation:2,
     zIndex: 9,
     shadowColor:'#000',
@@ -59,7 +59,13 @@ export const styles = StyleSheet.create({
       height:3
     }
   },
-  textBotaoAddList:{
+  acoesLista: {
+    position:'absolute', 
+    justifyContent:'space-between',
+    flexDirection:'row', 
+    right:10
+  },
+  textBotaoSalveCancel:{
     color:"#FFFFFF",
     fontWeight: 'bold',
     textAlign:'center',
@@ -70,7 +76,7 @@ export const styles = StyleSheet.create({
     backgroundColor:"#fff",
     marginTop:10,
     borderRadius: 5,
-    width: 340,
+    width: '92%',
     justifyContent:'center',
     padding: 5,
     marginRight:8
@@ -80,7 +86,25 @@ export const styles = StyleSheet.create({
     color: "#127289",
     fontWeight:'700'
   }, 
-  descLista:{
-    fontSize:14
+  descIdeia:{
+    fontSize:14,
+    width: '80%'
+  },
+  tituloExclusao:{
+    fontSize:19,
+    margin:8,
+    textAlign:'center', 
+    fontWeight:'700', 
+    color: '#1281AB'
+  }, 
+  containerExclusao:{
+    backgroundColor:'#FFFFFF', 
+    alignContent:'center',
+    justifyContent:'center',
+    borderRadius:5,
+    width:'90%',
+    height:'30%',
+    marginLeft:14, 
+  
   }
 });

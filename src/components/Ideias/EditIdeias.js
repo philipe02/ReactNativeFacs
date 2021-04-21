@@ -1,36 +1,64 @@
 import { StatusBar } from "expo-status-bar";
-import React, {useState} from "react";
-import { View, Text, ImageBackground, TouchableOpacity, Modal} from "react-native";
-import { styles } from "../style/style";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useState, useEffect} from "react";
+import { View, Text, ImageBackground, TouchableOpacity, Modal, Alert} from "react-native";
+import { styles } from "../../style/style";
 import { Header, Input  } from "react-native-elements";
 import {Picker} from '@react-native-picker/picker';
 
-const AddIdeias = (props) => {
+const EditIdeias = (props) => {
 
   const initialIdeiasState = {
     titulo:"",
     desc: "", 
     setor: "Selecione um setor", 
-    tema: "Selecione o tema abordado", 
+    tema: "Selecione um tema", 
     benefMalef: ""
   }
 
   const [ideia, setIdeia] = useState(initialIdeiasState)
   const { openIdeiaModal, closeIdeiaModal } = props
 
+  useEffect(() => {
+    const data = {
+        titulo: props.selectedIdeia.titulo,
+        desc: props.selectedIdeia.desc,
+        setor: props.selectedIdeia.setor,
+        tema: props.selectedIdeia.tema,
+        benefMalef: props.selectedIdeia.benefMalef
+      };
+    setIdeia(data)
+}, [])
+
   const handleChance = (value, name) => {
     setIdeia({...ideia, [name]: value})
   }
 
-  const addIdeia = async () => {
-    props.addIdeia(ideia) 
-    props.closeIdeiaModal();
+  const editIdeia = () => {
+    if(!ideia.titulo || ideia.titulo === "")
+      Alert.alert("Título Obrigatório.")
+    else if(!ideia.desc || ideia.desc === "")
+      Alert.alert("Descrição Obrigatória.")
+    else if(!ideia.benefMalef || ideia.benefMalef === "")
+      Alert.alert("Descreva pelo menos um malefício/benefício.")
+    else if(ideia.tema === "Selecione um tema")
+      Alert.alert("Selecione o tema abordado.")
+    else if(ideia.setor === "Selecione um setor")
+      Alert.alert("Selecione o setor ao qual sua ideia se relaciona.")
+    else{
+      props.editIdeia({
+        titulo: ideia.titulo,
+        desc: ideia.desc,
+        setor: ideia.setor,
+        tema: ideia.tema,
+        benefMalef: ideia.benefMalef
+      })
+      props.closeIdeiaModal();      
+    }
   }
 
     return (
             <View style={styles.container}>
-
+              
               <Modal 
                 animationType="fase" 
                 transparent={false} 
@@ -40,14 +68,14 @@ const AddIdeias = (props) => {
                 <Header
                   containerStyle={{ height: 50, backgroundColor: "#1D1D1D" }}
                   centerComponent={{
-                    text: "Suas ideias",
+                    text: "Editar Ideia",
                     style: styles.headerText,
                   }}
                 />
-                <ImageBackground source={require('../images/fundo1.png')} style={styles.bgImage}>            
+                <ImageBackground source={require('../../images/fundo1.png')} style={styles.bgImage}>            
                 <Text style={styles.tituloInput}>Título: </Text>
                 <Input
-                  placeholder="Como você chama essa ideia ?"
+                  placeholder="Titulo Ideia"
                   inputStyle={{
                     paddingLeft:10, 
                     paddingTop:2,
@@ -62,10 +90,11 @@ const AddIdeias = (props) => {
                     height:0
                   }}
                   onChangeText={(text) => {handleChance(text, "titulo")}}
+                  value={ideia.titulo}
                 />
                 <Text style={styles.tituloInput}>Descrição: </Text>
                 <Input
-                  placeholder="Descreva como seria sua ideia ?"
+                  placeholder="Descrição..."
                   inputStyle={{
                     paddingLeft:10, 
                     paddingTop:2,
@@ -83,12 +112,13 @@ const AddIdeias = (props) => {
                   errorStyle={{
                     height:0
                   }}
+                  value={ideia.desc}
                   onChangeText={(text) => {handleChance(text, "desc")}}
                 />
 
                 <Text style={styles.tituloInput}>Benefícios/Malefícios: </Text>
                 <Input
-                  placeholder="Quais seriam os benefícios/malefícos que essa ideia pode resolver/trazer?"
+                  placeholder="Benefícios/malefícos"
                   inputStyle={{
                     paddingLeft:10, 
                     paddingTop:2,
@@ -105,12 +135,14 @@ const AddIdeias = (props) => {
                   errorStyle={{
                     height:0
                   }}
+                  value={ideia.benefMalef}
                   onChangeText={(text) => {handleChance(text, "benefMalef")}}
                 />
 
                 <Text style={styles.tituloInput}>Tema: </Text>
                 <Picker
                   selectedValue={ideia.tema}
+                  value={ideia.tema}
                   onValueChange={(itemValue) => handleChance(itemValue, "tema")}
                   style={{ height: 40, width: 345, marginLeft:8, backgroundColor:'#fff'}}
                 >
@@ -124,6 +156,7 @@ const AddIdeias = (props) => {
                 <Text style={styles.tituloInput}>Setor: </Text>
                 <Picker
                   selectedValue={ideia.setor}
+                  value={ideia.setor}
                   onValueChange={(itemValue) => handleChance(itemValue, "setor")}
                   style={{ height: 40, width: 345, marginLeft:8, backgroundColor:'#fff'}}
                 >
@@ -136,17 +169,17 @@ const AddIdeias = (props) => {
 
                 <View style={styles.botaoContainer}>
                   <TouchableOpacity
-                    onPress={addIdeia}
-                    style={{...styles.botaoAddList, backgroundColor:"#1281AB",}}
+                    onPress={editIdeia}
+                    style={{...styles.botaoSalveCancel, backgroundColor:"#E37B09",}}
                   >
-                    <Text style={styles.textBotaoAddList}>Salvar</Text>
+                    <Text style={styles.textBotaoSalveCancel}>Alterar</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
-                  onPress={closeIdeiaModal}
-                  style={{...styles.botaoAddList, marginVertical: 0, position:'absolute', right: 30, backgroundColor: "#E76F51"}}
+                    onPress={closeIdeiaModal}
+                    style={{...styles.botaoSalveCancel, marginVertical: 0, position:'absolute', right: 30, backgroundColor: "red"}}
                   >
-                    <Text style={styles.textBotaoAddList}>Cancelar</Text>
+                    <Text style={styles.textBotaoSalveCancel}>Cancelar</Text>
                   </TouchableOpacity>              
                 </View>
                 <StatusBar style="light"/>
@@ -156,4 +189,4 @@ const AddIdeias = (props) => {
     );
 };
   
-export default AddIdeias;
+export default EditIdeias;
