@@ -1,5 +1,7 @@
-import React, {useState} from "react";
-import {Text, View, TouchableOpacity, ImageBackground, ScrollView} from 'react-native'
+import React, {useState, useEffect} from "react";
+import {Text, View, TouchableOpacity, ImageBackground, 
+  ScrollView} from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StatusBar } from "expo-status-bar";
@@ -8,6 +10,7 @@ import { styles } from "../style/style";
 import AddIdeias from '../components/Ideias/AddIdeias'
 import EditIdeias from '../components/Ideias/EditIdeias'
 import DeletIdeias from '../components/Ideias/DeletIdeias'
+
 
 function ListaIdeia ({navigation}) {
 
@@ -30,7 +33,7 @@ function ListaIdeia ({navigation}) {
   }
 
   const addIdeia = (data) => {
-    setIdeias([data, ...ideias])
+    setIdeias([data, ...ideias])    
   }
 
   const editIdeia = (data) => {
@@ -40,6 +43,29 @@ function ListaIdeia ({navigation}) {
   const deletIdeia = titulo => {
     setIdeias(ideias.filter(idea => idea.titulo !== titulo))
   }
+  
+//vai retornar as ideas que já estão salvas 
+useEffect(() => {
+  async function carregaIdeias(){
+    const ideiaStorage = await AsyncStorage.getItem('@idea');
+
+    if(ideiaStorage){
+      setIdeias(JSON.parse(ideiaStorage));
+    }
+  }
+
+carregaIdeias();
+
+}, [])
+
+//vai monitorar e atualizar a função carregaIdeias a cada ação, seja de excluir, editar ou add 
+useEffect(() =>{
+  async function salveIdeia(){
+    await AsyncStorage.setItem('@idea', JSON.stringify(ideias))
+  }
+
+  salveIdeia();
+}, [ideias])
 
   return(
     <>

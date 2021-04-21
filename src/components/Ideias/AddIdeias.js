@@ -23,6 +23,7 @@ const AddIdeias = (props) => {
   }
 
   const addIdeia = async () => {
+    //validação de campos obrigatórios
     if(!ideia.titulo || ideia.titulo === "")
       Alert.alert("Título Obrigatório.")
     else if(!ideia.desc || ideia.desc === "")
