@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     },
     containerFeed: {
         flex: 1,
-        padding: 30,
+        padding: 20,
         width: '100%',
         borderRadius: 10,
         backgroundColor: '#FFF',
@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     },
     bg: {
         flex: 1,
-        padding: 30,
+        padding: 20,
         resizeMode: "cover",
         alignItems: 'center',
         justifyContent: "center"

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, Modal, TouchableOpacity, TextInput } from 'react-native';
 
 import { styles } from '../../style/style';
@@ -19,11 +18,8 @@ const AdicionarComentario = (props) => {
         setComentario( {...comentario, [name] : value} )
     }
 
-    let incremment = 0;
-
     const adicionarComentario = async() => {
         props.adicionarComentario({
-            id: incremment++,
             code: selectedCode.id,
             message: comentario.message
         })

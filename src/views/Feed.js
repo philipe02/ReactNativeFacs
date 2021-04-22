@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { styles } from '../style/style';
-import { StyleSheet, Text, View, FlatList, ImageBackground, TouchableOpacity, Modal } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet, Text, View, FlatList, ImageBackground, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { ListItem, Avatar, Header, Button, Icon } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -19,7 +20,12 @@ const Feed = ({ navigation }) => {
     const [selectedCode, setSelectedCode] = useState(false)
     const [selectedComentario, setSelectedComentario] = useState(false)
 
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false)
+    const [selectedIdeiaClick, setSelectedIdeiaClick] = useState(false)
+
+    const toogleListaComentario = () => {
+        setModalVisible(! modalVisible)
+    }
 
     const toggleAdicionarComentario = () => {
         setIsAddModalOpen(! isAddModalOpen)
@@ -34,16 +40,38 @@ const Feed = ({ navigation }) => {
     }
 
     const adicionarComentario = (data) => {
-        setComentario([data, ...comentario])
+        try {
+            let idNovoComentario = comentario[comentario.length - 1].id + 1
+            data = { id: idNovoComentario, ...data }
+            setComentario( [...comentario,data])
+        } catch {
+            data = { id: 1, ...data }
+            setComentario([...comentario,data])
+        }
     }
 
     const editarComentario = (data) => {
-        setComentario(comentario.map(com => com.message == data.message ? data : com))
+        setComentario(comentario.map(com => com.id == data.id ? data : com))
     }
 
     const deletarComentario = data => {
-        setComentario(comentario.filter(com => com.message != data))
+        setComentario(comentario.filter(com => com.id != data))
     }
+
+    useEffect(() => {
+        async function CarregarComentario() {
+            const commentStorage = await AsyncStorage.getItem('@comentario')
+            if(commentStorage) setComentario(JSON.parse(commentStorage))
+        }
+
+        CarregarComentario()
+    }, [])
+
+    useEffect(() => {
+        async function SalvarComentario() {
+            await AsyncStorage.setItem('@comentario', JSON.stringify(comentario))
+        }
+    }, [comentario])
 
     function renderUserItems({ item:user }) {
         return(
@@ -52,13 +80,13 @@ const Feed = ({ navigation }) => {
                     <Avatar size="medium" rounded source={ user.thumb }/>
                     <ListItem.Title style={{ marginTop: 10 }}>{ user.name }</ListItem.Title>
                     <ListItem.Subtitle>{ user.post }</ListItem.Subtitle>
-                    <TouchableOpacity type="clear" onPress={ () => {setModalVisible(true);} }>
+
+                    <TouchableOpacity type="clear" onPress={ () => {setModalVisible(true); setSelectedIdeiaClick(user)} }>
                         <Text style={ styles.small }>Clique aqui para ver os comentários</Text>
                     </TouchableOpacity>
                 </ListItem.Content>
 
-                <TouchableOpacity style={{ position: 'relative' }}
-                                  onPress={ () => { toggleAdicionarComentario(); setSelectedCode(user)} }>
+                <TouchableOpacity style={{ position: 'relative' }} onPress={ () => { toggleAdicionarComentario(); setSelectedCode(user)} }>
                     <Text style={ styles.count }>
                         {
                             comentario.filter((value) => (value.code == user.id)) ?
@@ -66,7 +94,7 @@ const Feed = ({ navigation }) => {
                             : '0'
                         }
                     </Text>
-                    <FontAwesome name="comments" size={24} color="#D16E0B"/>
+                    <FontAwesome name="comments" size={30} color="#D16E0B"/>
                 </TouchableOpacity>
             </ListItem>
         )
@@ -102,30 +130,36 @@ const Feed = ({ navigation }) => {
                         <FlatList keyExtractor={ user => user.id.toString() }
                                   data={ users } renderItem={ renderUserItems }/>
 
-                        <Modal animationType="slide" transparent={true} visible={modalVisible}
-                               onRequestClose={ () => {alert('O modal está fechado!');} }>
+                        <Modal transparent={true}
+                               animationType="slide"
+                               visible={modalVisible}
+                               onRequestClose={ toogleListaComentario }>
+
                             <View style={ styles.centeredView }>
                                 <View style={ styles.modalView }>
                                     <Text style={ styles.title }>Lista de Comentários</Text>
 
-                                    { comentario.map((data, index) =>
-                                        <View key={ index.toString() } style={ styles.list }>
-                                            <Text style={{ fontSize: 20, width: '75%' }}>{ data.message }</Text>
-
-                                            <View style={ styles.groupButton }>
-                                                <Button type="clear"
-                                                        style={{marginHorizontal: 15}}
-                                                        icon={ <Icon name="edit" size={25} color="#1281AB"/> }
-                                                        onPress={ () => {toggleEditarComentario(); setSelectedComentario(data)} }
-                                                />
-                                                <Button type="clear"
-                                                        style={{marginHorizontal: 15}}
-                                                        icon={ <Icon name="delete" size={25} color="#E76F51"/> }
-                                                        onPress={ () => {toggleDeletarComentario(); setSelectedComentario(data)} }
-                                                />
-                                            </View>
-                                        </View>
-                                    ) }
+                                    <ScrollView>
+                                        {
+                                            comentario.filter(data => data.code == selectedIdeiaClick.id).map((data) =>
+                                                <View key={ data.id.toString() } style={ styles.list }>
+                                                    <Text style={{ fontSize: 20, width: '75%' }}>{ data.message }</Text>
+                                                    <View style={ styles.groupButton }>
+                                                        <Button type="clear"
+                                                                style={{marginHorizontal: 15}}
+                                                                icon={ <Icon name="edit" size={25} color="#1281AB"/> }
+                                                                onPress={ () => {toggleEditarComentario(); setSelectedComentario(data)} }
+                                                        />
+                                                        <Button type="clear"
+                                                                style={{marginHorizontal: 15}}
+                                                                icon={ <Icon name="delete" size={25} color="#E76F51"/> }
+                                                                onPress={ () => {toggleDeletarComentario(); setSelectedComentario(data)} }
+                                                        />
+                                                    </View>
+                                                </View>
+                                            )
+                                        }
+                                    </ScrollView>
 
                                     <View style={{ alignItems: 'center', width: '100%' }} >
                                         <TouchableOpacity style={{ ...styles.button, backgroundColor: '#1281AB' }}
@@ -177,42 +211,3 @@ const Feed = ({ navigation }) => {
 }
 
 export default Feed;
-
-const main = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        width: '100%',
-        marginTop: 55,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    modalView: {
-        margin: 20,
-        width: 365,
-        height: 615,
-        backgroundColor: '#FFFFFF',
-        borderRadius: 5,
-        padding: 20,
-        alignItems: 'center',
-        shadowColor: '#000',
-        elevation: 5,
-        shadowRadius: 3.84,
-        shadowOpacity: 0.25,
-        shadowOffset: { width: 0, height: 2 },
-    },
-    openButton: {
-        padding: 15,
-        elevation: 2,
-        borderRadius: 5,
-        backgroundColor: '#F194FF',
-    },
-    textStyle: {
-        color: '#FFFFFF',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-    },
-})

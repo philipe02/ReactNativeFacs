@@ -7,7 +7,7 @@ const DeletarComentario = (props) => {
     const { isOpen, isClose, selectedComentario } = props
 
     const deletarComentario = () => {
-        props.deletarComentario(props.selectedComentario.message)
+        props.deletarComentario(props.selectedComentario.id)
         props.isClose()
     }
 
