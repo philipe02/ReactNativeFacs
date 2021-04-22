@@ -20,6 +20,7 @@ const EditIdeias = (props) => {
 
   useEffect(() => {
     const data = {
+        id: props.selectedIdeia.id,
         titulo: props.selectedIdeia.titulo,
         desc: props.selectedIdeia.desc,
         setor: props.selectedIdeia.setor,
@@ -46,6 +47,7 @@ const EditIdeias = (props) => {
       Alert.alert("Selecione o setor ao qual sua ideia se relaciona.")
     else{
       props.editIdeia({
+        id: ideia.id,
         titulo: ideia.titulo,
         desc: ideia.desc,
         setor: ideia.setor,

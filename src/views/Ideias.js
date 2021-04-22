@@ -36,15 +36,28 @@ function ListaIdeia ({navigation}) {
     setIdeias([data, ...ideias])    
   }
 
-  const editIdeia = (data) => {
-    setIdeias(ideias.map(idea => idea.tema == data.tema ? data : idea))
+  const adicionarIdea = (data) => {
+    try{
+      let idNovaIdeia = ideias[ideias.length - 1 ].id ++
+      data={id:idNovaIdeia, ...data}
+      setIdeias([data, ...setIdeias])
+      console.log(ideias.id)             
+    }catch{
+      data={id:1, ...data}
+      setIdeias([data, ...setIdeias])
+      console.log(ideias.id)
+    }
   }
 
-  const deletIdeia = titulo => {
-    setIdeias(ideias.filter(idea => idea.titulo !== titulo))
+  const editIdeia = (data) => {
+    setIdeias(ideias.map(idea => idea.id == data.id ? data : idea))
   }
-  
-//vai retornar as ideas que já estão salvas 
+
+  const deletIdeia = id => {
+    setIdeias(ideias.filter(idea => idea.id !== id))
+  }
+
+  //vai retornar as ideas que já estão salvas 
 useEffect(() => {
   async function carregaIdeias(){
     const ideiaStorage = await AsyncStorage.getItem('@idea');
@@ -54,7 +67,7 @@ useEffect(() => {
     }
   }
 
-carregaIdeias();
+  carregaIdeias();
 
 }, [])
 
@@ -66,6 +79,7 @@ useEffect(() =>{
 
   salveIdeia();
 }, [ideias])
+
 
   return(
     <>
@@ -124,9 +138,10 @@ useEffect(() =>{
             )}
 
               {isAddIdeiaModalOpen ? <AddIdeias 
-              openIdeiaModal={isAddIdeiaModalOpen}
-              closeIdeiaModal={toggleAddIdeia}
-              addIdeias={addIdeia}
+                openIdeiaModal={isAddIdeiaModalOpen}
+                closeIdeiaModal={toggleAddIdeia}
+                addIdeias={addIdeia}
+                adicionarIdea={adicionarIdea}
               /> : null}
 
               {isEditIdeiaModalOpen ? <EditIdeias

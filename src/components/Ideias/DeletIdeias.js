@@ -9,7 +9,7 @@ const DeletIdeias = (props) => {
   const { openIdeiaModal, closeIdeiaModal, selectedIdeia } = props
 
   const deletIdeia = () => {
-    props.deletIdeia(props.selectedIdeia.titulo)
+    props.deletIdeia(props.selectedIdeia.id)
     props.closeIdeiaModal();
   }
 

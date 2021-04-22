@@ -8,6 +8,7 @@ import {Picker} from '@react-native-picker/picker';
 const AddIdeias = (props) => {
 
   const initialIdeiasState = {
+    id:"",
     titulo:"",
     desc: "", 
     setor: "Selecione um setor", 
