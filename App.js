@@ -1,60 +1,100 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
+import { StatusBar } from "expo-status-bar";
+import { Button, Icon } from "react-native-elements";
 import { Text, View, ImageBackground } from "react-native";
-import { Header } from "react-native-elements";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { FontAwesome } from '@expo/vector-icons';
+
 import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
 import { styles } from "./src/style/style";
+
+import Feed from "./src/views/Feed";
 import Ideias from "./src/views/Ideias";
 import Usuario from "./src/views/Usuario";
-import Feed from "./src/views/Feed";
 
-
-const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 const TelaInicial = ({ navigation }) => {
-  return (
-    <>
-      <Header
-        containerStyle={{ height: 80, backgroundColor:"#1281AB" }}
-        leftComponent={{
-          icon: "menu",
-          color: "#D16E0B",
-          onPress: navigation.openDrawer,
-          size: 40,
-        }}
-        centerComponent={{
-          text: "Tela inicial",
-          style: styles.headerText,
-        }}
-        rightComponent={{
-          icon: "home",
-          color: "#D16E0B",
-          size: 40,
-          onPress: () => navigation.navigate("Inicio"),
-        }}
-      />
-      <View style={styles.body}>
-        <ImageBackground source={require('./src/images/fundo1.png')} style={styles.bgImage}>
-          <View style={styles.container}>
-            <Text>Tela inicial</Text>
-          </View>
-          <StatusBar style="light" />
-        </ImageBackground>
-      </View>
-    </>
-  );
+    return (
+        <>
+            <View style={ styles.body }>
+                <ImageBackground source={ require('./src/images/fundo1.png') } style={ styles.bg }>
+                    <View style={ styles.containerFeed }>
+
+                        <View styles={{ alignItems: 'center' }}>
+                            <Text styles={ styles.title }>Tela inicial</Text>
+                        </View>
+
+                    </View>
+                    <StatusBar style="light" />
+                </ImageBackground>
+            </View>
+        </>
+    );
 };
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Inicio">
-        <Drawer.Screen name="Inicio" component={TelaInicial} />
-        <Drawer.Screen name="Ideias" component={Ideias} />
-        <Drawer.Screen name="Usuario" component={Usuario} />
-        <Drawer.Screen name="Feed" component={Feed} />
-      </Drawer.Navigator>
-    </NavigationContainer>
-  );
+    return (
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Feed" screenOptions={ optionScreen }>
+                <Stack.Screen name="Inicio" component={ TelaInicial }/>
+                <Stack.Screen name="Usuario" component={ Usuario }/>
+
+                <Stack.Screen
+                    name="Feed"
+                    component={ Feed }
+                    options={ ({ navigation }) => {
+                        return {
+                            title: 'Tela de Feed',
+                            headerRight: () => (
+                                <Button
+                                    type="clear"
+                                    icon={ <FontAwesome name="lightbulb-o" size={30} color="#D16E0B"/> }
+                                    onPress={() => navigation.navigate('Ideias')}
+                                />
+                            )
+                        }
+                    } }
+                />
+
+                <Stack.Screen
+                    name="Ideias"
+                    component={ Ideias }
+                    options={ ({ navigation }) => {
+                        return {
+                            title: 'Tela de ideias',
+                            headerRight: () => (
+                                <Button
+                                    type="clear"
+                                    icon={ <Icon name="add" size={40} color="#D16E0B"/> }
+                                    onPress={() => navigation.navigate('Ideias')}
+                                />
+                            )
+                        }
+                    } }
+                />
+
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
+}
+const optionScreen = {
+    headerStyle: {
+        height: 80,
+        backgroundColor: '#1D1D1D'
+    },
+    headerTitleStyle: {
+        fontSize: 20,
+        color: "#FFFFFF",
+        paddingTop: 5,
+        textTransform: 'uppercase'
+    },
+    headerTintColor: '#D16E0B',
+    headerLeftContainerStyle: {
+        paddingLeft: 15
+    },
+    headerRightContainerStyle: {
+        paddingRight: 15
+    }
 }

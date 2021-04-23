@@ -27,7 +27,7 @@ const AdicionarComentario = (props) => {
     }
 
     return(
-        <Modal visible={ isOpen } onRequestClose={ isClose } animationType="slide">
+        <Modal visible={ isOpen } onRequestClose={ isClose } animationType="slide" transparent>
             <View style={ styles.centeredView }>
                 <View style={ styles.modalView }>
                     <Text style={ styles.title }>Adicionar Comentário</Text>
@@ -38,11 +38,11 @@ const AdicionarComentario = (props) => {
                     />
 
                     <View style={ styles.groupButton }>
-                        <TouchableOpacity onPress={adicionarComentario} style={{...styles.button, backgroundColor: "#1281AB"}}>
+                        <TouchableOpacity onPress={ adicionarComentario } style={{...styles.button, backgroundColor: "#1281AB"}}>
                             <Text style={ styles.btnText }>Salvar</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={isClose} style={{...styles.button, backgroundColor: "#E76F51"}}>
+                        <TouchableOpacity onPress={ isClose } style={{...styles.button, backgroundColor: "#E76F51"}}>
                             <Text style={ styles.btnText }>Cancelar</Text>
                         </TouchableOpacity>
                     </View>

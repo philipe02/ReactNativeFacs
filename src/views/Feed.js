@@ -78,8 +78,8 @@ const Feed = ({ navigation }) => {
             <ListItem key={ user.id } bottomDivider>
                 <ListItem.Content>
                     <Avatar size="medium" rounded source={ user.thumb }/>
-                    <ListItem.Title style={{ marginTop: 10 }}>{ user.name }</ListItem.Title>
-                    <ListItem.Subtitle>{ user.post }</ListItem.Subtitle>
+                    <ListItem.Title style={ styles.titleList }>{ user.name }</ListItem.Title>
+                    <ListItem.Subtitle style={ styles.textList }>{ user.post }</ListItem.Subtitle>
 
                     <TouchableOpacity type="clear" onPress={ () => {setModalVisible(true); setSelectedIdeiaClick(user)} }>
                         <Text style={ styles.small }>Clique aqui para ver os comentários</Text>
@@ -102,30 +102,13 @@ const Feed = ({ navigation }) => {
 
     return(
         <>
-            <Header
-                containerStyle={{ height: 80, backgroundColor: "#1D1D1D" }}
-                leftComponent={{
-                    icon: "menu",
-                    color: "#D16E0B",
-                    onPress: navigation.openDrawer,
-                    size: 40,
-                }}
-                centerComponent={{
-                    text: "Entropia",
-                    style: styles.headerText,
-                }}
-                rightComponent={{
-                    icon: "home",
-                    color: "#D16E0B",
-                    size: 40,
-                    onPress: () => navigation.navigate("Inicio"),
-                }}
-            />
-
             <View style={ styles.body }>
                 <ImageBackground source={ require('../images/fundo1.png') } style={ styles.bg }>
                     <View style={ styles.containerFeed }>
-                        <Text style={ styles.title }>Últimas ideias publicadas</Text>
+
+                        <View style={{ alignItems: 'center' }}>
+                            <Text style={ styles.title }>Últimas ideias publicadas</Text>
+                        </View>
 
                         <FlatList keyExtractor={ user => user.id.toString() }
                                   data={ users } renderItem={ renderUserItems }/>

@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         width: '100%',
-        borderRadius: 10,
+        borderRadius: 5,
         backgroundColor: '#FFF',
     },
     headerText: {
@@ -37,9 +37,10 @@ export const styles = StyleSheet.create({
         justifyContent: "center"
     },
     title: {
-        fontSize: 28,
+        fontSize: 24,
         color: '#1d1d1d',
-        marginBottom: 15
+        marginBottom: 15,
+        textTransform: 'uppercase'
     },
     button: {
         marginTop: 30,
@@ -86,9 +87,19 @@ export const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     small: {
-        fontSize: 12,
-        color: "#d5d5d5",
+        fontSize: 14,
+        color: "#7b7a7a",
         marginTop: 10
+    },
+    titleList: {
+        color: "#000",
+        fontSize: 20,
+        marginTop: 10,
+        fontWeight: 'bold'
+    },
+    textList: {
+        color: "#000",
+        fontSize: 18
     },
     centeredView: {
         flex: 1,

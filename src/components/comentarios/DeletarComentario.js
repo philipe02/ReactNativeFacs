@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {Modal, Text, TextInput, TouchableOpacity, View} from "react-native";
+import React from 'react';
+import { View, Modal, Text, TouchableOpacity } from 'react-native';
 import { styles } from '../../style/style';
 
 const DeletarComentario = (props) => {
@@ -15,7 +15,7 @@ const DeletarComentario = (props) => {
         <Modal visible={ isOpen } onRequestClose={ isClose } animationType="slide" transparent>
             <View style={ styles.centeredView }>
                 <View style={ styles.modalView }>
-                    <Text style={ styles.title }>Deseja apagar esse comentario? ({selectedComentario.message})</Text>
+                    <Text style={ styles.title }>Deseja apagar esse comentario? ({selectedComentario.id})</Text>
                     <Text style={ styles.text }>Para confirmar aperte em OK</Text>
 
                     <View style={ styles.groupButton }>

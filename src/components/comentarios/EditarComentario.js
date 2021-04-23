@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, Modal, TouchableOpacity, TextInput } from 'react-native';
-
 import { styles } from '../../style/style';
 
 
@@ -39,7 +37,7 @@ const EditarComentario = (props) => {
     }
 
     return(
-        <Modal visible={ isOpen } onRequestClose={ isClose } animationType="slide">
+        <Modal visible={ isOpen } onRequestClose={ isClose } animationType="slide" transparent>
             <View style={ styles.centeredView }>
                 <View style={ styles.modalView }>
                     <Text style={ styles.title }>Editar o comentário</Text>

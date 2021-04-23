@@ -8,7 +8,7 @@ const Usuario = ({ navigation }) => {
   return (
     <>
       <Header
-        containerStyle={{ height: 80, backgroundColor: "#1281AB" }}
+        containerStyle={{ height: 80, backgroundColor: "#1D1D1D" }}
         leftComponent={{
           icon: "menu",
           color: "#D16E0B",
@@ -26,10 +26,14 @@ const Usuario = ({ navigation }) => {
           onPress: () => navigation.navigate("Inicio"),
         }}
       />
-      <View style={styles.body}>
-        <ImageBackground source={require('../images/fundo1.png')} style={styles.bgImage}>
-          <View style={styles.container}>
-            <Text>Tela usuário</Text>
+      <View style={ styles.body }>
+        <ImageBackground source={ require('../images/fundo1.png') } style={ styles.bg }>
+          <View style={ styles.containerFeed }>
+
+              <View style={{ alignItems: 'center' }}>
+                  <Text style={ styles.title }>Tela de usuário</Text>
+              </View>
+
           </View>
           <StatusBar style="light" />
         </ImageBackground>
