@@ -1,20 +1,26 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { ScrollView, View, ImageBackground, Image, Alert } from "react-native";
 import { Input, Button } from "react-native-elements";
-import UsersContext from "../context/UsersContext";
+import { useDispatch, useSelector } from "react-redux";
+import { logar } from "../redux/actions";
 import { styles } from "../style/style";
 
 const Login = ({ navigation }) => {
-  const { dispatch, state } = useContext(UsersContext);
+  const { usuarioAtual, usuarios } = useSelector(
+    (state) => state.UsuarioReducer
+  );
+  const dispatch = useDispatch();
   const [user, setUser] = useState({});
+  const logarUsuario = (usuario) => dispatch(logar(usuario));
 
   const handleLogin = () => {
-    const usuarioEncontrado = state.usuarios.find(
+    const usuarioEncontrado = usuarios.find(
       (value) => user.email === value.email && user.password === value.password
     );
     if (usuarioEncontrado !== undefined) {
-      dispatch({ type: "validado", payload: usuarioEncontrado });
+      logarUsuario(usuarioEncontrado);
+      setUser({});
       navigation.navigate("Menu");
     } else Alert.alert("Usuário ou senha incorretos");
   };
@@ -55,7 +61,10 @@ const Login = ({ navigation }) => {
             type="clear"
             titleStyle={styles.registerBtn}
             containerStyle={styles.registerBtnContainer}
-            onPress={() => navigation.navigate("Criar Usuário")}
+            onPress={() => {
+              setUser({});
+              navigation.navigate("Criar Usuário");
+            }}
           />
         </View>
       </ImageBackground>

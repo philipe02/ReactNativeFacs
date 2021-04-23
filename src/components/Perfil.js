@@ -9,26 +9,36 @@ import {
   FlatList,
 } from "react-native";
 import { Input, Button, Header, Icon, ListItem } from "react-native-elements";
-import UsersContext from "../context/UsersContext";
 import { styles } from "../style/style";
 import ideias from "../data/ideias";
+import { useDispatch, useSelector } from "react-redux";
+import { editar } from "../redux/actions";
 
 const Perfil = ({ navigation, route }) => {
-  const { state, dispatch } = useContext(UsersContext);
-  let userKey = state.usuarioAtual.key;
-  const [user, setUser] = useState(
-    state.usuarios.find((user) => user.key === userKey)
+  const { usuarioAtual, usuarios } = useSelector(
+    (state) => state.UsuarioReducer
   );
+  const dispatch = useDispatch();
+
+  let userKey = usuarioAtual.key;
+  const [user, setUser] = useState(
+    usuarios.find((user) => user.key === userKey)
+  );
+
+  const editarUsuario = (usuario) => dispatch(editar(usuario));
   const [mostraSenha, setMostraSenha] = useState(false);
+
   const handleEditar = () => {
-    dispatch({ type: "editar", payload: user });
+    editarUsuario(user);
     userKey = user.key;
 
     route.params ? navigation.goBack() : Alert.alert("Usuário editado");
   };
+
   const mostrarSenha = () => {
     setMostraSenha(!mostraSenha);
   };
+
   const itemIdeias = ({ item: ideia }) => {
     return (
       <ListItem
@@ -138,7 +148,7 @@ const Perfil = ({ navigation, route }) => {
               scrollEnabled={false}
               keyExtractor={(ideia) => ideia.id.toString()}
               data={ideias.filter(
-                (ideia) => state.usuarioAtual.key === ideia.userKey
+                (ideia) => usuarioAtual.key === ideia.userKey
               )}
               renderItem={itemIdeias}
               contentContainerStyle={{ justifyContent: "center" }}

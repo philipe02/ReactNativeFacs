@@ -1,18 +1,20 @@
-import React, { createContext, useReducer } from "react";
-import users from "../data/users";
+import {
+  ADD_USUARIO,
+  EXCLUI_USUARIO,
+  EDITA_USUARIO,
+  USUARIO_LOGADO,
+} from "./actions";
 
 const initialState = {
   usuarioAtual: {},
-  usuarios: users,
+  usuarios: [],
 };
 
-const UsersContext = createContext({});
-
 const actions = {
-  validado(state, usuarioLogin) {
+  USUARIO_LOGADO(state, usuarioLogin) {
     return { ...state, usuarioAtual: usuarioLogin };
   },
-  cadastrar(state, usuarioNovo) {
+  ADD_USUARIO(state, usuarioNovo) {
     let listaUsuarios = state.usuarios;
     try {
       let keyNovoUsuario = listaUsuarios[listaUsuarios.length - 1].key + 1;
@@ -23,7 +25,7 @@ const actions = {
       return { ...state, usuarios: [...listaUsuarios, usuarioNovo] };
     }
   },
-  editar(state, usuarioEditado) {
+  EDITA_USUARIO(state, usuarioEditado) {
     let listaUsuarios = state.usuarios;
     listaUsuarios = listaUsuarios.map((user) =>
       user.key === usuarioEditado.key ? usuarioEditado : user
@@ -32,7 +34,7 @@ const actions = {
       ? { usuarioAtual: usuarioEditado, usuarios: listaUsuarios }
       : { ...state, usuarios: listaUsuarios };
   },
-  excluir(state, usuarioDeletar) {
+  EXCLUI_USUARIO(state, usuarioDeletar) {
     let listaUsuarios = state.usuarios;
     listaUsuarios = listaUsuarios.filter(
       (user) => user.key !== usuarioDeletar.key
@@ -41,24 +43,9 @@ const actions = {
   },
 };
 
-export const UsersProvider = (props) => {
-  function reducer(state, action) {
-    const fn = actions[action.type];
-    return fn ? fn(state, action.payload) : state;
-  }
-
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  return (
-    <UsersContext.Provider
-      value={{
-        state,
-        dispatch,
-      }}
-    >
-      {props.children}
-    </UsersContext.Provider>
-  );
+const UsuarioReducer = (state = initialState, action) => {
+  const fn = actions[action.type];
+  return fn ? fn(state, action.payload) : state;
 };
 
-export default UsersContext;
+export default UsuarioReducer;

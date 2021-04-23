@@ -1,14 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { ScrollView, View, Text, ImageBackground, Alert } from "react-native";
 import { Input, Button } from "react-native-elements";
-import UsersContext, { UsersProvider } from "../context/UsersContext";
+import { useDispatch, useSelector } from "react-redux";
+import { cadastrar } from "../redux/actions";
 import { styles } from "../style/style";
 
 const CadastroUsuario = ({ navigation }) => {
   const [user, setUser] = useState({});
-  const { dispatch } = useContext(UsersContext);
-
+  const { usuarioAtual, usuarios } = useSelector(
+    (state) => state.UsuarioReducer
+  );
+  const dispatch = useDispatch();
+  const cadastrarUsuario = (usuario) => dispatch(cadastrar(usuario));
   const handleCadastro = () => {
     if (!user.name || user.name === "") Alert.alert("Nome obrigatório");
     else if (!user.email || user.email === "")
@@ -26,14 +30,14 @@ const CadastroUsuario = ({ navigation }) => {
       user.password !== ""
     ) {
       delete user.confirmPassword;
-      dispatch({ type: "cadastrar", payload: user });
+      cadastrarUsuario(user);
       setUser({});
       Alert.alert("Usuário registrado!");
       navigation.goBack();
     }
   };
   return (
-    <UsersProvider>
+    <>
       <ScrollView>
         <ImageBackground
           source={require("../images/fundo1.png")}
@@ -86,7 +90,7 @@ const CadastroUsuario = ({ navigation }) => {
         </ImageBackground>
       </ScrollView>
       <StatusBar style="light" />
-    </UsersProvider>
+    </>
   );
 };
 

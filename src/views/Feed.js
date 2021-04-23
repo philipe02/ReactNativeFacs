@@ -2,11 +2,9 @@ import { StatusBar } from "expo-status-bar";
 import React, { useContext } from "react";
 import { View, Text, ImageBackground } from "react-native";
 import { Header } from "react-native-elements";
-import UsersContext from "../context/UsersContext";
 import { styles } from "../style/style";
 
 const Feed = ({ navigation }) => {
-  const { state } = useContext(UsersContext);
   return (
     <>
       <Header

@@ -3,24 +3,32 @@ import React, { useState, useContext, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { ScrollView, View, Text, ImageBackground, Alert } from "react-native";
 import { Input, Button, Header, Icon } from "react-native-elements";
-import UsersContext from "../context/UsersContext";
 import { styles } from "../style/style";
+import { useDispatch, useSelector } from "react-redux";
+import { editar } from "../redux/actions";
 
 const Usuario = ({ navigation, route }) => {
-  const { state, dispatch } = useContext(UsersContext);
+  const { usuarioAtual, usuarios } = useSelector(
+    (state) => state.UsuarioReducer
+  );
+  const dispatch = useDispatch();
+
   let userKey = route.params.key;
   const [user, setUser] = useState(
-    state.usuarios.find((user) => user.key === userKey)
+    usuarios.find((user) => user.key === userKey)
   );
+
+  const editarUsuario = (usuario) => dispatch(editar(usuario));
+
   const handleEditar = () => {
-    dispatch({ type: "editar", payload: user });
+    editarUsuario(user);
     userKey = user.key;
 
     route.params ? navigation.goBack() : Alert.alert("Usuário editado");
   };
   useFocusEffect(
     useCallback(() => {
-      setUser(state.usuarios.find((user) => user.key === userKey));
+      setUser(usuarios.find((user) => user.key === userKey));
     }, [userKey])
   );
   return (

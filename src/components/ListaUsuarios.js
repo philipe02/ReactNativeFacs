@@ -2,17 +2,24 @@ import { StatusBar } from "expo-status-bar";
 import React, { useContext } from "react";
 import { ImageBackground, FlatList, Alert, View } from "react-native";
 import { Header, ListItem, Button, Icon } from "react-native-elements";
-import UsersContext from "../context/UsersContext";
+import { useDispatch, useSelector } from "react-redux";
+import { excluir } from "../redux/actions";
 import { styles } from "../style/style";
 
 const ListaUsuario = ({ navigation }) => {
-  const { state, dispatch } = useContext(UsersContext);
+  const { usuarioAtual, usuarios } = useSelector(
+    (state) => state.UsuarioReducer
+  );
+  const dispatch = useDispatch();
+
+  const excluirUsuario = (usuario) => dispatch(excluir(usuario));
+
   const confirmUserDeletion = (user) => {
     Alert.alert("Excluir usuário", "Deseja excluir o usuário?", [
       {
         text: "Sim",
         onPress() {
-          dispatch({ type: "excluir", payload: user });
+          excluirUsuario(user);
         },
       },
       { text: "Não" },
@@ -43,7 +50,7 @@ const ListaUsuario = ({ navigation }) => {
         bottomDivider
         containerStyle={styles.listItemContainer}
         onPress={() => {
-          usuario.key === state.usuarioAtual.key
+          usuario.key === usuarioAtual.key
             ? navigation.navigate("Perfil", usuario)
             : navigation.navigate("Usuário", usuario);
         }}
@@ -89,7 +96,7 @@ const ListaUsuario = ({ navigation }) => {
         <View style={styles.listContainer}>
           <FlatList
             keyExtractor={(user) => user.key.toString()}
-            data={state.usuarios}
+            data={usuarios}
             renderItem={itemUsuario}
           />
         </View>

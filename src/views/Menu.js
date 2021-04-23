@@ -4,7 +4,6 @@ import Ideias from "./Ideias";
 import Feed from "./Feed";
 import Perfil from "../components/Perfil";
 import ListaUsuario from "../components/ListaUsuarios";
-import UsersContext from "../context/UsersContext";
 
 const Drawer = createDrawerNavigator();
 
