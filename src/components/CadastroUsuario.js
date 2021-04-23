@@ -8,11 +8,11 @@ import { styles } from "../style/style";
 
 const CadastroUsuario = ({ navigation }) => {
   const [user, setUser] = useState({});
-  const { usuarioAtual, usuarios } = useSelector(
-    (state) => state.UsuarioReducer
-  );
+
   const dispatch = useDispatch();
+
   const cadastrarUsuario = (usuario) => dispatch(cadastrar(usuario));
+
   const handleCadastro = () => {
     if (!user.name || user.name === "") Alert.alert("Nome obrigatório");
     else if (!user.email || user.email === "")
