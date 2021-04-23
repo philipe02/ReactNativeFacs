@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useContext, useState } from "react";
 import { ScrollView, View, ImageBackground, Image, Alert } from "react-native";
-import { Input, Button, Text } from "react-native-elements";
+import { Input, Button } from "react-native-elements";
 import UsersContext from "../context/UsersContext";
 import { styles } from "../style/style";
 

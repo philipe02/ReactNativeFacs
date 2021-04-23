@@ -1,10 +1,17 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, ImageBackground } from "react-native";
-import { Header } from "react-native-elements";
+import { Header, Button } from "react-native-elements";
+import UsersContext from "../context/UsersContext";
+import ideias from "../data/ideias";
 import { styles } from "../style/style";
 
 const Ideias = ({ navigation }) => {
+  const { state } = useContext(UsersContext);
+  const [ideia, setIdeias] = useState(ideias);
+  const getIdeias = () => {
+    return ideia;
+  };
   return (
     <>
       <Header
@@ -32,7 +39,13 @@ const Ideias = ({ navigation }) => {
           style={styles.bgImage}
         >
           <View style={styles.container}>
-            <Text>Tela ideias</Text>
+            <Button
+              title="state"
+              onPress={() => {
+                console.warn(state);
+                console.warn(state.usuarioAtual);
+              }}
+            />
           </View>
           <StatusBar style="light" />
         </ImageBackground>

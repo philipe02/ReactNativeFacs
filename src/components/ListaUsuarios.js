@@ -1,13 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useContext } from "react";
-import { View, Text, ImageBackground, FlatList, Alert } from "react-native";
+import { ImageBackground, FlatList, Alert, View } from "react-native";
 import { Header, ListItem, Button, Icon } from "react-native-elements";
 import UsersContext from "../context/UsersContext";
 import { styles } from "../style/style";
 
 const ListaUsuario = ({ navigation }) => {
   const { state, dispatch } = useContext(UsersContext);
-
   const confirmUserDeletion = (user) => {
     Alert.alert("Excluir usuário", "Deseja excluir o usuário?", [
       {
@@ -24,9 +23,7 @@ const ListaUsuario = ({ navigation }) => {
     return (
       <>
         <Button
-          onPress={() =>
-            navigation.navigate("Usuário", { usuario, navigation })
-          }
+          onPress={() => navigation.navigate("Usuário", usuario)}
           type="clear"
           icon={<Icon name="edit" size={25} color="orange" />}
         />
@@ -46,7 +43,9 @@ const ListaUsuario = ({ navigation }) => {
         bottomDivider
         containerStyle={styles.listItemContainer}
         onPress={() => {
-          navigation.navigate("Usuário", { usuario, navigation });
+          usuario.key === state.usuarioAtual.key
+            ? navigation.navigate("Perfil", usuario)
+            : navigation.navigate("Usuário", usuario);
         }}
       >
         <ListItem.Content>
@@ -87,11 +86,13 @@ const ListaUsuario = ({ navigation }) => {
             onPress: () => navigation.navigate("Login"),
           }}
         />
-        <FlatList
-          keyExtractor={(user) => user.key.toString()}
-          data={state.usuarios}
-          renderItem={itemUsuario}
-        />
+        <View style={styles.listContainer}>
+          <FlatList
+            keyExtractor={(user) => user.key.toString()}
+            data={state.usuarios}
+            renderItem={itemUsuario}
+          />
+        </View>
       </ImageBackground>
       <StatusBar style="light" />
     </>

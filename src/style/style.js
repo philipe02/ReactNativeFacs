@@ -28,6 +28,7 @@ export const styles = StyleSheet.create({
   },
   listItemContainer: {
     backgroundColor: "#fff",
+    marginTop: 10,
   },
   listItemTitulo: {
     color: "#293241",
@@ -41,31 +42,32 @@ export const styles = StyleSheet.create({
   login: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
   },
   loginLogo: {
     height: 160,
     width: 160,
     borderRadius: 100,
     marginBottom: 20,
+    alignSelf: "center",
     backgroundColor: "#fff",
   },
   loginBtn: { backgroundColor: "#293241", height: 45 },
-  loginBtnContainer: { width: "75%" },
+  loginBtnContainer: { width: "75%", marginLeft: "12.5%" },
   registerBtn: { color: "#E37B09", fontSize: 18 },
   registerBtnContainer: { margin: 20, marginTop: 30 },
   input: { backgroundColor: "#fff", height: 45, width: "80%", paddingLeft: 15 },
-  inputContainer: { width: "80%", padding: 10 },
+  inputContainer: { width: "80%", padding: 10, marginLeft: "10%" },
   form: {
     flex: 1,
+    height: height - 250,
     padding: 12,
-    justifyContent: "center",
-    alignItems: "center",
+    marginTop: 20,
   },
   formText: {
     color: "#fff",
     fontSize: 20,
     paddingLeft: 5,
+    marginLeft: "10%",
   },
   formSave: {
     position: "absolute",
@@ -84,5 +86,17 @@ export const styles = StyleSheet.create({
   },
   formBackBtn: {
     backgroundColor: "tomato",
+  },
+  secaoTitulo: {
+    fontSize: 40,
+    fontWeight: "bold",
+  },
+  listContainer: {
+    flex: 1,
+    marginHorizontal: "5%",
+  },
+  mostraSenhaBtn: {
+    backgroundColor: "#fff",
+    height: 45,
   },
 });

@@ -28,7 +28,9 @@ const actions = {
     listaUsuarios = listaUsuarios.map((user) =>
       user.key === usuarioEditado.key ? usuarioEditado : user
     );
-    return { ...state, usuarios: listaUsuarios };
+    return state.usuarioAtual.key === usuarioEditado.key
+      ? { usuarioAtual: usuarioEditado, usuarios: listaUsuarios }
+      : { ...state, usuarios: listaUsuarios };
   },
   excluir(state, usuarioDeletar) {
     let listaUsuarios = state.usuarios;
