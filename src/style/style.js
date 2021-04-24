@@ -60,11 +60,11 @@ export const styles = StyleSheet.create({
     },
     count: {
         position: 'absolute',
-        top: -6,
-        right: -4,
+        top: -5,
+        right: -5,
         fontSize: 15,
         fontWeight: 'bold',
-        color: '#D16E0B'
+        color: '#E37B09'
     },
     text: {
         color: '#1d1d1d',
@@ -75,10 +75,12 @@ export const styles = StyleSheet.create({
     input: {
         width: 300,
         height: 45,
-        fontSize: 20,
-        marginTop: 30,
-        paddingHorizontal: 15,
+        fontSize: 18,
+        marginBottom: 15,
+        paddingHorizontal: 5,
         backgroundColor: '#f5f5f5',
+        borderWidth: 1,
+        borderColor: "#919191"
     },
     groupButton: {
         marginTop: 10,
@@ -103,14 +105,14 @@ export const styles = StyleSheet.create({
     },
     centeredView: {
         flex: 1,
-        width: '100%',
         marginTop: 55,
         alignItems: 'center',
         justifyContent: 'center',
     },
     modalView: {
         margin: 20,
-        width: 360,
+        width: 375,
+        height: 635,
         backgroundColor: '#FFFFFF',
         borderRadius: 5,
         padding: 20,
@@ -121,9 +123,9 @@ export const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowOffset: { width: 0, height: 2 },
     },
-    hidden: {
-        height: 0,
-        width: 0
+    scroll: {
+        height: '100%',
+        width: '100%'
     },
     list: {
         flexDirection: "row",
@@ -135,4 +137,8 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingBottom: 8
     },
+    label: {
+        fontSize: 18,
+        color: "#000"
+    }
 });

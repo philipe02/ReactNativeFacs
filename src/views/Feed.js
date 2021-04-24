@@ -102,6 +102,29 @@ const Feed = ({ navigation }) => {
 
     return(
         <>
+            <Header
+                containerStyle={{
+                    height: 80,
+                    backgroundColor: "#1D1D1D"
+                }}
+                leftComponent={{
+                    icon: "menu",
+                    color: "#D16E0B",
+                    onPress: navigation.openDrawer,
+                    size: 35,
+                }}
+                centerComponent={{
+                    text: "Feed",
+                    style: styles.headerText,
+                }}
+                rightComponent={{
+                    icon: "home",
+                    color: "#D16E0B",
+                    size: 35,
+                    onPress: () => navigation.navigate("Inicio"),
+                }}
+            />
+
             <View style={ styles.body }>
                 <ImageBackground source={ require('../images/fundo1.png') } style={ styles.bg }>
                     <View style={ styles.containerFeed }>
@@ -110,8 +133,11 @@ const Feed = ({ navigation }) => {
                             <Text style={ styles.title }>Últimas ideias publicadas</Text>
                         </View>
 
-                        <FlatList keyExtractor={ user => user.id.toString() }
-                                  data={ users } renderItem={ renderUserItems }/>
+                        <FlatList
+                                data={ users }
+                                renderItem={ renderUserItems }
+                                keyExtractor={ user => user.id.toString() }
+                        />
 
                         <Modal transparent={true}
                                animationType="slide"
