@@ -1,18 +1,49 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ImageBackground, FlatList, Alert, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Header, ListItem, Button, Icon } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { excluir } from "../redux/actions";
 import { styles } from "../style/style";
+import { salveUsuarios } from "../storage/storage";
 
 const ListaUsuario = ({ navigation }) => {
-  const { usuarioAtual, usuarios } = useSelector(
+  /* const { usuarioAtual, usuarios } = useSelector(
     (state) => state.UsuarioReducer
-  );
+  ); */
+  const [usuarios, setUsuarios] = useState();
+  const [usuarioAtual, setUsuarioAtual] = useState({});
   const dispatch = useDispatch();
 
-  const excluirUsuario = (usuario) => dispatch(excluir(usuario));
+  const excluirUsuario = (usuarioDeletar) => {
+    let listaUsuarios = usuarios;
+    listaUsuarios = listaUsuarios.filter(
+      (user) => user.key !== usuarioDeletar.key
+    );
+    setUsuarios(listaUsuarios);
+  };
+
+  useEffect(() => {
+    async function carregaUsuarios() {
+      const usuariosStorage = await AsyncStorage.getItem("@usuarios");
+      if (usuariosStorage) {
+        setUsuarios(JSON.parse(usuariosStorage));
+      }
+    }
+    async function carregaUsuarioAtual() {
+      const usuarioAtualStorage = await AsyncStorage.getItem("@usuarioAtual");
+      if (usuarioAtualStorage) {
+        setUsuarioAtual(JSON.parse(usuarioAtualStorage));
+      }
+    }
+    carregaUsuarioAtual();
+    carregaUsuarios();
+  }, []);
+
+  useEffect(() => {
+    usuarios !== undefined ? salveUsuarios(usuarios) : null;
+  }, [usuarios]);
 
   const confirmUserDeletion = (user) => {
     Alert.alert("Excluir usuário", "Deseja excluir o usuário?", [
@@ -94,11 +125,13 @@ const ListaUsuario = ({ navigation }) => {
           }}
         />
         <View style={styles.listContainer}>
-          <FlatList
-            keyExtractor={(user) => user.key.toString()}
-            data={usuarios}
-            renderItem={itemUsuario}
-          />
+          {usuarios !== undefined ? (
+            <FlatList
+              keyExtractor={(user) => user.key.toString()}
+              data={usuarios}
+              renderItem={itemUsuario}
+            />
+          ) : null}
         </View>
       </ImageBackground>
       <StatusBar style="light" />

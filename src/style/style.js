@@ -2,11 +2,7 @@ import { StyleSheet, Dimensions } from "react-native";
 const { height, width } = Dimensions.get("window");
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  container: { flex: 1, alignItems: "center", justifyContent: "center" },
   headerContainer: {
     height: 90,
     backgroundColor: "#293241",
@@ -18,31 +14,12 @@ export const styles = StyleSheet.create({
     paddingTop: 7,
     fontWeight: "bold",
   },
-  bgImage: {
-    height,
-    width,
-  },
-  body: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  listItemContainer: {
-    backgroundColor: "#fff",
-    marginTop: 10,
-  },
-  listItemTitulo: {
-    color: "#293241",
-    fontSize: 25,
-    fontWeight: "bold",
-  },
-  listItemSubtitulo: {
-    color: "#293241",
-    fontSize: 20,
-  },
-  login: {
-    flex: 1,
-    justifyContent: "center",
-  },
+  bgImage: { height, width },
+  body: { flex: 1, justifyContent: "center" },
+  listItemContainer: { backgroundColor: "#fff", marginTop: 10 },
+  listItemTitulo: { color: "#293241", fontSize: 25, fontWeight: "bold" },
+  listItemSubtitulo: { color: "#293241", fontSize: 20 },
+  login: { flex: 1, justifyContent: "center" },
   loginLogo: {
     height: 160,
     width: 160,
@@ -56,47 +33,104 @@ export const styles = StyleSheet.create({
   registerBtn: { color: "#E37B09", fontSize: 18 },
   registerBtnContainer: { margin: 20, marginTop: 30 },
   input: { backgroundColor: "#fff", height: 45, width: "80%", paddingLeft: 15 },
-  inputContainer: { width: "80%", padding: 10, marginLeft: "10%" },
-  form: {
-    flex: 1,
-    height: height - 250,
-    padding: 12,
-    marginTop: 20,
-  },
-  formText: {
-    color: "#fff",
-    fontSize: 20,
-    paddingLeft: 5,
+  inputContainer: {
+    width: "80%",
+    padding: 10,
     marginLeft: "10%",
   },
-  formSave: {
-    position: "absolute",
-    width: 100,
-    right: 25,
-    bottom: 30,
-  },
+  form: { flex: 1, height: height - 250, padding: 12, marginTop: 20 },
+  formText: { color: "#fff", fontSize: 20, paddingLeft: 5, marginLeft: "10%" },
+  formSave: { position: "absolute", width: 100, right: 25, bottom: 30 },
   formSaveBtn: {
     backgroundColor: "#293241",
   },
-  formBack: {
-    position: "absolute",
-    width: 100,
-    left: 25,
-    bottom: 30,
-  },
-  formBackBtn: {
-    backgroundColor: "tomato",
-  },
-  secaoTitulo: {
-    fontSize: 40,
+  formBack: { position: "absolute", width: 100, left: 25, bottom: 30 },
+  formBackBtn: { backgroundColor: "tomato" },
+  secaoTitulo: { fontSize: 40, fontWeight: "bold" },
+  listContainer: { flex: 1, marginHorizontal: "5%" },
+  mostraSenhaBtn: { backgroundColor: "#fff", height: 45 },
+  tituloInput: {
     fontWeight: "bold",
+    fontSize: 20,
+    color: "#000",
+    textAlign: "left",
+    marginLeft: 10,
   },
-  listContainer: {
-    flex: 1,
-    marginHorizontal: "5%",
+  botaoContainer: {
+    marginTop: 25,
+    marginBottom: 25,
+    flexDirection: "row",
   },
-  mostraSenhaBtn: {
-    backgroundColor: "#fff",
+  botaoSalveCancel: {
     height: 45,
+    width: 95,
+    marginLeft: 20,
+    borderRadius: 5,
+  },
+  botaoaddIdeia: {
+    position: "absolute",
+    width: 48,
+    height: 48,
+    backgroundColor: "#1D1D1D",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 30,
+    right: 25,
+    bottom: 25,
+    elevation: 2,
+    zIndex: 9,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      width: 1,
+      height: 3,
+    },
+  },
+  acoesLista: {
+    position: "absolute",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    right: 10,
+  },
+  textBotaoSalveCancel: {
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    textAlign: "center",
+    padding: 13,
+    fontSize: 15,
+  },
+  lista: {
+    backgroundColor: "#fff",
+    marginTop: 10,
+    borderRadius: 5,
+    width: "92%",
+    justifyContent: "center",
+    padding: 5,
+    marginRight: 8,
+  },
+  tituloIdeia: {
+    fontSize: 17,
+    color: "#127289",
+    fontWeight: "700",
+  },
+  descIdeia: {
+    fontSize: 14,
+    width: "80%",
+  },
+  tituloExclusao: {
+    fontSize: 19,
+    margin: 8,
+    textAlign: "center",
+    fontWeight: "700",
+    color: "#1281AB",
+  },
+  containerExclusao: {
+    backgroundColor: "#FFFFFF",
+    alignContent: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    width: "90%",
+    height: "30%",
+    marginLeft: 14,
   },
 });

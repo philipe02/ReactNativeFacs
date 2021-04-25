@@ -1,18 +1,32 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, View, Text, ImageBackground, Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Input, Button } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { cadastrar } from "../redux/actions";
+import { salveUsuarios } from "../storage/storage";
 import { styles } from "../style/style";
 
 const CadastroUsuario = ({ navigation }) => {
   const [user, setUser] = useState({});
-  const { usuarioAtual, usuarios } = useSelector(
+  const [usuarios, setUsuarios] = useState([]);
+  /* const { usuarioAtual, usuarios } = useSelector(
     (state) => state.UsuarioReducer
-  );
+  ); */
+
   const dispatch = useDispatch();
-  const cadastrarUsuario = (usuario) => dispatch(cadastrar(usuario));
+  const cadastrarUsuario = (usuarioNovo) => {
+    let listaUsuarios = usuarios;
+    try {
+      let keyNovoUsuario = listaUsuarios[listaUsuarios.length - 1].key + 1;
+      usuarioNovo = { key: keyNovoUsuario, ...usuarioNovo };
+      salveUsuarios([...listaUsuarios, usuarioNovo]);
+    } catch {
+      usuarioNovo = { key: 1, ...usuarioNovo };
+      salveUsuarios([...listaUsuarios, usuarioNovo]);
+    }
+  };
   const handleCadastro = () => {
     if (!user.name || user.name === "") Alert.alert("Nome obrigatório");
     else if (!user.email || user.email === "")
@@ -36,6 +50,17 @@ const CadastroUsuario = ({ navigation }) => {
       navigation.goBack();
     }
   };
+
+  useEffect(() => {
+    async function carregaUsuarios() {
+      const usuariosStorage = await AsyncStorage.getItem("@usuarios");
+      if (usuariosStorage) {
+        setUsuarios(JSON.parse(usuariosStorage));
+      }
+    }
+    carregaUsuarios();
+  }, []);
+
   return (
     <>
       <ScrollView>

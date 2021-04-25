@@ -1,18 +1,17 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, View, ImageBackground, Image, Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Input, Button } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { logar } from "../redux/actions";
+import { salveUsuarioAtual } from "../storage/storage";
 import { styles } from "../style/style";
 
 const Login = ({ navigation }) => {
-  const { usuarioAtual, usuarios } = useSelector(
-    (state) => state.UsuarioReducer
-  );
-  const dispatch = useDispatch();
   const [user, setUser] = useState({});
-  const logarUsuario = (usuario) => dispatch(logar(usuario));
+  const [usuarios, setUsuarios] = useState([]);
+  const logarUsuario = (usuario) => salveUsuarioAtual(usuario);
 
   const handleLogin = () => {
     const usuarioEncontrado = usuarios.find(
@@ -24,6 +23,16 @@ const Login = ({ navigation }) => {
       navigation.navigate("Menu");
     } else Alert.alert("Usuário ou senha incorretos");
   };
+
+  useEffect(() => {
+    async function carregaUsuarios() {
+      const usuariosStorage = await AsyncStorage.getItem("@usuarios");
+      if (usuariosStorage) {
+        setUsuarios(JSON.parse(usuariosStorage));
+      }
+    }
+    carregaUsuarios();
+  }, []);
   return (
     <ScrollView>
       <ImageBackground
