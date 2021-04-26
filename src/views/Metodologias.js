@@ -3,10 +3,10 @@ import { styles } from '../style/style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, View, FlatList, ImageBackground, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { ListItem, Button, Icon, Header } from 'react-native-elements';
-import { FontAwesome } from '@expo/vector-icons';
 
-import method from "../components/metodologias/metodologia"
+import { Searchbar } from 'react-native-paper';
 
+import ListaMetodologia from '../components/metodologias/ListaMetodologia';
 import AdicionarMetodologia from '../components/metodologias/AdicionarMetodologia';
 import EditarMetodologia from '../components/metodologias/EditarMetodologia';
 import DeletarMetodologia from '../components/metodologias/DeletarMetodologia';
@@ -17,12 +17,19 @@ const Metodologias = ({ navigation }) => {
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
-    const [selectedMetodologia, setSelectedMetodologia] = useState([])
-    const [metodologia, setMetodologia] = useState(false)
-
+    const [metodologia, setMetodologia] = useState(ListaMetodologia)
     const [modalVisible, setModalVisible] = useState(false)
+    const [selectedMetodologia, setSelectedMetodologia] = useState([])
 
-    const toogleDetailsMetodologia = () => {
+    const searchFilterFunction = (text) => {
+        if(text) {
+            const newData = metodologia.filter(item => (item.area.toUpperCase() == text.toUpperCase()))
+            setMetodologia(newData)
+        }else
+            setMetodologia(metodologia)
+    }
+
+    const toggleDetalhesMetodologia = () => {
         setModalVisible(! modalVisible)
     }
 
@@ -74,30 +81,37 @@ const Metodologias = ({ navigation }) => {
 
     function getActions(data) {
         return(
-            <>
+            <View style={styles.groupButton}>
                 <Button
-                        type="clear"
-                        style={{ marginHorizontal: 15 }}
-                        icon={ <Icon name="edit" size={25} color="#1281AB"/> }
-                        onPress={() => {toggleEditarMetodologia(); setSelectedMetodologia(data)}}
+                    type="clear"
+                    style={{ marginHorizontal: 40 }}
+                    icon={ <Icon name="edit" size={30} color="#1281AB"/> }
+                    onPress={() => {toggleEditarMetodologia(); setSelectedMetodologia(data)}}
                 />
 
                 <Button
-                        type="clear"
-                        style={{ marginHorizontal: 15 }}
-                        icon={ <Icon name="delete" size={25} color="#E76F51"/> }
-                        onPress={() => {toggleDeletarMetodologia(); setSelectedMetodologia(data)}}
+                    type="clear"
+                    style={{ marginHorizontal: 40 }}
+                    icon={ <Icon name="delete" size={30} color="#E76F51"/> }
+                    onPress={() => {toggleDeletarMetodologia(); setSelectedMetodologia(data)}}
                 />
-            </>
+            </View>
         )
     }
 
     function renderDataItems({ item : data }) {
         return(
-            <ListItem key={ data.id } bottomDivider onPress={ () => {setSelectedMetodologia(data); setModalVisible(true)} }>
+            <ListItem
+                bottomDivider
+                key={ data.id }
+                onPress={() => {
+                    setModalVisible(true);
+                    setSelectedMetodologia(data);
+                }}
+            >
                 <ListItem.Content>
                     <ListItem.Title style={ styles.titleList }>{ data.title }</ListItem.Title>
-                    <ListItem.Subtitle style={ styles.textList }>{ data.definition }</ListItem.Subtitle>
+                    <ListItem.Subtitle style={ styles.textList }>{ data.area }</ListItem.Subtitle>
                 </ListItem.Content>
 
                 { getActions(data) }
@@ -126,7 +140,7 @@ const Metodologias = ({ navigation }) => {
                     size: 35,
                     icon: "add",
                     color: "#D16E0B",
-                    onPress: () =>  toggleAdicionarMetodologia() ,
+                    onPress: () =>  toggleAdicionarMetodologia(),
                 }}
             />
 
@@ -135,52 +149,74 @@ const Metodologias = ({ navigation }) => {
                     <View style={ styles.containerFeed }>
 
                         <View style={{ alignItems: 'center' }}>
-                            <Text style={ styles.title }>Lista de metodologias</Text>
+                            <Text style={ styles.title }>Materiais para estudo</Text>
                         </View>
 
+                        <Searchbar
+                            autoCorrect={false}
+                            onChangeText={text => searchFilterFunction(text)}
+                            style={{width: 335, marginBottom: 10}}
+                            placeholder="Filtrar por área de estudo..."
+                        />
+
                         <FlatList
-                            data={ method }
-                            renderItem={ renderDataItems }
-                            keyExtractor={ user => user.id.toString() }
+                            data={metodologia}
+                            renderItem={renderDataItems}
+                            keyExtractor={method => method.id.toString()}
                         />
 
                         <Modal transparent
                                animationType="slide"
                                visible={ modalVisible }
-                               onRequestClose={ toogleDetailsMetodologia }>
+                               onRequestClose={ toggleDetalhesMetodologia }>
 
                             <View style={ styles.centeredView }>
                                 <View style={ styles.modalView }>
-                                    <Text style={ styles.title }>Detalhes da metodologia</Text>
+                                    <Text style={ styles.title }>Detalhes do Material</Text>
 
                                     <ScrollView>
                                         {
-                                            <View key={ selectedMetodologia.id } style={{...styles.list, flexDirection: 'column', justifyContent: 'center'}}>
+                                            <View key={selectedMetodologia.id} style={styles.listModal}>
 
-                                                <View style={{ flexDirection: 'column', alignItems: 'flex-start', width: '100%', marginBottom: 15 }}>
-                                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Título: </Text>
-                                                    <Text style={{ fontWeight: 'normal', fontSize: 18 }}>{ selectedMetodologia.title }</Text>
+                                                <View style={styles.listDetails}>
+                                                    <Text style={styles.listDetailsStrong}>Título: </Text>
+                                                    <Text style={styles.listDetailsText}>{selectedMetodologia.title}</Text>
                                                 </View>
 
-                                                <View style={{ flexDirection: 'column', alignItems: 'flex-start', width: '100%', marginBottom: 15 }}>
-                                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Área de estudos: </Text>
-                                                    <Text style={{ fontWeight: 'normal', fontSize: 18 }}>{ selectedMetodologia.area }</Text>
+                                                <View style={styles.listDetails}>
+                                                    <Text style={styles.listDetailsStrong}>Área de Estudo: </Text>
+                                                    <Text style={styles.listDetailsText}>{selectedMetodologia.area}</Text>
                                                 </View>
 
-                                                <View style={{ flexDirection: 'column', alignItems: 'flex-start', width: '100%', marginBottom: 15 }}>
-                                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Definição: </Text>
-                                                    <Text style={{ fontWeight: 'normal', fontSize: 18 }}>{ selectedMetodologia.definition }</Text>
+                                                <View style={styles.listDetails}>
+                                                    <Text style={styles.listDetailsStrong}>Definição: </Text>
+                                                    <Text style={styles.listDetailsText}>{selectedMetodologia.definition}</Text>
                                                 </View>
 
-                                                <View style={{ flexDirection: 'column', alignItems: 'flex-start', width: '100%', marginBottom: 15 }}>
-                                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Objetivo: </Text>
-                                                    <Text style={{ fontWeight: 'normal', fontSize: 18 }}>{ selectedMetodologia.objective }</Text>
+                                                <View style={styles.listDetails}>
+                                                    <Text style={styles.listDetailsStrong}>Objetivo: </Text>
+                                                    <Text style={styles.listDetailsText}>{selectedMetodologia.objective}</Text>
                                                 </View>
 
-                                                <View style={{ flexDirection: 'column', alignItems: 'flex-start', width: '100%', marginBottom: 15 }}>
-                                                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Informações adicionais: </Text>
-                                                    <Text style={{ fontWeight: 'normal', fontSize: 18 }}>{ selectedMetodologia.description }</Text>
+                                                <View style={styles.listDetails}>
+                                                    <Text style={styles.listDetailsStrong}>Informações adicionais: </Text>
+                                                    <Text style={styles.listDetailsText}>{selectedMetodologia.description}</Text>
                                                 </View>
+
+                                                <View style={styles.listDetails}>
+                                                    <Text style={styles.listDetailsStrong}>Essa pesquisa possui referências? </Text>
+                                                    <Text style={styles.listDetailsText}>{selectedMetodologia.references}</Text>
+                                                </View>
+
+                                                {
+                                                    selectedMetodologia.list ? selectedMetodologia.list.map(data =>
+                                                        <View key={selectedMetodologia.id} style={styles.listDetails}>
+                                                            <Text style={styles.listDetailsStrong}>Referências</Text>
+                                                            <Text style={styles.listDetailsText}>{data}</Text>
+                                                        </View> )
+                                                        : null
+                                                }
+
                                             </View>
                                         }
                                     </ScrollView>

@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#293241',
-        marginHorizontal: 15
+        marginHorizontal: 40
     },
     btnText: {
         fontSize: 16,
@@ -76,7 +76,6 @@ export const styles = StyleSheet.create({
         width: 300,
         height: 45,
         fontSize: 18,
-        marginBottom: 15,
         paddingHorizontal: 5,
         backgroundColor: '#f5f5f5',
         borderWidth: 1,
@@ -86,7 +85,7 @@ export const styles = StyleSheet.create({
         marginTop: 10,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: 'center'
+        justifyContent: 'space-between'
     },
     small: {
         fontSize: 14,
@@ -111,8 +110,6 @@ export const styles = StyleSheet.create({
     },
     modalView: {
         margin: 20,
-        width: 375,
-        height: 635,
         backgroundColor: '#FFFFFF',
         borderRadius: 5,
         padding: 20,
@@ -124,8 +121,9 @@ export const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
     },
     scroll: {
-        height: '100%',
-        width: '100%'
+        height: 600,
+        width: 330,
+        textAlign: 'center',
     },
     list: {
         flexDirection: "row",
@@ -138,7 +136,33 @@ export const styles = StyleSheet.create({
         paddingBottom: 8
     },
     label: {
-        fontSize: 18,
-        color: "#000"
-    }
+        fontSize: 20,
+        color: "#1D1D1D",
+        marginBottom: 5
+    },
+    listModal: {
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingHorizontal: 15,
+        paddingBottom: 8
+    },
+    listDetails: {
+        width: '100%',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        marginBottom: 15,
+        paddingBottom: 3,
+        borderColor: "#d5d5d5",
+        borderBottomWidth: 1,
+    },
+    listDetailsText: {
+        fontSize: 20,
+        color: "#1D1D1D",
+    },
+    listDetailsStrong: {
+        fontSize: 20,
+        color: "#1D1D1D",
+        fontWeight: 'bold'
+    },
 });

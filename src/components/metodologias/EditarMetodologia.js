@@ -2,22 +2,12 @@ import React, { useState, useEffect } from 'react';
 import {View, Text, Modal, TouchableOpacity, TextInput, Picker} from 'react-native';
 import { styles } from '../../style/style';
 import { RadioButton } from "react-native-paper";
+import ListaMetodologia from './ListaMetodologia';
 
 const EditarMetodologia = (props) => {
-
-    const initialMetodologiaState = {
-        id : 0,
-        area: "",
-        title : "",
-        objective: "",
-        definition: "",
-        description : "",
-        references: "",
-    }
-
-    const [metodologia, setMetodologia] = useState(initialMetodologiaState)
+    const [metodologia, setMetodologia] = useState(ListaMetodologia)
     const [checked, setChecked] = useState(metodologia.references);
-    const { isOpen, isClose } = props
+    const {isOpen, isClose} = props
 
     const handleChange = (value, name) => {
         setMetodologia( {...metodologia, [name] : value} )
@@ -50,16 +40,22 @@ const EditarMetodologia = (props) => {
     }
 
     return(
-        <Modal visible={ isOpen } onRequestClose={ isClose } animationType="slide" transparent>
-            <View style={ styles.centeredView }>
-                <View style={ styles.modalView }>
-                    <Text style={ styles.title }>Adicionar Metodologia</Text>
+        <Modal
+            transparent
+            visible={isOpen}
+            animationType="slide"
+            onRequestClose={isClose}
+        >
+
+            <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <Text style={styles.title}>Adicionar Metodologia</Text>
 
                     <View>
                         <Text>Título</Text>
                         <TextInput
-                                style={ styles.input }
-                                value={ metodologia.title }
+                                style={styles.input}
+                                value={metodologia.title}
                                 placeholder="Informe o título aqui: "
                                 onChangeText={ (text) => handleChange(text, 'title') }
                         />
@@ -68,10 +64,10 @@ const EditarMetodologia = (props) => {
                     <View>
                         <Text>Área</Text>
                         <Picker
-                                style={ styles.input }
-                                value={ metodologia.area }
-                                selectedValue={ metodologia.area }
-                                onValueChange={(text) => handleChange(text, 'area')}
+                            style={styles.input}
+                            value={metodologia.area}
+                            selectedValue={metodologia.area}
+                            onValueChange={(text) => handleChange(text, 'area')}
                         >
                             <Picker.Item label="Selecione a área de estudo" value="nulo"/>
                             <Picker.Item label="Recursos Humanos" value="recursos-humanos"/>
@@ -84,8 +80,8 @@ const EditarMetodologia = (props) => {
                     <View>
                         <Text>Definição</Text>
                         <TextInput
-                                style={ styles.input }
-                                value={ metodologia.definition }
+                                style={styles.input}
+                                value={metodologia.definition}
                                 placeholder="Informe a definição aqui: "
                                 onChangeText={ (text) => handleChange(text, 'definition') }
                         />
@@ -114,19 +110,25 @@ const EditarMetodologia = (props) => {
                     <View>
                         <Text>Possui referências?</Text>
 
-                        <View style={{ flexDirection: 'row' }}>
-                            <RadioButton
-                                    value="sim"
-                                    color="#1281AB"
-                                    onPress={() => setChecked('sim')}
-                                    status={ checked === 'sim' ? 'checked' : 'unchecked' }
-                            />
-                            <RadioButton
-                                    value="não"
-                                    color="#1281AB"
-                                    onPress={() => setChecked('não')}
-                                    status={ checked === 'não' ? 'checked' : 'unchecked' }
-                            />
+                        <View>
+                            <Text style={ styles.label }>Possui referências?</Text>
+
+                            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
+                                <RadioButton
+                                        value={metodologia.area}
+                                        color="#1281AB"
+                                        status={ checked === 'Sim' ? 'checked' : 'unchecked' }
+                                        onPress={() => setChecked('sim')}
+                                />
+                                <Text style={{...styles.label, marginRight: 45}}>sim</Text>
+                                <RadioButton
+                                        value={metodologia.area}
+                                        color="#1281AB"
+                                        status={ checked === 'Não' ? 'checked' : 'unchecked' }
+                                        onPress={() => setChecked('não')}
+                                />
+                                <Text style={ styles.label }>não</Text>
+                            </View>
                         </View>
                     </View>
 

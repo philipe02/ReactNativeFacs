@@ -1,123 +1,205 @@
 import React, { useState } from 'react';
-import { RadioButton } from 'react-native-paper';
-import {View, Text, Modal, TouchableOpacity, TextInput, Picker, ScrollView} from 'react-native';
+import { RadioButton, HelperText, TextInput, Snackbar } from 'react-native-paper';
+import { View, Text, Modal, TouchableOpacity, Picker, ScrollView } from 'react-native';
 
 import { styles } from '../../style/style';
+import ListaMetodologia from './ListaMetodologia';
 
 const AdicionarMetodologia = (props) => {
-
-    const initialMetodologiaState = {
-        id : 0,
-        title : "",
-        area: "nulo",
-        definition: "",
-        description : "",
-        objective: ""
+    const stateInitialValidate = {
+        title : false,
+        area: false,
+        definition: false,
+        objective: false,
     }
 
-    const [metodologia, setMetodologia] = useState(initialMetodologiaState)
-    const [checked, setChecked] = React.useState('');
-    const { isOpen, isClose } = props
+    const [metodologia, setMetodologia] = useState(ListaMetodologia)
+    const [checked, setChecked] = useState('');
+    const [addInvalid, setAddInvalid] = useState(stateInitialValidate);
+    const [error, setError] = useState(false)
+    const {isOpen, isClose} = props
 
     const handleChange = (value, name) => {
-        setMetodologia( {...metodologia, [name] : value} )
+        if(value) {
+            setAddInvalid({...addInvalid, [name]: false})
+            setMetodologia({...metodologia, [name] : value})
+        }else {
+            setAddInvalid({...addInvalid, [name]: true})
+        }
     }
 
     const adicionarMetodologia = async() => {
-        props.adicionarMetodologia(metodologia)
-        props.isClose()
+        if(metodologia.title === "" || metodologia.area === "" || metodologia.definition === "" || metodologia.objective === "" || checked === '') {
+            setError(true)
+        }else if(addInvalid.title || addInvalid.area || addInvalid.definition || addInvalid.objective || checked === '') {
+            setError(true)
+        }else {
+            setError(false)
+            props.adicionarMetodologia({
+                id : metodologia.id,
+                area: metodologia.area,
+                title : metodologia.title,
+                objective: metodologia.objective,
+                definition: metodologia.definition,
+                description : metodologia.description,
+                references : checked,
+            })
+            props.isClose()
+        }
     }
+
+    const [visible, setVisible] = useState(true);
+
+    const onToggleSnackBar = () => setError(! error);
+
+    const onDismissSnackBar = () => setError(false);
 
     return(
         <Modal visible={ isOpen } onRequestClose={ isClose } animationType="slide" transparent>
             <View style={ styles.centeredView }>
-                <View style={ styles.modalView }>
+                <View style={{ ...styles.modalView, width: 375, height: 635, }}>
 
                     <View style={{ alignItems: 'center' }}>
                         <Text style={ styles.title }>Adicionar Metodologia</Text>
                     </View>
 
-                    <ScrollView style={ styles.scroll }>
-                        <View>
-                            <Text style={ styles.label }>Título</Text>
+                    <ScrollView style={styles.scroll}>
+                        <View style={{marginBottom: 5}}>
                             <TextInput
-                                    style={ styles.input }
+                                    label="Título"
+                                    mode="outlined"
+                                    error={addInvalid.title}
                                     placeholder="Informe o título aqui: "
-                                    onChangeText={ (text) => handleChange(text, 'title') }
+                                    onChangeText={(text) => handleChange(text, 'title')}
                             />
+                            <HelperText
+                                type="error"
+                                visible={addInvalid.title}
+                                style={{fontSize: 15, paddingHorizontal: 0}}
+                            >Informe o título!</HelperText>
                         </View>
 
-                        <View>
-                            <Text style={ styles.label }>Área</Text>
-                            <Picker
-                                    style={ styles.input }
-                                    selectedValue={ metodologia.area }
-                                    onValueChange={(text) => handleChange(text, 'area')}
+                        <View style={{marginBottom: 5}}>
+                            <View style={{borderColor: "#919191", borderWidth: 1, borderRadius: 5, backgroundColor: "#eeecec"}}>
+                                <Picker
+                                        selectedValue={metodologia.area}
+                                        style={{...styles.input, width: '100%', height:55}}
+                                        onValueChange={(text) => handleChange(text, 'area')}
+                                >
+                                    <Picker.Item label="Selecione a área de estudo" value=""/>
+                                    <Picker.Item label="Recursos Humanos" value="Recursos Humanos"/>
+                                    <Picker.Item label="Tecnologias" value="Tecnologias"/>
+                                    <Picker.Item label="Administração" value="Administração"/>
+                                    <Picker.Item label="Organização de projetos" value="Organização de projetos"/>
+                                    <Picker.Item label="Marketing" value="Marketing"/>
+                                </Picker>
+                            </View>
+
+                            <HelperText
+                                type="error"
+                                padding="none"
+                                style={{fontSize: 15}}
+                                visible={addInvalid.area}
                             >
-                                <Picker.Item label="Selecione a área de estudo" value="nulo"/>
-                                <Picker.Item label="Recursos Humanos" value="recursos-humanos"/>
-                                <Picker.Item label="Tecnologias" value="tecnologias"/>
-                                <Picker.Item label="Administração" value="administracao"/>
-                                <Picker.Item label="Organização de projetos" value="organizacao-de-projetos"/>
-                            </Picker>
+                                Selecione a área de estudo!
+                            </HelperText>
                         </View>
 
-                        <View>
-                            <Text style={ styles.label }>Definição</Text>
+                        <View style={{marginBottom: 5}}>
                             <TextInput
-                                    style={ styles.input }
+                                    label="Definição"
+                                    mode="outlined"
+                                    error={addInvalid.definition}
                                     placeholder="Informe a definição aqui: "
-                                    onChangeText={ (text) => handleChange(text, 'definition') }
+                                    onChangeText={(text) => handleChange(text, 'definition')}
                             />
+
+                            <HelperText
+                                type="error"
+                                padding="none"
+                                style={{fontSize: 15}}
+                                visible={addInvalid.definition}
+                            >
+                                Informe a definição!
+                            </HelperText>
                         </View>
 
-                        <View>
-                            <Text style={ styles.label }>Objetivo</Text>
+                        <View style={{marginBottom: 5}}>
                             <TextInput
-                                    style={ styles.input }
+                                    label="Objetivo"
+                                    mode="outlined"
+                                    error={addInvalid.objective}
                                     placeholder="Informe o objetivo aqui: "
-                                    onChangeText={ (text) => handleChange(text, 'objective') }
+                                    onChangeText={(text) => handleChange(text, 'objective')}
                             />
+
+                            <HelperText
+                                type="error"
+                                padding="none"
+                                style={{fontSize: 15}}
+                                visible={addInvalid.objective}
+                            >
+                                Informe o objetivo!
+                            </HelperText>
                         </View>
 
-                        <View>
-                            <Text style={ styles.label }>Informações adicionais</Text>
+                        <View style={{marginBottom: 20}}>
                             <TextInput
-                                    style={ styles.input }
+                                    mode="outlined"
+                                    label="Informações adicionais"
                                     placeholder="Informe as informações adicionais aqui: "
-                                    onChangeText={ (text) => handleChange(text, 'description') }
+                                    onChangeText={(text) => handleChange(text, 'description')}
                             />
                         </View>
 
                         <View>
-                            <Text style={ styles.label }>Possui referências?</Text>
+                            <Text style={styles.label}>Esse material é autoral?</Text>
 
                             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                                 <RadioButton
-                                        value="sim"
-                                        color="#1281AB"
-                                        status={ checked === 'sim' ? 'checked' : 'unchecked' }
-                                        onPress={() => setChecked('sim')}
+                                    value="Sim"
+                                    color="#1281AB"
+                                    status={ checked === 'Sim' ? 'checked' : 'unchecked' }
+                                    onPress={() => setChecked('Sim')}
                                 />
-                                <Text style={{...styles.label, marginRight: 45}}>sim</Text>
+                                <Text style={{...styles.label, marginRight: 45}}>Sim</Text>
                                 <RadioButton
-                                        value="não"
-                                        color="#1281AB"
-                                        status={ checked === 'não' ? 'checked' : 'unchecked' }
-                                        onPress={() => setChecked('não')}
+                                    value="Não"
+                                    color="#1281AB"
+                                    status={ checked === 'Não' ? 'checked' : 'unchecked' }
+                                    onPress={() => setChecked('Não')}
                                 />
-                                <Text style={ styles.label }>não</Text>
+                                <Text style={styles.label}>Não</Text>
                             </View>
+
+                            <HelperText
+                                    type="error"
+                                    padding="none"
+                                    style={{fontSize: 15}}
+                                    visible={'' === checked}
+                            >
+                                Marque mesmo caso não tenha referências!
+                            </HelperText>
                         </View>
                     </ScrollView>
 
-                    <View style={ styles.groupButton }>
-                        <TouchableOpacity onPress={ adicionarMetodologia } style={{...styles.button, backgroundColor: "#1281AB"}}>
-                            <Text style={ styles.btnText }>Salvar</Text>
+                    <Snackbar
+                            visible={error}
+                            onDismiss={onDismissSnackBar}
+                            action={{
+                                label: 'fechar',
+                                onPress: () => setError(false),
+                            }}>
+                        Preencha os campos corretamente!
+                    </Snackbar>
+
+                    <View style={styles.groupButton}>
+                        <TouchableOpacity onPress={adicionarMetodologia} style={{...styles.button, backgroundColor: "#1281AB"}}>
+                            <Text style={styles.btnText}>Salvar</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={ isClose } style={{...styles.button, backgroundColor: "#E76F51"}}>
-                            <Text style={ styles.btnText }>Cancelar</Text>
+                        <TouchableOpacity onPress={isClose} style={{...styles.button, backgroundColor: "#E76F51"}}>
+                            <Text style={styles.btnText}>Cancelar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

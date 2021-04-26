@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { styles } from '../style/style';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StyleSheet, Text, View, FlatList, ImageBackground, TouchableOpacity, Modal, ScrollView } from 'react-native';
+import { Text, View, FlatList, ImageBackground, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { ListItem, Avatar, Header, Button, Icon } from 'react-native-elements';
 import { FontAwesome } from '@expo/vector-icons';
 
 import users from './Users';
+import ListaComentario from '../components/comentarios/ListaComentario';
 import AdicionarComentario from '../components/comentarios/AdicionarComentario';
 import EditarComentario from '../components/comentarios/EditarComentario';
 import DeletarComentario from '../components/comentarios/DeletarComentario';
@@ -15,7 +16,7 @@ const Feed = ({ navigation }) => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-    const [comentario, setComentario] = useState([])
+    const [comentario, setComentario] = useState(ListaComentario)
 
     const [selectedCode, setSelectedCode] = useState(false)
     const [selectedComentario, setSelectedComentario] = useState(false)
@@ -86,8 +87,8 @@ const Feed = ({ navigation }) => {
                     </TouchableOpacity>
                 </ListItem.Content>
 
-                <TouchableOpacity style={{ position: 'relative' }} onPress={ () => { toggleAdicionarComentario(); setSelectedCode(user)} }>
-                    <Text style={ styles.count }>
+                <TouchableOpacity style={{position: 'relative'}} onPress={ () => {toggleAdicionarComentario(); setSelectedCode(user)} }>
+                    <Text style={styles.count}>
                         {
                             comentario.filter((value) => (value.code == user.id)) ?
                             comentario.filter((value) => (value.code == user.id)).length

@@ -1,13 +1,5 @@
 export default [
     {
-        id : 0,
-        title : "Metodologia 1",
-        area: "administracao",
-        definition: "Lorem ipsum dolor sit amet neque porro quisquam est qui dolorem ipsum quia",
-        description : "Lorem ipsum dolor sit amet neque porro quisquam est qui dolorem ipsum quia",
-        objective: "Lorem ipsum dolor sit amet neque porro quisquam est qui dolorem ipsum quia"
-    },
-    {
         id : 1,
         title : "Metodologia 2",
         area: "tecnologias",

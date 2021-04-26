@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Modal, TouchableOpacity, TextInput } from 'react-native';
 import { styles } from '../../style/style';
+import ListaComentario from './ListaComentario';
 
 
 const EditarComentario = (props) => {
 
-    const initialComentarioState = {
-        id: 0,
-        code : "",
-        message : ""
-    }
-
-    const [comentario, setComentario] = useState(initialComentarioState)
+    const [comentario, setComentario] = useState(ListaComentario)
     const { isOpen, isClose } = props
 
     const handleChange = (value, name) => {
