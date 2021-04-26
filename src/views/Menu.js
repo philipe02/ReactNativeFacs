@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Ideias from "./Ideias";
 import Feed from "./Feed";
-import Perfil from "../components/Perfil";
-import ListaUsuario from "../components/ListaUsuarios";
+import Perfil from "./Perfil";
+import ListaUsuario from "./ListaUsuarios";
 
 const Drawer = createDrawerNavigator();
 
