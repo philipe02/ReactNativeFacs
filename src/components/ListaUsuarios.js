@@ -1,12 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { ImageBackground, FlatList, Alert, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Header, ListItem, Button, Icon } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
-import { excluir } from "../redux/actions";
 import { styles } from "../style/style";
 import { salveUsuarios } from "../storage/storage";
+import { useFocusEffect } from "@react-navigation/core";
 
 const ListaUsuario = ({ navigation }) => {
   /* const { usuarioAtual, usuarios } = useSelector(
@@ -14,7 +13,6 @@ const ListaUsuario = ({ navigation }) => {
   ); */
   const [usuarios, setUsuarios] = useState();
   const [usuarioAtual, setUsuarioAtual] = useState({});
-  const dispatch = useDispatch();
 
   const excluirUsuario = (usuarioDeletar) => {
     let listaUsuarios = usuarios;
@@ -24,22 +22,24 @@ const ListaUsuario = ({ navigation }) => {
     setUsuarios(listaUsuarios);
   };
 
-  useEffect(() => {
-    async function carregaUsuarios() {
-      const usuariosStorage = await AsyncStorage.getItem("@usuarios");
-      if (usuariosStorage) {
-        setUsuarios(JSON.parse(usuariosStorage));
+  useFocusEffect(
+    useCallback(() => {
+      async function carregaUsuarios() {
+        const usuariosStorage = await AsyncStorage.getItem("@usuarios");
+        if (usuariosStorage) {
+          setUsuarios(JSON.parse(usuariosStorage));
+        }
       }
-    }
-    async function carregaUsuarioAtual() {
-      const usuarioAtualStorage = await AsyncStorage.getItem("@usuarioAtual");
-      if (usuarioAtualStorage) {
-        setUsuarioAtual(JSON.parse(usuarioAtualStorage));
+      async function carregaUsuarioAtual() {
+        const usuarioAtualStorage = await AsyncStorage.getItem("@usuarioAtual");
+        if (usuarioAtualStorage) {
+          setUsuarioAtual(JSON.parse(usuarioAtualStorage));
+        }
       }
-    }
-    carregaUsuarioAtual();
-    carregaUsuarios();
-  }, []);
+      carregaUsuarioAtual();
+      carregaUsuarios();
+    }, [])
+  );
 
   useEffect(() => {
     usuarios !== undefined ? salveUsuarios(usuarios) : null;

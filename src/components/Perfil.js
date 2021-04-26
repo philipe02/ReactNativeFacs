@@ -11,8 +11,6 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Input, Button, Header, Icon, ListItem } from "react-native-elements";
 import { styles } from "../style/style";
-import { useDispatch, useSelector } from "react-redux";
-import { editar } from "../redux/actions";
 import { useFocusEffect } from "@react-navigation/core";
 import { salveUsuarioAtual, salveUsuarios } from "../storage/storage";
 
@@ -20,16 +18,16 @@ const Perfil = ({ navigation, route }) => {
   const [user, setUser] = useState({});
   const [usuarios, setUsuarios] = useState();
   const [ideias, setIdeias] = useState([]);
+  const [mostraSenha, setMostraSenha] = useState(false);
 
   const editarUsuario = (usuarioEditado) => {
     let listaUsuarios = usuarios;
-    console.warn(user);
     listaUsuarios = listaUsuarios.map((user) =>
       user.key === usuarioEditado.key ? usuarioEditado : user
     );
     setUsuarios(listaUsuarios);
+    salveUsuarioAtual(user);
   };
-  const [mostraSenha, setMostraSenha] = useState(false);
 
   const handleEditar = () => {
     editarUsuario(user);
@@ -67,7 +65,6 @@ const Perfil = ({ navigation, route }) => {
   );
   useEffect(() => {
     usuarios !== undefined ? salveUsuarios(usuarios) : null;
-    salveUsuarioAtual(user);
   }, [usuarios]);
 
   const itemIdeias = (ideia) => {
@@ -76,9 +73,6 @@ const Perfil = ({ navigation, route }) => {
         key={ideia.id}
         bottomDivider
         containerStyle={styles.listItemContainer}
-        onPress={() => {
-          console.log("clicou");
-        }}
       >
         <ListItem.Content>
           <ListItem.Title style={styles.listItemTitulo}>

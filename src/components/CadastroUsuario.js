@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, View, Text, ImageBackground, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Input, Button } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
-import { cadastrar } from "../redux/actions";
 import { salveUsuarios } from "../storage/storage";
 import { styles } from "../style/style";
 
@@ -14,8 +12,6 @@ const CadastroUsuario = ({ navigation }) => {
   /* const { usuarioAtual, usuarios } = useSelector(
     (state) => state.UsuarioReducer
   ); */
-
-  const dispatch = useDispatch();
   const cadastrarUsuario = (usuarioNovo) => {
     let listaUsuarios = usuarios;
     try {

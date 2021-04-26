@@ -3,15 +3,15 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, View, ImageBackground, Image, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Input, Button } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
-import { logar } from "../redux/actions";
 import { salveUsuarioAtual } from "../storage/storage";
 import { styles } from "../style/style";
 
 const Login = ({ navigation }) => {
   const [user, setUser] = useState({});
   const [usuarios, setUsuarios] = useState([]);
-  const logarUsuario = (usuario) => salveUsuarioAtual(usuario);
+  const logarUsuario = (usuario) => {
+    salveUsuarioAtual(usuario);
+  };
 
   const handleLogin = () => {
     const usuarioEncontrado = usuarios.find(
@@ -50,6 +50,7 @@ const Login = ({ navigation }) => {
             containerStyle={styles.inputContainer}
             errorStyle={{ height: 0 }}
             onChangeText={(email) => setUser({ ...user, email })}
+            value={user.email}
           />
           <Input
             placeholder={"Digite sua senha"}
@@ -58,6 +59,7 @@ const Login = ({ navigation }) => {
             errorStyle={{ height: 0 }}
             secureTextEntry={true}
             onChangeText={(password) => setUser({ ...user, password })}
+            value={user.password}
           />
           <Button
             title={"ACESSAR"}

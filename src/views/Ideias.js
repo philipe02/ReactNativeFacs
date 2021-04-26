@@ -14,8 +14,6 @@ import { styles } from "../style/style";
 import AddIdeias from "../components/AddIdeias";
 import EditIdeias from "../components/EditIdeias";
 import DeletIdeias from "../components/DeletIdeias";
-import { useDispatch, useSelector } from "react-redux";
-import { ideiaAdicionada, ideiaEditada, ideiaExcluida } from "../redux/actions";
 import { salveIdeia } from "../storage/storage";
 import { useFocusEffect } from "@react-navigation/core";
 
@@ -27,9 +25,6 @@ function Ideias({ navigation }) {
   const [ideias, setIdeias] = useState();
   const [usuarioAtual, setUsuarioAtual] = useState({});
   const [selectedIdeia, setSelectedIdeia] = useState(false);
-
-  //const { ideias } = useSelector((state) => state.IdeiasReducer);
-  const dispatch = useDispatch();
 
   const toggleAddIdeia = () => {
     setIsAddIdeiaModalOpen(!isAddIdeiaModalOpen);
@@ -60,14 +55,12 @@ function Ideias({ navigation }) {
     listaIdeia = listaIdeia.map((ideia) =>
       ideia.id === ideiaEditada.id ? ideiaEditada : ideia
     );
-    console.warn(listaIdeia);
     setIdeias(listaIdeia);
   };
 
   const deletIdeia = (idIdeiaExcluida) => {
     let listaIdeia = ideias;
     listaIdeia = listaIdeia.filter((ideia) => ideia.id !== idIdeiaExcluida);
-    console.warn(listaIdeia);
     setIdeias(listaIdeia);
   };
 
@@ -89,19 +82,10 @@ function Ideias({ navigation }) {
       carregaIdeias();
     }, [])
   );
+
   useEffect(() => {
     ideias !== undefined ? salveIdeia(ideias) : null;
   }, [ideias]);
-
-  //vai monitorar e atualizar a função carregaIdeias a cada ação, seja de excluir, editar ou add
-  /*
-  useEffect(() => {
-    async function salveIdeia() {
-      await AsyncStorage.setItem("@idea", JSON.stringify(ideias));
-    }
-
-    salveIdeia();
-  }, [ideias]); */
 
   return (
     <>
@@ -128,7 +112,7 @@ function Ideias({ navigation }) {
         </TouchableOpacity>
         <ScrollView>
           <View style={styles.container}>
-            <Button title="ideias" onPress={() => console.warn(ideias)} />
+            <Button title="ideias" onPress={() => console.warn(usuarioAtual)} />
             {ideias !== undefined
               ? ideias.map((data, index) => (
                   <View style={styles.lista} key={data.id}>
