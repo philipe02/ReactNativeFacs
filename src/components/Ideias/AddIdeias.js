@@ -1,27 +1,24 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ImageBackground,
-  TouchableOpacity,
-  Modal,
-  Alert,
-} from "react-native";
+import { View, Text, ImageBackground, TouchableOpacity, Modal, Alert, Switch} from "react-native";
 import { styles } from "../../style/style";
 import { Header, Input } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
+import { RadioButton } from "react-native-paper";
 
 const AddIdeias = (props) => {
   const initialIdeiasState = {
     titulo: "",
     desc: "",
-    setor: "Selecione um setor",
     tema: "Selecione um tema",
     benefMalef: "",
+    homeSimNao:false
   };
 
   const [ideia, setIdeia] = useState(initialIdeiasState);
+  const [checked, setChecked] = useState(ideia.benefMalef);
+  const [isEnabled, setIsEnabled] = useState(ideia.homeSimNao);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const { openIdeiaModal, closeIdeiaModal } = props;
 
   const handleChance = (value, name) => {
@@ -34,14 +31,20 @@ const AddIdeias = (props) => {
       Alert.alert("Título Obrigatório.");
     else if (!ideia.desc || ideia.desc === "")
       Alert.alert("Descrição Obrigatória.");
-    else if (!ideia.benefMalef || ideia.benefMalef === "")
-      Alert.alert("Descreva pelo menos um malefício/benefício.");
     else if (ideia.tema === "Selecione um tema")
       Alert.alert("Selecione o tema abordado.");
-    else if (ideia.setor === "Selecione um setor")
-      Alert.alert("Selecione o setor ao qual sua ideia se relaciona.");
+    else if (!checked){
+      Alert.alert("Indique se a ideia resolve um malefício ou traz um benefício.");
+    } 
     else {
-      props.adicionarIdeia(ideia);
+      props.adicionarIdeia({
+        id: ideia.id,
+        titulo: ideia.titulo,
+        desc: ideia.desc,
+        tema: ideia.tema,
+        benefMalef: checked, 
+        homeSimNao: isEnabled
+      });
       props.closeIdeiaModal();
     }
   };
@@ -100,7 +103,7 @@ const AddIdeias = (props) => {
               justifyContent: "center",
             }}
             multiline={true}
-            numberOfLines={4}
+            numberOfLines={6}
             maxLength={150}
             errorStyle={{
               height: 0,
@@ -110,29 +113,23 @@ const AddIdeias = (props) => {
             }}
           />
 
-          <Text style={styles.tituloInput}>Benefícios/Malefícios: </Text>
-          <Input
-            placeholder="Quais seriam os benefícios/malefícos que essa ideia pode resolver/trazer?"
-            inputStyle={{
-              paddingLeft: 10,
-              paddingTop: 2,
-              backgroundColor: "#fff",
-              borderRadius: 4,
-              marginRight: 8,
-            }}
-            containerStyle={{
-              justifyContent: "center",
-            }}
-            multiline={true}
-            numberOfLines={5}
-            maxLength={200}
-            errorStyle={{
-              height: 0,
-            }}
-            onChangeText={(text) => {
-              handleChance(text, "benefMalef");
-            }}
-          />
+        <Text style={styles.tituloInput}>Benefícios ou Malefícios: </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={styles.textRadio}>Benefício:</Text>
+            <RadioButton
+              value='Benefício'
+              color="#D16E0B"
+              onPress={() => setChecked('Benefício')}
+              status={ checked === 'Benefício' ? 'checked' : 'unchecked' }
+            />
+            <Text style={styles.textRadio}>Malefício:</Text>
+            <RadioButton
+              value="Malefício"
+              color="#D16E0B"
+              onPress={() => setChecked('Malefício')}
+              status={ checked === 'Malefício' ? 'checked' : 'unchecked' }
+            />
+          </View>
 
           <Text style={styles.tituloInput}>Tema: </Text>
           <Picker
@@ -152,23 +149,17 @@ const AddIdeias = (props) => {
             <Picker.Item label="Finanças" value="financas" />
           </Picker>
 
-          <Text style={styles.tituloInput}>Setor: </Text>
-          <Picker
-            selectedValue={ideia.setor}
-            onValueChange={(itemValue) => handleChance(itemValue, "setor")}
-            style={{
-              height: 40,
-              width: 345,
-              marginLeft: 8,
-              backgroundColor: "#fff",
-            }}
-          >
-            <Picker.Item label="Selecione um setor" value="setorPadrao" />
-            <Picker.Item label="Área de Pessoas" value="pessoas" />
-            <Picker.Item label="Tecnologia da informação" value="tinformação" />
-            <Picker.Item label="Gerência e gestão" value="gestao" />
-            <Picker.Item label="Contabilidade" value="contabilidade" />
-          </Picker>
+          <Text style={{...styles.tituloInput, marginTop:10}}>Essa ideia se enquandra no contexto atual da empresa (Home office) ? </Text>
+          <View style={{flexDirection:"row", justifyContent:'space-between', marginRight:14, marginLeft:14}}>
+            <Text style={{fontSize:10, color:'white'}}>Laranja (não) / Verde (sim)</Text>
+            <Switch
+              trackColor={{ false: "white", true: "white" }}
+              thumbColor={isEnabled ? "#1281AB" : "#E37B09"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
 
           <View style={styles.botaoContainer}>
             <TouchableOpacity

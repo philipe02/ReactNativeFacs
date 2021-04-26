@@ -105,6 +105,12 @@ export const styles = StyleSheet.create({
     width:'90%',
     height:'30%',
     marginLeft:14, 
-  
+  }, 
+  textRadio:{
+    fontSize:17, 
+    marginLeft:10,
+    alignContent:'center',
+    padding:8
   }
+
 });

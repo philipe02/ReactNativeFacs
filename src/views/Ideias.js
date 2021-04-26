@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  ImageBackground,
-  ScrollView,
-} from "react-native";
+import {Text,View,TouchableOpacity,ImageBackground,ScrollView,} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -22,7 +16,6 @@ function ListaIdeia({ navigation }) {
   const [isDeletIdeiaModalOpen, setIsDeletIdeiaModalOpen] = useState(false);
   const [ideias, setIdeias] = useState([]);
   const [selectedIdeia, setSelectedIdeia] = useState(false);
-  console.log(ideias);
   const toggleAddIdeia = () => {
     setIsAddIdeiaModalOpen(!isAddIdeiaModalOpen);
   };
@@ -37,7 +30,7 @@ function ListaIdeia({ navigation }) {
 
   const adicionarIdea = (data) => {
     try {
-      let idNovaIdeia = ideias[ideias.length - 1].id + 1;
+      let idNovaIdeia = ideias[ideias.length - 1].id + 1
       data = { id: idNovaIdeia, ...data };
       setIdeias([...ideias, data]);
     } catch {
@@ -105,7 +98,7 @@ function ListaIdeia({ navigation }) {
             </TouchableOpacity>
 
             {ideias.map((data, index) => (
-              <View style={styles.lista}>
+              <View style={styles.lista} key={index}>
                 <Text style={styles.tituloIdeia}>{data.titulo}</Text>
                 <Text style={styles.descIdeia}>{data.desc}</Text>
 

@@ -25,7 +25,7 @@ const DeletIdeias = (props) => {
                 <Header
                   containerStyle={{ height: 50, backgroundColor: "#1D1D1D" }}
                   centerComponent={{
-                    text: "Suas ideias",
+                    text: "Excluir Ideia",
                     style: styles.headerText,
                   }}
                 />
