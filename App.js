@@ -1,11 +1,9 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { Header, Button, Icon } from "react-native-elements";
+import { Header } from "react-native-elements";
 import { Text, View, ImageBackground } from "react-native";
-import { FontAwesome } from '@expo/vector-icons';
 
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { styles } from "./src/style/style";
@@ -15,7 +13,6 @@ import Ideias from "./src/views/Ideias";
 import Usuario from "./src/views/Usuario";
 import Metodologias from "./src/views/Metodologias";
 
-const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const TelaInicial = ({ navigation }) => {
@@ -62,11 +59,11 @@ const TelaInicial = ({ navigation }) => {
 export default function App() {
     return (
         <NavigationContainer>
-            <Drawer.Navigator initialRouteName="Feed" screenOptions={ optionScreen }>
+            <Drawer.Navigator initialRouteName="Metodologias" screenOptions={ optionScreen }>
+                <Drawer.Screen name="Inicio" component={ TelaInicial }/>
                 <Drawer.Screen name="Feed" component={ Feed }/>
                 <Drawer.Screen name="Ideias" component={ Ideias }/>
                 <Drawer.Screen name="Usuario" component={ Usuario }/>
-                <Drawer.Screen name="Inicio" component={ TelaInicial }/>
                 <Drawer.Screen name="Metodologias" component={ Metodologias }/>
             </Drawer.Navigator>
         </NavigationContainer>

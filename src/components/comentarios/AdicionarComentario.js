@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, Modal, TouchableOpacity, TextInput } from 'react-native';
-import ListaComentario from './ListaComentario';
+import { TextInput } from 'react-native-paper';
+import { View, Text, Modal, TouchableOpacity } from 'react-native';
 
 import { styles } from '../../style/style';
+import ListaComentario from './ListaComentario';
 
 const AdicionarComentario = (props) => {
 
@@ -27,9 +28,11 @@ const AdicionarComentario = (props) => {
                 <View style={ styles.modalView }>
                     <Text style={ styles.title }>Adicionar Comentário</Text>
 
-                    <TextInput style={ styles.input }
-                               placeholder="Digite o comentário aqui: "
-                               onChangeText={ (text) => handleChange(text, 'message') }
+                    <TextInput
+                        mode="outlined"
+                        label="Comentário"
+                        placeholder="Deixe o seu comentário aqui: "
+                        onChangeText={(text) => handleChange(text, 'message')}
                     />
 
                     <View style={ styles.groupButton }>

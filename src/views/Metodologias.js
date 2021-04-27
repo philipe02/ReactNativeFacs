@@ -16,51 +16,55 @@ const Metodologias = ({ navigation }) => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false)
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-
-    const [metodologia, setMetodologia] = useState(ListaMetodologia)
     const [modalVisible, setModalVisible] = useState(false)
+
     const [selectedMetodologia, setSelectedMetodologia] = useState([])
+
+    const [search, setSearch] = useState('')
+    const [filtered, setFiltered] = useState(ListaMetodologia)
+    const [metodologia, setMetodologia] = useState(ListaMetodologia)
 
     const searchFilterFunction = (text) => {
         if(text) {
-            const newData = metodologia.filter(item => (item.area.toUpperCase() == text.toUpperCase()))
-            setMetodologia(newData)
-        }else
-            setMetodologia(metodologia)
+            const data = metodologia.filter( function(item) {
+                const itemData = item.area ? item.area.toUpperCase() : ''.toUpperCase()
+                const textData = text.toUpperCase()
+                return itemData.indexOf(textData) > -1
+            })
+
+            setFiltered(data)
+            setSearch(text)
+        } else {
+            setFiltered(metodologia)
+            setSearch(text)
+        }
     }
 
-    const toggleDetalhesMetodologia = () => {
-        setModalVisible(! modalVisible)
-    }
-
-    const toggleAdicionarMetodologia = () => {
-        setIsAddModalOpen(! isAddModalOpen)
-    }
-
-    const toggleEditarMetodologia = () => {
-        setIsUpdateModalOpen(! isUpdateModalOpen)
-    }
-
-    const toggleDeletarMetodologia = () => {
-        setIsDeleteModalOpen(! isDeleteModalOpen)
-    }
+    const toggleDetalhesMetodologia  = () => setModalVisible(! modalVisible)
+    const toggleAdicionarMetodologia = () => setIsAddModalOpen(! isAddModalOpen)
+    const toggleEditarMetodologia    = () => setIsUpdateModalOpen(! isUpdateModalOpen)
+    const toggleDeletarMetodologia   = () => setIsDeleteModalOpen(! isDeleteModalOpen)
 
     const adicionarMetodologia = (data) => {
         try {
             let idNovaMetodologia = metodologia[metodologia.length - 1].id + 1
             data = { id: idNovaMetodologia, ...data }
+            setFiltered( [...filtered, data])
             setMetodologia( [...metodologia, data])
         } catch {
             data = { id: 1, ...data }
+            setFiltered( [...filtered, data])
             setMetodologia( [...metodologia, data])
         }
     }
 
-    const editarMetodologia = (data) => {
-        setMetodologia(metodologia.map(com => com.id === data.id ? data : com))
+    const editarMetodologia  = (data) => {
+        setFiltered(filtered.map(com => com.id == data.id ? data : com))
+        setMetodologia(metodologia.map(com => com.id == data.id ? data : com))
     }
 
     const deletarMetodologia = data => {
+        setFiltered(filtered.filter(com => com.id !== data))
         setMetodologia(metodologia.filter(com => com.id !== data))
     }
 
@@ -144,35 +148,37 @@ const Metodologias = ({ navigation }) => {
                 }}
             />
 
-            <View style={ styles.body }>
-                <ImageBackground source={ require('../images/fundo1.png') } style={ styles.bg }>
-                    <View style={ styles.containerFeed }>
+            <View style={styles.body}>
+                <ImageBackground source={require('../images/fundo1.png')} style={styles.bg}>
+                    <View style={styles.containerFeed}>
 
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={ styles.title }>Materiais para estudo</Text>
+                        <View style={{alignItems: 'center'}}>
+                            <Text style={styles.title}>Materiais para estudo</Text>
                         </View>
 
                         <Searchbar
+                            value={search}
                             autoCorrect={false}
-                            onChangeText={text => searchFilterFunction(text)}
                             style={{width: 335, marginBottom: 10}}
                             placeholder="Filtrar por área de estudo..."
+                            onClear={(text) => searchFilterFunction('')}
+                            onChangeText={(text) => searchFilterFunction(text)}
                         />
 
                         <FlatList
-                            data={metodologia}
+                            data={filtered}
                             renderItem={renderDataItems}
                             keyExtractor={method => method.id.toString()}
                         />
 
                         <Modal transparent
                                animationType="slide"
-                               visible={ modalVisible }
-                               onRequestClose={ toggleDetalhesMetodologia }>
+                               visible={modalVisible}
+                               onRequestClose={toggleDetalhesMetodologia}>
 
-                            <View style={ styles.centeredView }>
-                                <View style={ styles.modalView }>
-                                    <Text style={ styles.title }>Detalhes do Material</Text>
+                            <View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Text style={styles.title}>Detalhes do Material</Text>
 
                                     <ScrollView>
                                         {
@@ -204,7 +210,7 @@ const Metodologias = ({ navigation }) => {
                                                 </View>
 
                                                 <View style={styles.listDetails}>
-                                                    <Text style={styles.listDetailsStrong}>Essa pesquisa possui referências? </Text>
+                                                    <Text style={styles.listDetailsStrong}>Esse material é autoral? </Text>
                                                     <Text style={styles.listDetailsText}>{selectedMetodologia.references}</Text>
                                                 </View>
 
@@ -214,7 +220,7 @@ const Metodologias = ({ navigation }) => {
                                                             <Text style={styles.listDetailsStrong}>Referências</Text>
                                                             <Text style={styles.listDetailsText}>{data}</Text>
                                                         </View> )
-                                                        : null
+                                                    : null
                                                 }
 
                                             </View>
@@ -236,9 +242,9 @@ const Metodologias = ({ navigation }) => {
                         {
                             isAddModalOpen ?
                             <AdicionarMetodologia
-                                    isOpen={ isAddModalOpen }
-                                    isClose={ toggleAdicionarMetodologia }
-                                    adicionarMetodologia={ adicionarMetodologia }
+                                isOpen={ isAddModalOpen }
+                                isClose={ toggleAdicionarMetodologia }
+                                adicionarMetodologia={ adicionarMetodologia }
                             />
                             : null
                         }
@@ -246,10 +252,10 @@ const Metodologias = ({ navigation }) => {
                         {
                             isUpdateModalOpen ?
                             <EditarMetodologia
-                                    isOpen={ isUpdateModalOpen }
-                                    isClose={ toggleEditarMetodologia }
-                                    editarMetodologia={ editarMetodologia }
-                                    selectedMetodologia={ selectedMetodologia }
+                                isOpen={ isUpdateModalOpen }
+                                isClose={ toggleEditarMetodologia }
+                                editarMetodologia={ editarMetodologia }
+                                selectedMetodologia={ selectedMetodologia }
                             />
                             : null
                         }
@@ -257,10 +263,10 @@ const Metodologias = ({ navigation }) => {
                         {
                             isDeleteModalOpen ?
                             <DeletarMetodologia
-                                    isOpen={ isDeleteModalOpen }
-                                    isClose={ toggleDeletarMetodologia }
-                                    deletarMetodologia={ deletarMetodologia }
-                                    selectedMetodologia={ selectedMetodologia }
+                                isOpen={ isDeleteModalOpen }
+                                isClose={ toggleDeletarMetodologia }
+                                deletarMetodologia={ deletarMetodologia }
+                                selectedMetodologia={ selectedMetodologia }
                             />
                             : null
                         }

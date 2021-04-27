@@ -172,8 +172,9 @@ const Feed = ({ navigation }) => {
                                     </ScrollView>
 
                                     <View style={{ alignItems: 'center', width: '100%' }} >
-                                        <TouchableOpacity style={{ ...styles.button, backgroundColor: '#1281AB' }}
-                                                          onPress={ () => {setModalVisible(!modalVisible);} }>
+                                        <TouchableOpacity
+                                                style={{ ...styles.button, backgroundColor: '#1281AB' }}
+                                                onPress={ () => {setModalVisible(!modalVisible);} }>
                                             <Text style={ styles.btnText }>Fechar janela</Text>
                                         </TouchableOpacity>
                                     </View>

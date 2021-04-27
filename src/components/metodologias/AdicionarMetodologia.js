@@ -6,18 +6,22 @@ import { styles } from '../../style/style';
 import ListaMetodologia from './ListaMetodologia';
 
 const AdicionarMetodologia = (props) => {
+
     const stateInitialValidate = {
-        title : false,
         area: false,
-        definition: false,
+        title : false,
         objective: false,
+        definition: false,
     }
 
-    const [metodologia, setMetodologia] = useState(ListaMetodologia)
-    const [checked, setChecked] = useState('');
+    const [metodologia, setMetodologia] = useState(ListaMetodologia);
     const [addInvalid, setAddInvalid] = useState(stateInitialValidate);
+
     const [error, setError] = useState(false)
-    const {isOpen, isClose} = props
+    const [checked, setChecked] = useState('');
+
+    const { isOpen, isClose } = props;
+    const onDismissSnackBar = () => setError(false);
 
     const handleChange = (value, name) => {
         if(value) {
@@ -31,28 +35,21 @@ const AdicionarMetodologia = (props) => {
     const adicionarMetodologia = async() => {
         if(metodologia.title === "" || metodologia.area === "" || metodologia.definition === "" || metodologia.objective === "" || checked === '') {
             setError(true)
-        }else if(addInvalid.title || addInvalid.area || addInvalid.definition || addInvalid.objective || checked === '') {
+        } else if(addInvalid.title || addInvalid.area || addInvalid.definition || addInvalid.objective || checked === '') {
             setError(true)
-        }else {
+        } else {
             setError(false)
             props.adicionarMetodologia({
-                id : metodologia.id,
+                references : checked,
                 area: metodologia.area,
                 title : metodologia.title,
                 objective: metodologia.objective,
                 definition: metodologia.definition,
-                description : metodologia.description,
-                references : checked,
+                description : metodologia.description
             })
             props.isClose()
         }
     }
-
-    const [visible, setVisible] = useState(true);
-
-    const onToggleSnackBar = () => setError(! error);
-
-    const onDismissSnackBar = () => setError(false);
 
     return(
         <Modal visible={ isOpen } onRequestClose={ isClose } animationType="slide" transparent>
@@ -66,11 +63,11 @@ const AdicionarMetodologia = (props) => {
                     <ScrollView style={styles.scroll}>
                         <View style={{marginBottom: 5}}>
                             <TextInput
-                                    label="Título"
-                                    mode="outlined"
-                                    error={addInvalid.title}
-                                    placeholder="Informe o título aqui: "
-                                    onChangeText={(text) => handleChange(text, 'title')}
+                                label="Título"
+                                mode="outlined"
+                                error={addInvalid.title}
+                                placeholder="Informe o título aqui: "
+                                onChangeText={(text) => handleChange(text, 'title')}
                             />
                             <HelperText
                                 type="error"
@@ -82,9 +79,9 @@ const AdicionarMetodologia = (props) => {
                         <View style={{marginBottom: 5}}>
                             <View style={{borderColor: "#919191", borderWidth: 1, borderRadius: 5, backgroundColor: "#eeecec"}}>
                                 <Picker
-                                        selectedValue={metodologia.area}
-                                        style={{...styles.input, width: '100%', height:55}}
-                                        onValueChange={(text) => handleChange(text, 'area')}
+                                    selectedValue={metodologia.area}
+                                    style={{...styles.input, width: '100%', height:55}}
+                                    onValueChange={(text) => handleChange(text, 'area')}
                                 >
                                     <Picker.Item label="Selecione a área de estudo" value=""/>
                                     <Picker.Item label="Recursos Humanos" value="Recursos Humanos"/>
@@ -126,11 +123,11 @@ const AdicionarMetodologia = (props) => {
 
                         <View style={{marginBottom: 5}}>
                             <TextInput
-                                    label="Objetivo"
-                                    mode="outlined"
-                                    error={addInvalid.objective}
-                                    placeholder="Informe o objetivo aqui: "
-                                    onChangeText={(text) => handleChange(text, 'objective')}
+                                label="Objetivo"
+                                mode="outlined"
+                                error={addInvalid.objective}
+                                placeholder="Informe o objetivo aqui: "
+                                onChangeText={(text) => handleChange(text, 'objective')}
                             />
 
                             <HelperText
@@ -145,10 +142,10 @@ const AdicionarMetodologia = (props) => {
 
                         <View style={{marginBottom: 20}}>
                             <TextInput
-                                    mode="outlined"
-                                    label="Informações adicionais"
-                                    placeholder="Informe as informações adicionais aqui: "
-                                    onChangeText={(text) => handleChange(text, 'description')}
+                                mode="outlined"
+                                label="Informações adicionais"
+                                placeholder="Informe as informações adicionais aqui: "
+                                onChangeText={(text) => handleChange(text, 'description')}
                             />
                         </View>
 
@@ -159,15 +156,15 @@ const AdicionarMetodologia = (props) => {
                                 <RadioButton
                                     value="Sim"
                                     color="#1281AB"
-                                    status={ checked === 'Sim' ? 'checked' : 'unchecked' }
                                     onPress={() => setChecked('Sim')}
+                                    status={ checked === 'Sim' ? 'checked' : 'unchecked' }
                                 />
                                 <Text style={{...styles.label, marginRight: 45}}>Sim</Text>
                                 <RadioButton
                                     value="Não"
                                     color="#1281AB"
-                                    status={ checked === 'Não' ? 'checked' : 'unchecked' }
                                     onPress={() => setChecked('Não')}
+                                    status={ checked === 'Não' ? 'checked' : 'unchecked' }
                                 />
                                 <Text style={styles.label}>Não</Text>
                             </View>
