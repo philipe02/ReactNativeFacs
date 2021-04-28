@@ -8,16 +8,13 @@ import { salveUsuarios } from "../storage/storage";
 import { useFocusEffect } from "@react-navigation/core";
 
 const ListaUsuario = ({ navigation }) => {
-  /* const { usuarioAtual, usuarios } = useSelector(
-    (state) => state.UsuarioReducer
-  ); */
   const [usuarios, setUsuarios] = useState();
   const [usuarioAtual, setUsuarioAtual] = useState({});
 
   const excluirUsuario = (usuarioDeletar) => {
     let listaUsuarios = usuarios;
     listaUsuarios = listaUsuarios.filter(
-      (user) => user.key !== usuarioDeletar.key
+      (user) => user.id !== usuarioDeletar.id
     );
     setUsuarios(listaUsuarios);
   };
@@ -77,11 +74,11 @@ const ListaUsuario = ({ navigation }) => {
   const itemUsuario = ({ item: usuario }) => {
     return (
       <ListItem
-        key={usuario.key}
+        key={usuario.id}
         bottomDivider
         containerStyle={styles.listItemContainer}
         onPress={() => {
-          usuario.key === usuarioAtual.key
+          usuario.id === usuarioAtual.id
             ? navigation.navigate("Perfil", usuario)
             : navigation.navigate("Usuário", usuario);
         }}
@@ -127,7 +124,7 @@ const ListaUsuario = ({ navigation }) => {
         <View style={styles.listContainer}>
           {usuarios !== undefined ? (
             <FlatList
-              keyExtractor={(user) => user.key.toString()}
+              keyExtractor={(user) => user.id.toString()}
               data={usuarios}
               renderItem={itemUsuario}
             />

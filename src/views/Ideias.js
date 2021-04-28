@@ -42,10 +42,10 @@ function Ideias({ navigation }) {
     let listaIdeias = ideias;
     try {
       let idNovaIdeia = listaIdeias[listaIdeias.length - 1].id + 1;
-      ideiaNova = { id: idNovaIdeia, userKey: usuarioAtual.key, ...ideiaNova };
+      ideiaNova = { id: idNovaIdeia, userId: usuarioAtual.id, ...ideiaNova };
       setIdeias([...listaIdeias, ideiaNova]);
     } catch {
-      ideiaNova = { id: 1, userKey: usuarioAtual.key, ...ideiaNova };
+      ideiaNova = { id: 1, userId: usuarioAtual.id, ...ideiaNova };
       setIdeias([...listaIdeias, ideiaNova]);
     }
   };

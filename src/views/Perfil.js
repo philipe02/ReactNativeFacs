@@ -1,29 +1,31 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useContext, useEffect, useCallback } from "react";
-import {
-  ScrollView,
-  View,
-  Text,
-  ImageBackground,
-  Alert,
-  FlatList,
-} from "react-native";
+import { ScrollView, View, Text, ImageBackground, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Input, Button, Header, Icon, ListItem } from "react-native-elements";
+import {
+  Input,
+  Button,
+  Header,
+  Icon,
+  ListItem,
+  CheckBox,
+} from "react-native-elements";
 import { styles } from "../style/style";
 import { useFocusEffect } from "@react-navigation/core";
 import { salveUsuarioAtual, salveUsuarios } from "../storage/storage";
+import { Picker } from "@react-native-picker/picker";
 
 const Perfil = ({ navigation, route }) => {
   const [user, setUser] = useState({});
   const [usuarios, setUsuarios] = useState();
   const [ideias, setIdeias] = useState([]);
   const [mostraSenha, setMostraSenha] = useState(false);
+  const [sexo, setSexo] = useState("");
 
   const editarUsuario = (usuarioEditado) => {
     let listaUsuarios = usuarios;
     listaUsuarios = listaUsuarios.map((user) =>
-      user.key === usuarioEditado.key ? usuarioEditado : user
+      user.id === usuarioEditado.id ? usuarioEditado : user
     );
     setUsuarios(listaUsuarios);
     salveUsuarioAtual(user);
@@ -36,6 +38,12 @@ const Perfil = ({ navigation, route }) => {
 
   const mostrarSenha = () => {
     setMostraSenha(!mostraSenha);
+  };
+
+  const preencherSexo = (sexoPressionado) => {
+    if (sexo === "" || sexo !== sexoPressionado) {
+      setSexo(sexoPressionado);
+    }
   };
 
   useFocusEffect(
@@ -56,6 +64,7 @@ const Perfil = ({ navigation, route }) => {
         const usuarioAtualStorage = await AsyncStorage.getItem("@usuarioAtual");
         if (usuarioAtualStorage) {
           setUser(JSON.parse(usuarioAtualStorage));
+          setSexo(JSON.parse(usuarioAtualStorage).sexo);
         }
       }
       carregaUsuarios();
@@ -63,6 +72,11 @@ const Perfil = ({ navigation, route }) => {
       carregaIdeias();
     }, [])
   );
+
+  useEffect(() => {
+    setUser({ ...user, sexo: sexo });
+  }, [sexo]);
+
   useEffect(() => {
     usuarios !== undefined ? salveUsuarios(usuarios) : null;
   }, [usuarios]);
@@ -117,6 +131,7 @@ const Perfil = ({ navigation, route }) => {
           }}
         />
         <ScrollView>
+          <Button title="sexo" onPress={() => console.log(user)} />
           <View style={styles.form}>
             <Text style={styles.formText}>Nome</Text>
             <Input
@@ -136,6 +151,57 @@ const Perfil = ({ navigation, route }) => {
               placeholder="Digite seu email"
               value={user.email}
             />
+            <Text style={styles.formText}>Sexo</Text>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-around" }}
+            >
+              <CheckBox
+                containerStyle={{
+                  width: 100,
+                  backgroundColor: "transparent",
+                  borderColor: "transparent",
+                }}
+                textStyle={{ color: "#fff", fontSize: 25 }}
+                size={35}
+                onPress={() => {
+                  preencherSexo("M");
+                  setUser({ ...user, sexo: sexo });
+                }}
+                checked={sexo === "M"}
+                title="M"
+              />
+              <CheckBox
+                containerStyle={{
+                  width: 100,
+                  backgroundColor: "transparent",
+                  borderColor: "transparent",
+                }}
+                textStyle={{ color: "#fff", fontSize: 25 }}
+                onPress={() => {
+                  preencherSexo("F");
+                }}
+                checked={sexo === "F"}
+                size={35}
+                title="F"
+              />
+            </View>
+            <Text style={styles.formText}>Setor de atuação</Text>
+            <View style={styles.formPickerContainer}>
+              <Picker
+                selectedValue={user.setor}
+                onValueChange={(setor) => setUser({ ...user, setor })}
+                style={styles.formPicker}
+              >
+                <Picker.Item label="Selecione um setor" value="setorPadrao" />
+                <Picker.Item label="Área de Pessoas" value="pessoas" />
+                <Picker.Item
+                  label="Tecnologia da informação"
+                  value="tinformação"
+                />
+                <Picker.Item label="Gerência e gestão" value="gestao" />
+                <Picker.Item label="Contabilidade" value="contabilidade" />
+              </Picker>
+            </View>
             <Text style={styles.formText}>Senha</Text>
             <Input
               inputStyle={styles.input}
@@ -155,24 +221,32 @@ const Perfil = ({ navigation, route }) => {
               }
               rightIconContainerStyle={styles.mostraSenhaBtn}
             />
-            <Button
-              containerStyle={styles.formBack}
-              buttonStyle={styles.formBackBtn}
-              title="Voltar"
-              onPress={() => navigation.goBack()}
-            />
-            <Button
-              containerStyle={styles.formSave}
-              buttonStyle={styles.formSaveBtn}
-              title="Salvar"
-              onPress={handleEditar}
-            />
           </View>
           <View style={{ ...styles.listContainer, paddingBottom: 30 }}>
             <Text style={styles.secaoTitulo}>Ideias</Text>
-            {ideias
-              .filter((ideia) => ideia.userKey === user.key)
-              .map((ideia) => itemIdeias(ideia))}
+            {!ideias.filter((ideia) => ideia.userId === user.id).length ? (
+              <Text style={styles.semIdeiasText}>
+                Não há ideias para serem mostradas
+              </Text>
+            ) : (
+              ideias
+                .filter((ideia) => ideia.userId === user.id)
+                .map((ideia) => itemIdeias(ideia))
+            )}
+            <View style={{ ...styles.formContainerBotoes, marginTop: 40 }}>
+              <Button
+                containerStyle={styles.formBack}
+                buttonStyle={styles.formBackBtn}
+                title="Voltar"
+                onPress={() => navigation.goBack()}
+              />
+              <Button
+                containerStyle={styles.formSave}
+                buttonStyle={styles.formSaveBtn}
+                title="Salvar"
+                onPress={handleEditar}
+              />
+            </View>
           </View>
         </ScrollView>
       </ImageBackground>
