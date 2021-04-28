@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, Modal, TouchableOpacity, Picker, ScrollView} from 'react-native';
+import { View, Text, Modal, TouchableOpacity, Picker, ScrollView } from 'react-native';
 import { styles } from '../../style/style';
-import {HelperText, RadioButton, Snackbar, TextInput} from "react-native-paper";
+import {HelperText, RadioButton, Snackbar, Switch, TextInput} from "react-native-paper";
 import ListaMetodologia from './ListaMetodologia';
 
 const EditarMetodologia = (props) => {
@@ -9,7 +9,7 @@ const EditarMetodologia = (props) => {
     const stateInitialValidate = {
         area: false,
         title : false,
-        objective: false,
+        description: false,
         definition: false,
     }
 
@@ -18,7 +18,13 @@ const EditarMetodologia = (props) => {
     const [error, setError] = useState(false)
     const [metodologia, setMetodologia] = useState(ListaMetodologia);
     const [addInvalid, setAddInvalid] = useState(stateInitialValidate);
-    const [checked, setChecked] = useState(props.selectedMetodologia.references);
+    const [checked, setChecked] = useState('');
+
+    const [isSwitch, setIsSwitch] = useState(props.selectedMetodologia.objective == 'Profissional');
+    const onToggleSwitch = () => {
+        setIsSwitch(!isSwitch);
+        setMetodologia({...metodologia, ['objective'] :  isSwitch ? 'Pessoal' : 'Profissional'})
+    }
 
     const handleChange = (value, name) => {
         if(value) {
@@ -40,10 +46,11 @@ const EditarMetodologia = (props) => {
             references: props.selectedMetodologia.references,
         };
         setMetodologia(data)
+        setChecked(data.references)
     }, [])
 
     const editarMetodologia = () => {
-        if(addInvalid.title || addInvalid.area || addInvalid.definition || addInvalid.objective || checked === '') {
+        if(addInvalid.title || addInvalid.area || addInvalid.definition || addInvalid.description || checked === '') {
             setError(true)
         } else {
             setError(false)
@@ -70,7 +77,7 @@ const EditarMetodologia = (props) => {
 
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={styles.title}>Adicionar Metodologia</Text>
+                    <Text style={styles.title}>Editar Material</Text>
 
                     <ScrollView style={styles.scroll}>
 
@@ -123,6 +130,7 @@ const EditarMetodologia = (props) => {
                             <Text style={styles.label}>Definição</Text>
                             <TextInput
                                     mode="outlined"
+                                    error={ addInvalid.definition }
                                     value={ metodologia.definition }
                                     placeholder="Informe a definição aqui: "
                                     onChangeText={(text) => handleChange(text, 'definition')}
@@ -130,23 +138,39 @@ const EditarMetodologia = (props) => {
                         </View>
 
                         <View style={{marginBottom: 5}}>
-                            <Text style={styles.label}>Objetivo</Text>
-                            <TextInput
-                                    mode="outlined"
-                                    value={ metodologia.objective }
-                                    placeholder="Informe o objetivo aqui: "
-                                    onChangeText={(text) => handleChange(text, 'objective')}
-                            />
-                        </View>
-
-                        <View style={{marginBottom: 5}}>
                             <Text style={styles.label}>Informações adicionais</Text>
                             <TextInput
                                     mode="outlined"
+                                    error={addInvalid.description}
                                     value={ metodologia.description }
                                     placeholder="Informe as informações adicionais aqui: "
                                     onChangeText={(text) => handleChange(text, 'description')}
                             />
+
+                            <HelperText
+                                    type="error"
+                                    padding="none"
+                                    style={{fontSize: 15}}
+                                    visible={addInvalid.description}
+                            >
+                                Informe mais informações sobre o assunto!
+                            </HelperText>
+                        </View>
+
+                        <View style={{marginBottom: 15}}>
+                            <Text style={styles.label}>Objetivo</Text>
+
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={{...styles.label, fontSize: 18, color: '#666666', marginRight: 15, marginTop: 5}}>Pessoal</Text>
+                                <Switch
+                                        value={ isSwitch }
+                                        ios_backgroundColor="#3e3e3e"
+                                        onValue={ onToggleSwitch }
+                                        trackColor={{ false: '#D5D5D5', true: '#D5D5D5' }}
+                                        thumbColor={ isSwitch ? '#1280AB' : '#E37B09' }
+                                />
+                                <Text style={{...styles.label, fontSize: 18, color: '#666666', marginLeft: 15, marginTop: 5}}>Profissional</Text>
+                            </View>
                         </View>
 
                         <View style={{marginBottom: 20}}>
@@ -170,16 +194,6 @@ const EditarMetodologia = (props) => {
                             </View>
                         </View>
 
-                        <View style={ styles.groupButton }>
-                            <TouchableOpacity onPress={ editarMetodologia } style={{...styles.button, backgroundColor: "#1281AB"}}>
-                                <Text style={ styles.btnText }>Salvar</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={ isClose } style={{...styles.button, backgroundColor: "#E76F51"}}>
-                                <Text style={ styles.btnText }>Cancelar</Text>
-                            </TouchableOpacity>
-                        </View>
-
                         <Snackbar
                                 visible={error}
                                 onDismiss={onDismissSnackBar}
@@ -191,6 +205,15 @@ const EditarMetodologia = (props) => {
                         </Snackbar>
                     </ScrollView>
 
+                    <View style={ styles.groupButton }>
+                        <TouchableOpacity onPress={ editarMetodologia } style={{...styles.button, backgroundColor: "#1281AB"}}>
+                            <Text style={ styles.btnText }>Salvar</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={ isClose } style={{...styles.button, backgroundColor: "#E76F51"}}>
+                            <Text style={ styles.btnText }>Cancelar</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </Modal>

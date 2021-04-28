@@ -171,6 +171,7 @@ const Metodologias = ({ navigation }) => {
                             keyExtractor={method => method.id.toString()}
                         />
 
+
                         <Modal transparent
                                animationType="slide"
                                visible={modalVisible}
@@ -178,7 +179,10 @@ const Metodologias = ({ navigation }) => {
 
                             <View style={styles.centeredView}>
                                 <View style={styles.modalView}>
-                                    <Text style={styles.title}>Detalhes do Material</Text>
+
+                                    <View style={{marginLeft: 15}}>
+                                        <Text style={styles.title}>Detalhes do Material</Text>
+                                    </View>
 
                                     <ScrollView>
                                         {
@@ -200,36 +204,26 @@ const Metodologias = ({ navigation }) => {
                                                 </View>
 
                                                 <View style={styles.listDetails}>
-                                                    <Text style={styles.listDetailsStrong}>Objetivo: </Text>
-                                                    <Text style={styles.listDetailsText}>{selectedMetodologia.objective}</Text>
+                                                    <Text style={styles.listDetailsStrong}>Informações adicionais: </Text>
+                                                    <Text style={styles.listDetailsText}>{selectedMetodologia.description}</Text>
                                                 </View>
 
                                                 <View style={styles.listDetails}>
-                                                    <Text style={styles.listDetailsStrong}>Informações adicionais: </Text>
-                                                    <Text style={styles.listDetailsText}>{selectedMetodologia.description}</Text>
+                                                    <Text style={styles.listDetailsStrong}>Objetivo: </Text>
+                                                    <Text style={styles.listDetailsText}>{selectedMetodologia.objective}</Text>
                                                 </View>
 
                                                 <View style={styles.listDetails}>
                                                     <Text style={styles.listDetailsStrong}>Esse material é autoral? </Text>
                                                     <Text style={styles.listDetailsText}>{selectedMetodologia.references}</Text>
                                                 </View>
-
-                                                {
-                                                    selectedMetodologia.list ? selectedMetodologia.list.map(data =>
-                                                        <View key={selectedMetodologia.id} style={styles.listDetails}>
-                                                            <Text style={styles.listDetailsStrong}>Referências</Text>
-                                                            <Text style={styles.listDetailsText}>{data}</Text>
-                                                        </View> )
-                                                    : null
-                                                }
-
                                             </View>
                                         }
                                     </ScrollView>
 
-                                    <View style={{ alignItems: 'center', width: '100%' }} >
+                                    <View style={{ alignItems: 'center', width: '100%', justifyContent: 'center' }} >
                                         <TouchableOpacity
-                                                style={{ ...styles.button, backgroundColor: '#1281AB' }}
+                                                style={{ ...styles.button, backgroundColor: '#1281AB', marginLeft: 15 }}
                                                 onPress={ () => {setModalVisible(!modalVisible);} }
                                         >
                                             <Text style={ styles.btnText }>Fechar janela</Text>

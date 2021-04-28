@@ -59,7 +59,7 @@ const TelaInicial = ({ navigation }) => {
 export default function App() {
     return (
         <NavigationContainer>
-            <Drawer.Navigator initialRouteName="Metodologias" screenOptions={ optionScreen }>
+            <Drawer.Navigator initialRouteName="Inicio" screenOptions={ optionScreen }>
                 <Drawer.Screen name="Inicio" component={ TelaInicial }/>
                 <Drawer.Screen name="Feed" component={ Feed }/>
                 <Drawer.Screen name="Ideias" component={ Ideias }/>

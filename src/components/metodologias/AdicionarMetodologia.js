@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RadioButton, HelperText, TextInput, Snackbar } from 'react-native-paper';
+import { RadioButton, HelperText, TextInput, Snackbar, Switch } from 'react-native-paper';
 import { View, Text, Modal, TouchableOpacity, Picker, ScrollView } from 'react-native';
 
 import { styles } from '../../style/style';
@@ -10,7 +10,7 @@ const AdicionarMetodologia = (props) => {
     const stateInitialValidate = {
         area: false,
         title : false,
-        objective: false,
+        description: false,
         definition: false,
     }
 
@@ -19,6 +19,12 @@ const AdicionarMetodologia = (props) => {
 
     const [error, setError] = useState(false)
     const [checked, setChecked] = useState('');
+
+    const [isSwitch, setIsSwitch] = useState(false);
+    const onToggleSwitch = () => {
+        setIsSwitch(!isSwitch);
+        setMetodologia({...metodologia, ['objective'] :  isSwitch ? 'Pessoal' : 'Profissional'})
+    }
 
     const { isOpen, isClose } = props;
     const onDismissSnackBar = () => setError(false);
@@ -33,9 +39,11 @@ const AdicionarMetodologia = (props) => {
     }
 
     const adicionarMetodologia = async() => {
-        if(metodologia.title === "" || metodologia.area === "" || metodologia.definition === "" || metodologia.objective === "" || checked === '') {
-            setError(true)
-        } else if(addInvalid.title || addInvalid.area || addInvalid.definition || addInvalid.objective || checked === '') {
+        if(metodologia.title === "" ||
+                metodologia.area === "" ||
+                metodologia.definition === "" ||
+                metodologia.description === "" ||
+                checked === '') {
             setError(true)
         } else {
             setError(false)
@@ -71,8 +79,9 @@ const AdicionarMetodologia = (props) => {
                             />
                             <HelperText
                                 type="error"
+                                padding="none"
                                 visible={addInvalid.title}
-                                style={{fontSize: 15, paddingHorizontal: 0}}
+                                style={{fontSize: 15}}
                             >Informe o título!</HelperText>
                         </View>
 
@@ -123,31 +132,39 @@ const AdicionarMetodologia = (props) => {
 
                         <View style={{marginBottom: 5}}>
                             <TextInput
-                                label="Objetivo"
-                                mode="outlined"
-                                error={addInvalid.objective}
-                                placeholder="Informe o objetivo aqui: "
-                                onChangeText={(text) => handleChange(text, 'objective')}
+                                    mode="outlined"
+                                    error={addInvalid.description}
+                                    label="Informações adicionais"
+                                    placeholder="Informe as informações adicionais aqui: "
+                                    onChangeText={(text) => handleChange(text, 'description')}
                             />
 
                             <HelperText
-                                type="error"
-                                padding="none"
-                                style={{fontSize: 15}}
-                                visible={addInvalid.objective}
+                                    type="error"
+                                    padding="none"
+                                    style={{fontSize: 15}}
+                                    visible={addInvalid.description}
                             >
-                                Informe o objetivo!
+                                Informe mais informações sobre o assunto!
                             </HelperText>
                         </View>
 
-                        <View style={{marginBottom: 20}}>
-                            <TextInput
-                                mode="outlined"
-                                label="Informações adicionais"
-                                placeholder="Informe as informações adicionais aqui: "
-                                onChangeText={(text) => handleChange(text, 'description')}
-                            />
+                        <View style={{marginBottom: 15}}>
+                            <Text style={styles.label}>Objetivo</Text>
+
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={{...styles.label, fontSize: 18, color: '#666666', marginRight: 15, marginTop: 5}}>Pessoal</Text>
+                                <Switch
+                                        value={ isSwitch }
+                                        ios_backgroundColor="#3e3e3e"
+                                        onValueChange={ onToggleSwitch }
+                                        trackColor={{ false: '#D5D5D5', true: '#D5D5D5' }}
+                                        thumbColor={ isSwitch ? '#1280AB' : '#E37B09' }
+                                />
+                                <Text style={{...styles.label, fontSize: 18, color: '#666666', marginLeft: 15, marginTop: 5}}>Profissional</Text>
+                            </View>
                         </View>
+
 
                         <View>
                             <Text style={styles.label}>Esse material é autoral?</Text>
@@ -175,7 +192,7 @@ const AdicionarMetodologia = (props) => {
                                     style={{fontSize: 15}}
                                     visible={'' === checked}
                             >
-                                Marque mesmo caso não tenha referências!
+                                Necessário selecionar uma opção!
                             </HelperText>
                         </View>
                     </ScrollView>
