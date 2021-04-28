@@ -111,6 +111,46 @@ export const styles = StyleSheet.create({
     marginLeft:10,
     alignContent:'center',
     padding:8
+  },
+  botaoVoto:{
+    backgroundColor: "#1281AB",
+    marginLeft: 8,
+    padding: 5, 
+    borderRadius: 5,
+    height:30,
+    width:50,
+  },
+  modalRank:{
+  backgroundColor:'#FFFFFF', 
+  margin:10, 
+  borderRadius:5, 
+  padding:5, 
+  width:340, 
+  height:250,
+  flexDirection:'column'
+  },
+  textoRank:{
+    color:'#127289', 
+    paddingLeft:5,
+    paddingBottom:3, 
+    fontSize:16
+  },
+  botaoRank:{
+    backgroundColor:'#E37B09', 
+    width:60, 
+    height:35, 
+    borderRadius:5, 
+    alignItems:'center',
+    marginTop:10,
+    marginBottom:10
+  },
+  textoBotaoRank:{
+    color:'#FFFFFF', 
+    fontSize:17, 
+    fontWeight:'700', 
+    justifyContent:'center',
+    alignItems:'center', 
+    padding:5
   }
 
 });

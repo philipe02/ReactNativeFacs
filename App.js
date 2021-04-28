@@ -54,7 +54,7 @@ export default function App() {
         <Drawer.Screen name="Ideias" component={Ideias} />
         <Drawer.Screen name="Usuario" component={Usuario} />
         <Drawer.Screen name="Feed" component={Feed} />
-        <Drawer.Screen name="RankingIdeias" component={RankingIdeias} />
+        <Drawer.Screen name="Ranking Ideias" component={RankingIdeias} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

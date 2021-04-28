@@ -16,6 +16,7 @@ function ListaIdeia({ navigation }) {
   const [isDeletIdeiaModalOpen, setIsDeletIdeiaModalOpen] = useState(false);
   const [ideias, setIdeias] = useState([]);
   const [selectedIdeia, setSelectedIdeia] = useState(false);
+  
   const toggleAddIdeia = () => {
     setIsAddIdeiaModalOpen(!isAddIdeiaModalOpen);
   };
@@ -30,9 +31,9 @@ function ListaIdeia({ navigation }) {
 
   const adicionarIdea = (data) => {
     try {
-      let idNovaIdeia = ideias[ideias.length - 1].id + 1
+      let idNovaIdeia = ideias[ideias.length - 1].id ++
       data = { id: idNovaIdeia, ...data };
-      setIdeias([...ideias, data]);
+      setIdeias([...ideias, data]); 
     } catch {
       data = { id: 1, ...data };
       setIdeias([...ideias, data]);
