@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   scrollViewStyle: {
     backgroundColor: "transparent",
-    marginVertical: 20,
+    marginBottom: 20,
   },
   body: { flex: 1, justifyContent: "center" },
   listItemContainer: { backgroundColor: "#fff", marginTop: 10 },
@@ -64,13 +64,13 @@ export const styles = StyleSheet.create({
   },
   formBackBtn: { backgroundColor: "tomato" },
   formContainerBotoes: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+    marginHorizontal: "5%",
   },
   formPicker: {
     height: 40,
-    color: "#909da6",
+    color: "#333",
     fontFamily: "sans-serif",
     fontSize: 40,
   },

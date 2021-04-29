@@ -102,36 +102,36 @@ const Perfil = ({ navigation, route }) => {
 
   return (
     <>
-      <ImageBackground
-        source={require("../images/fundo1.png")}
-        style={styles.bgImage}
-      >
-        <Header
-          containerStyle={styles.headerContainer}
-          leftComponent={
-            <Icon
-              name={route.params ? "arrow-left" : "menu"}
-              type="entypo"
-              color="#D16E0B"
-              onPress={() =>
-                route.params ? navigation.goBack() : navigation.openDrawer()
-              }
-              size={40}
-            />
-          }
-          centerComponent={{
-            text: "Tela de usuário",
-            style: styles.headerText,
-          }}
-          rightComponent={{
-            icon: "home",
-            color: "#D16E0B",
-            size: 40,
-            onPress: () => navigation.navigate("Feed"),
-          }}
+      <Header
+        containerStyle={styles.headerContainer}
+        leftComponent={
+          <Icon
+            name={route.params ? "arrow-left" : "menu"}
+            type="entypo"
+            color="#D16E0B"
+            onPress={() =>
+              route.params ? navigation.goBack() : navigation.openDrawer()
+            }
+            size={40}
+          />
+        }
+        centerComponent={{
+          text: "Tela de usuário",
+          style: styles.headerText,
+        }}
+        rightComponent={{
+          icon: "home",
+          color: "#D16E0B",
+          size: 40,
+          onPress: () => navigation.navigate("Feed"),
+        }}
+      />
+      <View>
+        <ImageBackground
+          source={require("../images/fundo1.png")}
+          style={[styles.bgImage, styles.bgImageFixed]}
         />
-        <ScrollView>
-          <Button title="sexo" onPress={() => console.log(user)} />
+        <ScrollView style={styles.scrollViewStyle}>
           <View style={styles.form}>
             <Text style={styles.formText}>Nome</Text>
             <Input
@@ -222,7 +222,12 @@ const Perfil = ({ navigation, route }) => {
               rightIconContainerStyle={styles.mostraSenhaBtn}
             />
           </View>
-          <View style={{ ...styles.listContainer, paddingBottom: 30 }}>
+          <View
+            style={{
+              ...styles.listContainer,
+              marginBottom: 30,
+            }}
+          >
             <Text style={styles.secaoTitulo}>Ideias</Text>
             {!ideias.filter((ideia) => ideia.userId === user.id).length ? (
               <Text style={styles.semIdeiasText}>
@@ -233,23 +238,28 @@ const Perfil = ({ navigation, route }) => {
                 .filter((ideia) => ideia.userId === user.id)
                 .map((ideia) => itemIdeias(ideia))
             )}
-            <View style={{ ...styles.formContainerBotoes, marginTop: 40 }}>
-              <Button
-                containerStyle={styles.formBack}
-                buttonStyle={styles.formBackBtn}
-                title="Voltar"
-                onPress={() => navigation.goBack()}
-              />
-              <Button
-                containerStyle={styles.formSave}
-                buttonStyle={styles.formSaveBtn}
-                title="Salvar"
-                onPress={handleEditar}
-              />
-            </View>
+          </View>
+          <View
+            style={{
+              ...styles.formContainerBotoes,
+              marginBottom: 100,
+            }}
+          >
+            <Button
+              containerStyle={styles.formSave}
+              buttonStyle={styles.formSaveBtn}
+              title="Salvar"
+              onPress={handleEditar}
+            />
+            <Button
+              containerStyle={styles.formBack}
+              buttonStyle={styles.formBackBtn}
+              title="Voltar"
+              onPress={() => navigation.goBack()}
+            />
           </View>
         </ScrollView>
-      </ImageBackground>
+      </View>
       <StatusBar style="light" />
     </>
   );

@@ -1,10 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, View, ImageBackground, Image, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Input, Button } from "react-native-elements";
 import { salveUsuarioAtual } from "../storage/storage";
 import { styles } from "../style/style";
+import { useFocusEffect } from "@react-navigation/core";
 
 const Login = ({ navigation }) => {
   const [user, setUser] = useState({});
@@ -24,15 +25,17 @@ const Login = ({ navigation }) => {
     } else Alert.alert("Usuário ou senha incorretos");
   };
 
-  useEffect(() => {
-    async function carregaUsuarios() {
-      const usuariosStorage = await AsyncStorage.getItem("@usuarios");
-      if (usuariosStorage) {
-        setUsuarios(JSON.parse(usuariosStorage));
+  useFocusEffect(
+    useCallback(() => {
+      async function carregaUsuarios() {
+        const usuariosStorage = await AsyncStorage.getItem("@usuarios");
+        if (usuariosStorage) {
+          setUsuarios(JSON.parse(usuariosStorage));
+        }
       }
-    }
-    carregaUsuarios();
-  }, []);
+      carregaUsuarios();
+    }, [])
+  );
   return (
     <ScrollView>
       <ImageBackground

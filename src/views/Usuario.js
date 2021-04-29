@@ -59,10 +59,7 @@ const Usuario = ({ navigation, route }) => {
   }, [usuarios]);
 
   return (
-    <ImageBackground
-      source={require("../images/fundo1.png")}
-      style={styles.bgImage}
-    >
+    <>
       <Header
         containerStyle={styles.headerContainer}
         leftComponent={
@@ -177,24 +174,34 @@ const Usuario = ({ navigation, route }) => {
             }
             rightIconContainerStyle={styles.mostraSenhaBtn}
           />
-          <View style={{ ...styles.formContainerBotoes, marginVertical: 40 }}>
-            <Button
-              containerStyle={styles.formBack}
-              buttonStyle={styles.formBackBtn}
-              title="Voltar"
-              onPress={() => navigation.goBack()}
-            />
-            <Button
-              containerStyle={styles.formSave}
-              buttonStyle={styles.formSaveBtn}
-              title="Salvar"
-              onPress={handleEditar}
-            />
-          </View>
         </View>
-        <StatusBar style="light" />
+        <View
+          style={{
+            ...styles.formContainerBotoes,
+            marginTop: 20,
+            marginBottom: 30,
+          }}
+        >
+          <Button
+            containerStyle={styles.formSave}
+            buttonStyle={styles.formSaveBtn}
+            title="Salvar"
+            onPress={handleEditar}
+          />
+          <Button
+            containerStyle={styles.formBack}
+            buttonStyle={styles.formBackBtn}
+            title="Voltar"
+            onPress={() => navigation.goBack()}
+          />
+        </View>
       </ScrollView>
-    </ImageBackground>
+      <ImageBackground
+        source={require("../images/fundo1.png")}
+        style={[styles.bgImage, styles.bgImageFixed]}
+      />
+      <StatusBar style="light" />
+    </>
   );
 };
 
