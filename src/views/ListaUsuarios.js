@@ -105,19 +105,19 @@ const ListaUsuario = ({ navigation }) => {
         <Header
           containerStyle={styles.headerContainer}
           leftComponent={{
+            size: 35,
             icon: "menu",
             color: "#D16E0B",
             onPress: navigation.openDrawer,
-            size: 40,
           }}
           centerComponent={{
             text: "Lista de usuários",
             style: styles.headerText,
           }}
           rightComponent={{
+            size: 35,
             icon: "home",
             color: "#D16E0B",
-            size: 40,
             onPress: () => navigation.navigate("Login"),
           }}
         />

@@ -33,7 +33,7 @@ const Perfil = ({ navigation, route }) => {
 
   const handleEditar = () => {
     editarUsuario(user);
-    route.params ? navigation.goBack() : Alert.alert("Usuário editado");
+    Alert.alert("Usuário editado");
   };
 
   const mostrarSenha = () => {
@@ -104,25 +104,20 @@ const Perfil = ({ navigation, route }) => {
     <>
       <Header
         containerStyle={styles.headerContainer}
-        leftComponent={
-          <Icon
-            name={route.params ? "arrow-left" : "menu"}
-            type="entypo"
-            color="#D16E0B"
-            onPress={() =>
-              route.params ? navigation.goBack() : navigation.openDrawer()
-            }
-            size={40}
-          />
-        }
+        leftComponent={{
+          size: 35,
+          icon: "menu",
+          color: "#D16E0B",
+          onPress: navigation.openDrawer,
+        }}
         centerComponent={{
-          text: "Tela de usuário",
+          text: "Perfil",
           style: styles.headerText,
         }}
         rightComponent={{
+          size: 35,
           icon: "home",
           color: "#D16E0B",
-          size: 40,
           onPress: () => navigation.navigate("Feed"),
         }}
       />

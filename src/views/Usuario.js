@@ -34,7 +34,7 @@ const Usuario = ({ navigation, route }) => {
 
   const handleEditar = () => {
     editarUsuario(user);
-    route.params ? navigation.goBack() : Alert.alert("Usuário editado");
+    navigation.goBack();
   };
 
   useFocusEffect(
@@ -62,25 +62,20 @@ const Usuario = ({ navigation, route }) => {
     <>
       <Header
         containerStyle={styles.headerContainer}
-        leftComponent={
-          <Icon
-            name={route.params ? "arrow-left" : "menu"}
-            type="entypo"
-            color="#D16E0B"
-            onPress={() =>
-              route.params ? navigation.goBack() : navigation.openDrawer()
-            }
-            size={40}
-          />
-        }
+        leftComponent={{
+          size: 35,
+          icon: "arrow-left",
+          color: "#D16E0B",
+          onPress: () => navigation.goBack(),
+        }}
         centerComponent={{
-          text: "Tela de usuário",
+          text: "Usuário",
           style: styles.headerText,
         }}
         rightComponent={{
+          size: 35,
           icon: "home",
           color: "#D16E0B",
-          size: 40,
           onPress: () => navigation.navigate("Feed"),
         }}
       />

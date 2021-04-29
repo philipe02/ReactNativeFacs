@@ -77,85 +77,83 @@ const RankingIdeias = ({ navigation }) => {
           onPress: () => navigation.navigate("Inicio"),
         }}
       />
-      <View style={styles.body}>
-        <ImageBackground
-          source={require("../images/fundo1.png")}
-          style={styles.bgImage}
-        >
-          <FlatList
-            keyExtractor={(rank) => rank.id.toString()}
-            data={ranking}
-            renderItem={getListIdeias}
-          />
+      <ImageBackground
+        source={require("../images/fundo1.png")}
+        style={styles.bgImage}
+      >
+        <FlatList
+          keyExtractor={(rank) => rank.id.toString()}
+          data={ranking}
+          renderItem={getListIdeias}
+        />
 
-          <ScrollView>
-            <Modal
-              transparent={false}
-              animationType="slide"
-              visible={modalIsOpen}
-              onRequestClose={setModalIsOpen}
+        <ScrollView>
+          <Modal
+            transparent={false}
+            animationType="slide"
+            visible={modalIsOpen}
+            onRequestClose={setModalIsOpen}
+          >
+            <Header
+              containerStyle={{ height: 50, backgroundColor: "#1D1D1D" }}
+              centerComponent={{
+                text: "Ideia",
+                style: styles.headerText,
+              }}
+              leftComponent={{
+                icon: "arrow-left",
+                color: "#E37B09",
+                onPress: () => setModalIsOpen(false),
+                size: 40,
+              }}
+            />
+            <ImageBackground
+              source={require("../images/fundo1.png")}
+              style={styles.bgImage}
             >
-              <Header
-                containerStyle={{ height: 50, backgroundColor: "#1D1D1D" }}
-                centerComponent={{
-                  text: "Ideia",
-                  style: styles.headerText,
-                }}
-                leftComponent={{
-                  icon: "arrow-left",
-                  color: "#E37B09",
-                  onPress: () => setModalIsOpen(false),
-                  size: 40,
-                }}
-              />
-              <ImageBackground
-                source={require("../images/fundo1.png")}
-                style={styles.bgImage}
-              >
-                <View style={styles.modalRank} key={selectedIdeia.id}>
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.textoRank}>Titulo da ideia: </Text>
-                    <Text style={styles.dadosRank}>{selectedIdeia.titulo}</Text>
-                  </View>
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.textoRank}>Nome do idealizador: </Text>
-                    <Text style={styles.dadosRank}>{selectedIdeia.nome}</Text>
-                  </View>
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.textoRank}>Descrição: </Text>
-                    <Text style={{ ...styles.dadosRank, width: 240 }}>
-                      {selectedIdeia.desc}
-                    </Text>
-                  </View>
-                  <View style={styles.viewBotao}>
-                    <TouchableOpacity
-                      style={styles.botaoRank}
-                      onPress={() => countVoto(selectedIdeia)}
-                    >
-                      <Text style={styles.textoBotaoRank}> VOTE </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.dadosRank}>Quantidade de votos: </Text>
-                    <Text
-                      style={{
-                        ...styles.dadosRank,
-                        color: "#127289",
-                        fontWeight: "700",
-                      }}
-                    >
-                      {selectedIdeia.voto}
-                    </Text>
-                  </View>
+              <View style={styles.modalRank} key={selectedIdeia.id}>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.textoRank}>Titulo da ideia: </Text>
+                  <Text style={styles.dadosRank}>{selectedIdeia.titulo}</Text>
                 </View>
-                <StatusBar style="light" />
-              </ImageBackground>
-            </Modal>
-            <StatusBar style="light" />
-          </ScrollView>
-        </ImageBackground>
-      </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.textoRank}>Nome do idealizador: </Text>
+                  <Text style={styles.dadosRank}>{selectedIdeia.nome}</Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.textoRank}>Descrição: </Text>
+                  <Text style={{ ...styles.dadosRank, width: 240 }}>
+                    {selectedIdeia.desc}
+                  </Text>
+                </View>
+                <View style={styles.viewBotao}>
+                  <TouchableOpacity
+                    style={styles.botaoRank}
+                    onPress={() => countVoto(selectedIdeia)}
+                  >
+                    <Text style={styles.textoBotaoRank}> VOTE </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.dadosRank}>Quantidade de votos: </Text>
+                  <Text
+                    style={{
+                      ...styles.dadosRank,
+                      color: "#127289",
+                      fontWeight: "700",
+                    }}
+                  >
+                    {selectedIdeia.voto}
+                  </Text>
+                </View>
+              </View>
+              <StatusBar style="light" />
+            </ImageBackground>
+          </Modal>
+        </ScrollView>
+      </ImageBackground>
+      <StatusBar style="light" />
     </>
   );
 };

@@ -1,10 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { styles } from "./src/style/style";
-import Ideias from "./src/views/Ideias";
-import Feed from "./src/views/Feed";
-import RankingIdeias from "./src/views/RankingIdeias";
 import CadastroUsuario from "./src/views/CadastroUsuario";
 import Login from "./src/views/Login";
 import Menu from "./src/views/Menu";

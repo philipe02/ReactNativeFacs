@@ -21,6 +21,7 @@ function ListaIdeia({ navigation }) {
   const [isEditIdeiaModalOpen, setIsEditIdeiaModalOpen] = useState(false);
   const [isDeletIdeiaModalOpen, setIsDeletIdeiaModalOpen] = useState(false);
   const [ideias, setIdeias] = useState([]);
+  const [usuarioAtual, setUsuarioAtual] = useState({});
   const [selectedIdeia, setSelectedIdeia] = useState(false);
 
   const toggleAddIdeia = () => {
@@ -38,10 +39,10 @@ function ListaIdeia({ navigation }) {
   const adicionarIdea = (data) => {
     try {
       let idNovaIdeia = ideias[ideias.length - 1].id + 1;
-      data = { id: idNovaIdeia, ...data };
+      data = { id: idNovaIdeia, userId: usuarioAtual.id, ...data };
       setIdeias([...ideias, data]);
     } catch {
-      data = { id: 1, ...data };
+      data = { id: 1, userId: usuarioAtual.id, ...data };
       setIdeias([...ideias, data]);
     }
   };
@@ -58,12 +59,17 @@ function ListaIdeia({ navigation }) {
   useEffect(() => {
     async function carregaIdeias() {
       const ideiaStorage = await AsyncStorage.getItem("@idea");
-
       if (ideiaStorage) {
         setIdeias(JSON.parse(ideiaStorage));
       }
     }
-
+    async function carregaUsuarioAtual() {
+      const usuarioAtualStorage = await AsyncStorage.getItem("@usuarioAtual");
+      if (usuarioAtualStorage) {
+        setUsuarioAtual(JSON.parse(usuarioAtualStorage));
+      }
+    }
+    carregaUsuarioAtual();
     carregaIdeias();
   }, []);
 
@@ -72,7 +78,6 @@ function ListaIdeia({ navigation }) {
     async function salveIdeia() {
       await AsyncStorage.setItem("@idea", JSON.stringify(ideias));
     }
-
     salveIdeia();
   }, [ideias]);
 
