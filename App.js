@@ -8,10 +8,11 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { styles } from "./src/style/style";
 
-import Feed from "./src/views/Feed";
-import Ideias from "./src/views/Ideias";
-import Usuario from "./src/views/Usuario";
 import Metodologias from "./src/views/Metodologias";
+import ListaIdeia from './src/views/Ideias';
+import Usuario from "./src/views/Usuario";
+import Feed from "./src/views/Feed";
+import RankingIdeias from "./src/views/RankingIdeias";
 
 const Drawer = createDrawerNavigator();
 
@@ -58,15 +59,16 @@ const TelaInicial = ({ navigation }) => {
 
 export default function App() {
     return (
-        <NavigationContainer>
-            <Drawer.Navigator initialRouteName="Inicio" screenOptions={ optionScreen }>
-                <Drawer.Screen name="Inicio" component={ TelaInicial }/>
-                <Drawer.Screen name="Feed" component={ Feed }/>
-                <Drawer.Screen name="Ideias" component={ Ideias }/>
-                <Drawer.Screen name="Usuario" component={ Usuario }/>
-                <Drawer.Screen name="Metodologias" component={ Metodologias }/>
-            </Drawer.Navigator>
-        </NavigationContainer>
+            <NavigationContainer>
+                <Drawer.Navigator initialRouteName="Inicio">
+                    <Drawer.Screen name="Inicio" component={TelaInicial} />
+                    <Drawer.Screen name="Ideias" component={ListaIdeia} />
+                    <Drawer.Screen name="Usuario" component={Usuario} />
+                    <Drawer.Screen name="Metodologias" component={ Metodologias }/>
+                    <Drawer.Screen name="Feed" component={Feed} />
+                    <Drawer.Screen name="Ranking Ideias" component={RankingIdeias} />
+                </Drawer.Navigator>
+            </NavigationContainer>
     );
 }
 const optionScreen = {
