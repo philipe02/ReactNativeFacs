@@ -125,10 +125,10 @@ const Rancking = ({ navigation }) => {
                   <Text style={{...styles.dadosRank, color:'#127289', fontWeight:'700'}}>{selectedIdeia.voto}</Text>                 
                 </View>
               </View>
-              
-              </ImageBackground>
               <StatusBar style="light" />
+              </ImageBackground>
             </Modal>
+            <StatusBar style="light" />
           </ScrollView>
         </ImageBackground>
       </View>

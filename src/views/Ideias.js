@@ -84,6 +84,12 @@ function ListaIdeia({ navigation }) {
           text: "Suas ideias",
           style: styles.headerText,
         }}
+        rightComponent={{
+          icon: "home",
+          color: "#E37B09",
+          size: 40,
+          onPress: () => navigation.navigate("Inicio"),
+        }}
       />
       <ScrollView>
         <ImageBackground
