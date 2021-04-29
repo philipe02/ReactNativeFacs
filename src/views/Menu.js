@@ -4,6 +4,7 @@ import Ideias from "./Ideias";
 import Feed from "./Feed";
 import Perfil from "./Perfil";
 import ListaUsuario from "./ListaUsuarios";
+import RankingIdeias from "./RankingIdeias";
 
 const Drawer = createDrawerNavigator();
 
@@ -14,6 +15,7 @@ const Menu = ({ navigation, route }) => {
       <Drawer.Screen name="Feed" component={Feed} />
       <Drawer.Screen name="Lista de Usuários" component={ListaUsuario} />
       <Drawer.Screen name="Perfil" component={Perfil} />
+      <Drawer.Screen name="Ranking Ideias" component={RankingIdeias} />
     </Drawer.Navigator>
   );
 };
