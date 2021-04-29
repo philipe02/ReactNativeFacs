@@ -1,6 +1,14 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { View, Text, ImageBackground, TouchableOpacity, Modal, Alert, Switch} from "react-native";
+import {
+  View,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+  Modal,
+  Alert,
+  Switch,
+} from "react-native";
 import { styles } from "../../style/style";
 import { Header, Input } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
@@ -12,13 +20,13 @@ const AddIdeias = (props) => {
     desc: "",
     tema: "Selecione um tema",
     benefMalef: "",
-    homeSimNao:false
+    homeSimNao: false,
   };
 
   const [ideia, setIdeia] = useState(initialIdeiasState);
   const [checked, setChecked] = useState(ideia.benefMalef);
   const [isEnabled, setIsEnabled] = useState(ideia.homeSimNao);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const { openIdeiaModal, closeIdeiaModal } = props;
 
   const handleChance = (value, name) => {
@@ -33,17 +41,17 @@ const AddIdeias = (props) => {
       Alert.alert("Descrição Obrigatória.");
     else if (ideia.tema === "Selecione um tema")
       Alert.alert("Selecione o tema abordado.");
-    else if (!checked){
-      Alert.alert("Indique se a ideia resolve um malefício ou traz um benefício.");
-    } 
-    else {
+    else if (!checked) {
+      Alert.alert(
+        "Indique se a ideia resolve um malefício ou traz um benefício."
+      );
+    } else {
       props.adicionarIdeia({
-        id: ideia.id,
         titulo: ideia.titulo,
         desc: ideia.desc,
         tema: ideia.tema,
-        benefMalef: checked, 
-        homeSimNao: isEnabled
+        benefMalef: checked,
+        homeSimNao: isEnabled,
       });
       props.closeIdeiaModal();
     }
@@ -113,45 +121,63 @@ const AddIdeias = (props) => {
             }}
           />
 
-        <Text style={styles.tituloInput}>Benefícios ou Malefícios: </Text>
-          <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.tituloInput}>Benefícios ou Malefícios: </Text>
+          <View style={{ flexDirection: "row" }}>
             <Text style={styles.textRadio}>Benefício:</Text>
             <RadioButton
-              value='Benefício'
+              value="Benefício"
               color="#D16E0B"
-              onPress={() => setChecked('Benefício')}
-              status={ checked === 'Benefício' ? 'checked' : 'unchecked' }
+              onPress={() => setChecked("Benefício")}
+              status={checked === "Benefício" ? "checked" : "unchecked"}
             />
             <Text style={styles.textRadio}>Malefício:</Text>
             <RadioButton
               value="Malefício"
               color="#D16E0B"
-              onPress={() => setChecked('Malefício')}
-              status={ checked === 'Malefício' ? 'checked' : 'unchecked' }
+              onPress={() => setChecked("Malefício")}
+              status={checked === "Malefício" ? "checked" : "unchecked"}
             />
           </View>
 
           <Text style={styles.tituloInput}>Tema: </Text>
-          <Picker
-            selectedValue={ideia.tema}
-            onValueChange={(itemValue) => handleChance(itemValue, "tema")}
+          <View
             style={{
-              height: 40,
-              width: 345,
-              marginLeft: 8,
-              backgroundColor: "#fff",
+              ...styles.formPickerContainer,
+              width: "auto",
+              marginRight: 10,
+              marginLeft: 10,
+              borderRadius: 4,
             }}
           >
-            <Picker.Item label="Selecione o tema abordado" value="temaPadrao" />
-            <Picker.Item label="Recursos Humanos" value="recursoshumanos" />
-            <Picker.Item label="TI" value="TI" />
-            <Picker.Item label="Administração" value="adm" />
-            <Picker.Item label="Finanças" value="financas" />
-          </Picker>
-
-          <Text style={{...styles.tituloInput, marginTop:10}}>Essa ideia se enquandra no contexto atual da empresa (Home office) ? </Text>
-          <View style={{flexDirection:"row", justifyContent:'space-between', marginRight:14, marginLeft:14}}>
-            <Text style={{fontSize:10, color:'white'}}>Laranja (não) / Verde (sim)</Text>
+            <Picker
+              selectedValue={ideia.tema}
+              onValueChange={(itemValue) => handleChance(itemValue, "tema")}
+              style={styles.formPicker}
+            >
+              <Picker.Item
+                label="Selecione o tema abordado"
+                value="temaPadrao"
+              />
+              <Picker.Item label="Recursos Humanos" value="recursoshumanos" />
+              <Picker.Item label="TI" value="TI" />
+              <Picker.Item label="Administração" value="adm" />
+              <Picker.Item label="Finanças" value="financas" />
+            </Picker>
+          </View>
+          <Text style={{ ...styles.tituloInput, marginTop: 10 }}>
+            Essa ideia se enquandra no contexto atual da empresa (Home office) ?{" "}
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginRight: 14,
+              marginLeft: 14,
+            }}
+          >
+            <Text style={{ fontSize: 10, color: "white" }}>
+              Laranja (não) / Verde (sim)
+            </Text>
             <Switch
               trackColor={{ false: "white", true: "white" }}
               thumbColor={isEnabled ? "#1281AB" : "#E37B09"}

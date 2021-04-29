@@ -1,100 +1,84 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useContext, useCallback, useEffect } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
 import { ScrollView, View, Text, ImageBackground, Alert } from "react-native";
-import { Input, Button, Header, Icon, CheckBox } from "react-native-elements";
-import { styles } from "../style/style";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Input, Button, CheckBox } from "react-native-elements";
 import { salveUsuarios } from "../storage/storage";
+import { styles } from "../style/style";
 import { Picker } from "@react-native-picker/picker";
 
-const Usuario = ({ navigation, route }) => {
-  const [user, setUser] = useState(route.params ? route.params : {});
-  const [usuarios, setUsuarios] = useState();
-  const [mostraSenha, setMostraSenha] = useState(false);
+const CadastroUsuario = ({ navigation }) => {
+  const [user, setUser] = useState({});
+  const [usuarios, setUsuarios] = useState([]);
   const [sexo, setSexo] = useState("");
 
-  const editarUsuario = (usuarioEditado) => {
+  const cadastrarUsuario = (usuarioNovo) => {
     let listaUsuarios = usuarios;
-    listaUsuarios = listaUsuarios.map((user) =>
-      user.id === usuarioEditado.id ? usuarioEditado : user
-    );
-    setUsuarios(listaUsuarios);
+    try {
+      let keyNovoUsuario = listaUsuarios[listaUsuarios.length - 1].id + 1;
+      usuarioNovo = { id: keyNovoUsuario, ...usuarioNovo };
+      salveUsuarios([...listaUsuarios, usuarioNovo]);
+    } catch {
+      usuarioNovo = { id: 1, ...usuarioNovo };
+      salveUsuarios([...listaUsuarios, usuarioNovo]);
+    }
   };
-
-  const mostrarSenha = () => {
-    setMostraSenha(!mostraSenha);
-  };
-
   const preencherSexo = (sexoPressionado) => {
     if (sexo === "" || sexo !== sexoPressionado) {
       setSexo(sexoPressionado);
     }
   };
 
-  const handleEditar = () => {
-    editarUsuario(user);
-    navigation.goBack();
+  const handleCadastro = () => {
+    if (!user.name || user.name === "") Alert.alert("Nome obrigatório");
+    else if (!user.email || user.email === "")
+      Alert.alert("E-mail obrigatório");
+    else if (!user.password || user.password === "")
+      Alert.alert("Senha obrigatória");
+    else if (user.password !== user.confirmPassword)
+      Alert.alert("Confirmação de senha diferente da senha");
+    else if (!user.sexo || user.sexo === "") Alert.alert("Selecione o sexo");
+    else {
+      delete user.confirmPassword;
+      cadastrarUsuario(user);
+      setUser({});
+      Alert.alert("Usuário registrado!");
+      navigation.navigate("Login");
+    }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      async function carregaUsuarios() {
-        const usuariosStorage = await AsyncStorage.getItem("@usuarios");
-        if (usuariosStorage) {
-          setUsuarios(JSON.parse(usuariosStorage));
-          setSexo(route.params.sexo);
-        }
+  useEffect(() => {
+    async function carregaUsuarios() {
+      const usuariosStorage = await AsyncStorage.getItem("@usuarios");
+      if (usuariosStorage) {
+        setUsuarios(JSON.parse(usuariosStorage));
       }
-      carregaUsuarios();
-    }, [])
-  );
+    }
+    carregaUsuarios();
+  }, []);
 
   useEffect(() => {
     setUser({ ...user, sexo: sexo });
   }, [sexo]);
 
-  useEffect(() => {
-    usuarios !== undefined ? salveUsuarios(usuarios) : null;
-  }, [usuarios]);
-
   return (
     <>
-      <Header
-        containerStyle={styles.headerContainer}
-        leftComponent={{
-          size: 35,
-          icon: "arrow-left",
-          color: "#D16E0B",
-          onPress: () => navigation.goBack(),
-        }}
-        centerComponent={{
-          text: "Usuário",
-          style: styles.headerText,
-        }}
-        rightComponent={{
-          size: 35,
-          icon: "home",
-          color: "#D16E0B",
-          onPress: () => navigation.navigate("Feed"),
-        }}
-      />
-      <ScrollView>
+      <ScrollView style={styles.scrollViewStyle}>
         <View style={styles.form}>
-          <Text style={styles.formText}>Nome</Text>
           <Input
+            label="Nome"
+            labelStyle={styles.formLabelText}
             inputStyle={styles.input}
             containerStyle={styles.inputContainer}
-            errorStyle={{ height: 0 }}
             onChangeText={(name) => setUser({ ...user, name })}
             placeholder="Digite seu nome"
             value={user.name}
           />
-          <Text style={styles.formText}>Email</Text>
           <Input
+            label="Email"
+            labelStyle={styles.formLabelText}
             inputStyle={styles.input}
             containerStyle={styles.inputContainer}
-            errorStyle={{ height: 0 }}
             onChangeText={(email) => setUser({ ...user, email })}
             placeholder="Digite seu email"
             value={user.email}
@@ -150,44 +134,33 @@ const Usuario = ({ navigation, route }) => {
               <Picker.Item label="Contabilidade" value="contabilidade" />
             </Picker>
           </View>
-          <Text style={styles.formText}>Senha</Text>
           <Input
+            label="Senha"
+            labelStyle={styles.formLabelText}
             inputStyle={styles.input}
             containerStyle={styles.inputContainer}
-            inputContainerStyle={{ borderBottomWidth: 0 }}
-            errorStyle={{ height: 0 }}
+            secureTextEntry={true}
             onChangeText={(password) => setUser({ ...user, password })}
             placeholder="Digite sua senha"
             value={user.password}
-            secureTextEntry={!mostraSenha}
-            rightIcon={
-              <Icon
-                type="antdesign"
-                name={mostraSenha ? "eye" : "eyeo"}
-                onPress={mostrarSenha}
-              />
+          />
+          <Input
+            label="Confirmar senha"
+            labelStyle={styles.formLabelText}
+            inputStyle={styles.input}
+            containerStyle={styles.inputContainer}
+            secureTextEntry={true}
+            onChangeText={(confirmPassword) =>
+              setUser({ ...user, confirmPassword })
             }
-            rightIconContainerStyle={styles.mostraSenhaBtn}
-          />
-        </View>
-        <View
-          style={{
-            ...styles.formContainerBotoes,
-            marginTop: 20,
-            marginBottom: 30,
-          }}
-        >
-          <Button
-            containerStyle={styles.formSave}
-            buttonStyle={styles.formSaveBtn}
-            title="Salvar"
-            onPress={handleEditar}
+            placeholder="Confirme sua senha"
+            value={user.confirmPassword}
           />
           <Button
-            containerStyle={styles.formBack}
-            buttonStyle={styles.formBackBtn}
-            title="Voltar"
-            onPress={() => navigation.goBack()}
+            buttonStyle={styles.loginBtn}
+            containerStyle={styles.loginBtnContainer}
+            title="Cadastrar"
+            onPress={handleCadastro}
           />
         </View>
       </ScrollView>
@@ -200,4 +173,4 @@ const Usuario = ({ navigation, route }) => {
   );
 };
 
-export default Usuario;
+export default CadastroUsuario;

@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {Text,View,TouchableOpacity,ImageBackground,ScrollView,} from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ImageBackground,
+  ScrollView,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -15,6 +21,7 @@ function ListaIdeia({ navigation }) {
   const [isEditIdeiaModalOpen, setIsEditIdeiaModalOpen] = useState(false);
   const [isDeletIdeiaModalOpen, setIsDeletIdeiaModalOpen] = useState(false);
   const [ideias, setIdeias] = useState([]);
+  const [usuarioAtual, setUsuarioAtual] = useState({});
   const [selectedIdeia, setSelectedIdeia] = useState(false);
 
   const toggleAddIdeia = () => {
@@ -31,11 +38,11 @@ function ListaIdeia({ navigation }) {
 
   const adicionarIdea = (data) => {
     try {
-      let idNovaIdeia = ideias[ideias.length - 1].id ++
-      data = { id: idNovaIdeia, ...data };
+      let idNovaIdeia = ideias[ideias.length - 1].id + 1;
+      data = { id: idNovaIdeia, userId: usuarioAtual.id, ...data };
       setIdeias([...ideias, data]);
     } catch {
-      data = { id: 1, ...data };
+      data = { id: 1, userId: usuarioAtual.id, ...data };
       setIdeias([...ideias, data]);
     }
   };
@@ -52,12 +59,17 @@ function ListaIdeia({ navigation }) {
   useEffect(() => {
     async function carregaIdeias() {
       const ideiaStorage = await AsyncStorage.getItem("@idea");
-
       if (ideiaStorage) {
         setIdeias(JSON.parse(ideiaStorage));
       }
     }
-
+    async function carregaUsuarioAtual() {
+      const usuarioAtualStorage = await AsyncStorage.getItem("@usuarioAtual");
+      if (usuarioAtualStorage) {
+        setUsuarioAtual(JSON.parse(usuarioAtualStorage));
+      }
+    }
+    carregaUsuarioAtual();
     carregaIdeias();
   }, []);
 
@@ -66,45 +78,39 @@ function ListaIdeia({ navigation }) {
     async function salveIdeia() {
       await AsyncStorage.setItem("@idea", JSON.stringify(ideias));
     }
-
     salveIdeia();
   }, [ideias]);
 
-
   return (
     <>
-      <Header
-        containerStyle={{ height: 80, backgroundColor: "#1D1D1D" }}
-        leftComponent={{
-          icon: "menu",
-          color: "#E37B09",
-          onPress: navigation.openDrawer,
-          size: 40,
-        }}
-        centerComponent={{
-          text: "Suas ideias",
-          style: styles.headerText,
-        }}
-        rightComponent={{
-          icon: "home",
-          color: "#E37B09",
-          size: 40,
-          onPress: () => navigation.navigate("Inicio"),
-        }}
-      />
-      <ScrollView>
-        <ImageBackground
-          source={require("../images/fundo1.png")}
-          style={styles.bgImage}
-        >
+      <ImageBackground
+        source={require("../images/fundo1.png")}
+        style={styles.bgImage}
+      >
+        <Header
+          containerStyle={{ height: 80, backgroundColor: "#1D1D1D" }}
+          leftComponent={{
+            icon: "menu",
+            color: "#E37B09",
+            onPress: navigation.openDrawer,
+            size: 40,
+          }}
+          centerComponent={{
+            text: "Suas ideias",
+            style: styles.headerText,
+          }}
+          rightComponent={{
+            icon: "home",
+            color: "#E37B09",
+            size: 40,
+            onPress: () => navigation.navigate("Inicio"),
+          }}
+        />
+        <TouchableOpacity onPress={toggleAddIdeia} style={styles.botaoaddIdeia}>
+          <Ionicons name="ios-add" size={50} color="#E37B09" />
+        </TouchableOpacity>
+        <ScrollView>
           <View style={styles.container}>
-            <TouchableOpacity
-              onPress={toggleAddIdeia}
-              style={styles.botaoaddIdeia}
-            >
-              <Ionicons name="ios-add" size={50} color="#E37B09" />
-            </TouchableOpacity>
-
             {ideias.map((data, index) => (
               <View style={styles.lista} key={index}>
                 <Text style={styles.tituloIdeia}>{data.titulo}</Text>
@@ -163,8 +169,8 @@ function ListaIdeia({ navigation }) {
             ) : null}
           </View>
           <StatusBar style="light" />
-        </ImageBackground>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </>
   );
 }
