@@ -12,21 +12,24 @@ const Rancking = ({ navigation }) => {
   const [selectedIdeia, setSelectedIdeia] = useState([])
 
   const countVoto = (data) => {
-    let novoVoto = data.voto ++
-    setRanking({...ranking, ['voto'] : novoVoto})
-    console.log(data)
+    let novoVoto = data.voto + 1
+    novoRanking = ranking.map((ideia) => 
+      ideia.id === data.id ? {...ideia, voto : novoVoto } : ideia
+    )
+    setSelectedIdeia({...data,  voto:novoVoto});
+    setRanking(novoRanking);
   }
 
   const getListIdeias = ({item: rank}) => {
       return (
           <ListItem 
-              bottomDivider 
-              key={rank.id}
+            bottomDivider 
+            key={rank.id}
           >
             <Avatar size="medium" rounded source={ rank.thumb }/>
             <ListItem.Content>
                 <ListItem.Title style={{fontWeight:'700'}}>{rank.nome}</ListItem.Title>
-                <ListItem.Subtitle>{rank.titulo}</ListItem.Subtitle>
+                <ListItem.Subtitle style={{color:'black'}}>{rank.titulo}</ListItem.Subtitle>
                 <Text style={{marginTop:10, fontWeight:'700'}}> Quantidade de votos: {rank.voto} </Text>
             </ListItem.Content>
             <TouchableOpacity style={styles.botaoVoto}
@@ -74,6 +77,7 @@ const Rancking = ({ navigation }) => {
               transparent={false}
               animationType="slide"
               visible={modalIsOpen}
+              onRequestClose={setModalIsOpen}
             >
               <Header
                 containerStyle={{ height: 50, backgroundColor: "#1D1D1D" }}
@@ -84,7 +88,7 @@ const Rancking = ({ navigation }) => {
                 leftComponent={{
                   icon: "arrow-left",
                   color: "#E37B09",
-
+                  onPress: () => setModalIsOpen(false),
                   size: 40,
                 }}
               />
@@ -95,40 +99,37 @@ const Rancking = ({ navigation }) => {
                 
               <View style={styles.modalRank} key={selectedIdeia.id}>
                 <View style={{flexDirection:'row'}}>
-                  <Text style={{...styles.textoRank}}>Titulo da ideia: </Text>
-                  <Text>{selectedIdeia.titulo}</Text>
+                  <Text style={styles.textoRank}>Titulo da ideia: </Text>
+                  <Text style={styles.dadosRank}>{selectedIdeia.titulo}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
-                  <Text style={{...styles.textoRank}}>Nome do idealizador: </Text>
-                  <Text>{selectedIdeia.nome}</Text>
+                  <Text style={styles.textoRank}>Nome do idealizador: </Text>
+                  <Text style={styles.dadosRank} >{selectedIdeia.nome}</Text>
                 </View>
                 <View style={{flexDirection:'row'}}>
-                  <Text style={{...styles.textoRank}}>Descrição: </Text>
-                  <Text>{selectedIdeia.desc}</Text>
+                  <Text style={styles.textoRank}>Descrição: </Text>
+                  <Text style={{...styles.dadosRank, width:240}}>{selectedIdeia.desc}</Text>
                 </View>
-                <View style={{margin:10}}>
+                <View style={styles.viewBotao}>
                   <TouchableOpacity 
                     style={styles.botaoRank}
                     onPress={ () => countVoto(selectedIdeia) }
                   >
                     <Text style={ styles.textoBotaoRank}> VOTE </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity 
-                    style={styles.botaoRank}
-                    onPress={() => setModalIsOpen(false)}
-                  >
-                    <Text style={ styles.textoBotaoRank}> Voltar </Text>
-                  </TouchableOpacity>
-
                   
                 </View>
-                <Text style={{justifyContent:'flex-end'}}>Quantidade de votos: {selectedIdeia.voto}</Text>
+                
+                <View style={{flexDirection:'row'}}>
+                  <Text style={styles.dadosRank}>Quantidade de votos: </Text> 
+                  <Text style={{...styles.dadosRank, color:'#127289', fontWeight:'700'}}>{selectedIdeia.voto}</Text>                 
+                </View>
               </View>
               
               </ImageBackground>
+              <StatusBar style="light" />
             </Modal>
-            <StatusBar style="light" />
-            </ScrollView>
+          </ScrollView>
         </ImageBackground>
       </View>
     </>
@@ -136,3 +137,4 @@ const Rancking = ({ navigation }) => {
 };
 
 export default Rancking;
+

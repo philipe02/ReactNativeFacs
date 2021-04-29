@@ -121,24 +121,30 @@ export const styles = StyleSheet.create({
     width:50,
   },
   modalRank:{
-  backgroundColor:'#FFFFFF', 
-  margin:10, 
-  borderRadius:5, 
-  padding:5, 
-  width:340, 
-  height:250,
-  flexDirection:'column'
+    backgroundColor:'#FFFFFF', 
+    margin:10, 
+    borderRadius:5, 
+    padding:5, 
+    width:340, 
+    height:250,
+    flexDirection:'column'
   },
   textoRank:{
     color:'#127289', 
-    paddingLeft:5,
     paddingBottom:3, 
-    fontSize:16
+    fontSize:16,
+    fontWeight:'700'
+  },
+  viewBotao:{
+    margin:5, 
+    flexDirection:"row", 
+    alignItems:'center', 
+    justifyContent:'center'
   },
   botaoRank:{
     backgroundColor:'#E37B09', 
-    width:60, 
-    height:35, 
+    width:70, 
+    height:40, 
     borderRadius:5, 
     alignItems:'center',
     marginTop:10,
@@ -148,9 +154,12 @@ export const styles = StyleSheet.create({
     color:'#FFFFFF', 
     fontSize:17, 
     fontWeight:'700', 
-    justifyContent:'center',
     alignItems:'center', 
-    padding:5
+    justifyContent:'center',
+    paddingTop:8
+  }, 
+  dadosRank:{
+    fontSize:16,
   }
 
 });
