@@ -4,7 +4,6 @@ import { View, Text, Modal, TouchableOpacity } from "react-native";
 
 import { styles } from "../../style/style";
 import ListaComentario from "./ListaComentario";
-import metodologia from "../metodologias/metodologia";
 
 const AdicionarComentario = (props) => {
   const [comentario, setComentario] = useState(ListaComentario);
@@ -23,16 +22,17 @@ const AdicionarComentario = (props) => {
     }
   };
 
+
   const adicionarComentario = async () => {
-    if (metodologia.message == "") {
-      setError(true);
-    } else {
+    if (comentario.message) {
       setError(false);
       props.adicionarComentario({
         code: selectedCode.id,
         message: comentario.message,
       });
       props.isClose();
+    } else {
+      setError(true);
     }
   };
 
