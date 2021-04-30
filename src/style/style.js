@@ -144,7 +144,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     justifyContent: "space-between",
     flexDirection: "row",
-    right: 10,
+    right: 3,
   },
   textBotaoSalveCancel: {
     color: "#FFFFFF",
@@ -160,7 +160,6 @@ export const styles = StyleSheet.create({
     width: "92%",
     justifyContent: "center",
     padding: 5,
-    marginRight: 8,
   },
   tituloIdeia: {
     fontSize: 17,
