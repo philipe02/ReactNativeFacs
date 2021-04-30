@@ -67,14 +67,14 @@ const RankingIdeias = ({ navigation }) => {
           size: 40,
         }}
         centerComponent={{
-          text: " ⭐ Ranking Ideias ⭐",
+          text: "Ranking Ideias",
           style: styles.headerText,
         }}
         rightComponent={{
           icon: "home",
           color: "#E37B09",
           size: 40,
-          onPress: () => navigation.navigate("Inicio"),
+          onPress: () => navigation.navigate("Feed"),
         }}
       />
       <ImageBackground

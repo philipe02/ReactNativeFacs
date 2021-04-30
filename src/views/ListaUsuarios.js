@@ -118,7 +118,7 @@ const ListaUsuario = ({ navigation }) => {
             size: 35,
             icon: "home",
             color: "#D16E0B",
-            onPress: () => navigation.navigate("Login"),
+            onPress: () => navigation.navigate("Feed"),
           }}
         />
         <View style={styles.listContainer}>

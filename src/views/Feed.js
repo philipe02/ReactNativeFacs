@@ -144,10 +144,9 @@ const Feed = ({ navigation }) => {
           icon: "home",
           color: "#D16E0B",
           size: 35,
-          onPress: () => navigation.navigate("Inicio"),
+          onPress: () => navigation.navigate("Feed"),
         }}
       />
-
       <View style={styles.body}>
         <ImageBackground
           source={require("../images/fundo1.png")}

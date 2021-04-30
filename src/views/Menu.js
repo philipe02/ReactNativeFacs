@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Ideias from "./Ideias";
 import Feed from "./Feed";

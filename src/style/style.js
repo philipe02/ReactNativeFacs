@@ -5,8 +5,8 @@ export const styles = StyleSheet.create({
   container: { flex: 1, alignItems: "center", justifyContent: "center" },
   headerContainer: {
     height: 90,
-    backgroundColor: "#293241",
-    borderBottomColor: "#293241",
+    backgroundColor: "#1D1D1D",
+    borderBottomColor: "#1D1D1D",
   },
   containerFeed: {
     flex: 1,
