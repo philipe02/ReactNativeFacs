@@ -178,9 +178,13 @@ const Feed = ({ navigation }) => {
                       .filter((data) => data.code == selectedIdeiaClick.id)
                       .map((data) => (
                         <View key={data.id.toString()} style={styles.list}>
-                          <Text style={{ fontSize: 20, width: "75%" }}>
-                            {data.message}
-                          </Text>
+
+                          <View style={{width: '70%'}}>
+                            <Text style={{ fontSize: 20 }}>
+                              {data.message}
+                            </Text>
+                          </View>
+
                           <View style={styles.groupButton}>
                             <Button
                               type="clear"

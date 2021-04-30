@@ -179,7 +179,7 @@ const Metodologias = ({ navigation }) => {
             <Searchbar
               value={search}
               autoCorrect={false}
-              style={{ width: 335, marginBottom: 10 }}
+              style={{ width: '100%', marginBottom: 10 }}
               placeholder="Filtrar por área de estudo..."
               onClear={(text) => searchFilterFunction("")}
               onChangeText={(text) => searchFilterFunction(text)}
