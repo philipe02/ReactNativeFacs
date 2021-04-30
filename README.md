@@ -10,12 +10,15 @@ Aplicação feita para o trabalho da matéria de Computação para Dispositivos 
 
 ### Integrantes/ User git
 
-Andreza Vitório - DrezaVitorio
-Nathalie Evangelista - nathalieEvans
-Philipe Santos - philipe02
+Andreza Vitório - DrezaVitorio,
+Nathalie Evangelista - nathalieEvans,
+Philipe Santos - philipe02,
 
 ### Telas/ Desenvolvedores
 
 1. Feed, Metodologias - Andreza Vitório 
 2. Ideias, RankingIdeias - Nathalie Evangelista
 3. Perfil, Usuário, ListaUsuarios, Login, CadastroUsuário - Philipe Santos
+
+### Vídeo
+Link: https://youtu.be/GqFUesbsF7c
