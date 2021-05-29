@@ -1,10 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ScrollView, View, ImageBackground, Image, Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Input, Button } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { usuarioLogado } from "../redux/Actions/userActions";
+import { salveUsuarioAtual } from "../storage/storage";
 import { styles } from "../style/style";
+import { useFocusEffect } from "@react-navigation/core";
 
 const Login = ({ navigation }) => {
     const { usuarioAtual, usuarios } = useSelector(
@@ -25,6 +28,18 @@ const Login = ({ navigation }) => {
             navigation.navigate("Menu");
         } else Alert.alert("Usuário ou senha incorretos");
     };
+
+    /* useFocusEffect(
+        useCallback(() => {
+            async function carregaUsuarios() {
+                const usuariosStorage = await AsyncStorage.getItem("@usuarios");
+                if (usuariosStorage) {
+                    setUsuarios(JSON.parse(usuariosStorage));
+                }
+            }
+            carregaUsuarios();
+        }, [])
+    ); */
     return (
         <ScrollView>
             <ImageBackground
@@ -42,6 +57,7 @@ const Login = ({ navigation }) => {
                         containerStyle={styles.inputContainer}
                         errorStyle={{ height: 0 }}
                         onChangeText={(email) => setUser({ ...user, email })}
+                        value={user.email}
                     />
                     <Input
                         placeholder={"Digite sua senha"}
@@ -52,6 +68,7 @@ const Login = ({ navigation }) => {
                         onChangeText={(password) =>
                             setUser({ ...user, password })
                         }
+                        value={user.password}
                     />
                     <Button
                         title={"ACESSAR"}
@@ -75,5 +92,4 @@ const Login = ({ navigation }) => {
         </ScrollView>
     );
 };
-
 export default Login;

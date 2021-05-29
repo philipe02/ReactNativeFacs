@@ -17,28 +17,27 @@ const actions = {
     ADD_USUARIO(state, usuarioNovo) {
         let listaUsuarios = state.usuarios;
         try {
-            let keyNovoUsuario =
-                listaUsuarios[listaUsuarios.length - 1].key + 1;
-            usuarioNovo = { key: keyNovoUsuario, ...usuarioNovo };
+            let idNovoUsuario = listaUsuarios[listaUsuarios.length - 1].id + 1;
+            usuarioNovo = { id: idNovoUsuario, ...usuarioNovo };
             return { ...state, usuarios: [...listaUsuarios, usuarioNovo] };
         } catch {
-            usuarioNovo = { key: 1, ...usuarioNovo };
+            usuarioNovo = { id: 1, ...usuarioNovo };
             return { ...state, usuarios: [...listaUsuarios, usuarioNovo] };
         }
     },
     EDITA_USUARIO(state, usuarioEditado) {
         let listaUsuarios = state.usuarios;
         listaUsuarios = listaUsuarios.map((user) =>
-            user.key === usuarioEditado.key ? usuarioEditado : user
+            user.id === usuarioEditado.id ? usuarioEditado : user
         );
-        return state.usuarioAtual.key === usuarioEditado.key
+        return state.usuarioAtual.id === usuarioEditado.id
             ? { usuarioAtual: usuarioEditado, usuarios: listaUsuarios }
             : { ...state, usuarios: listaUsuarios };
     },
     EXCLUI_USUARIO(state, usuarioDeletar) {
         let listaUsuarios = state.usuarios;
         listaUsuarios = listaUsuarios.filter(
-            (user) => user.key !== usuarioDeletar.key
+            (user) => user.id !== usuarioDeletar.id
         );
         return { ...state, usuarios: listaUsuarios };
     },

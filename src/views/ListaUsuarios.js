@@ -1,10 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { ImageBackground, FlatList, Alert, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Header, ListItem, Button, Icon } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { usuarioExcluido } from "../redux/Actions/userActions";
 import { styles } from "../style/style";
+import { salveUsuarios } from "../storage/storage";
+import { useFocusEffect } from "@react-navigation/core";
 
 const ListaUsuario = ({ navigation }) => {
     const { usuarioAtual, usuarios } = useSelector(
@@ -77,28 +80,30 @@ const ListaUsuario = ({ navigation }) => {
                 <Header
                     containerStyle={styles.headerContainer}
                     leftComponent={{
+                        size: 35,
                         icon: "menu",
                         color: "#D16E0B",
                         onPress: navigation.openDrawer,
-                        size: 40,
                     }}
                     centerComponent={{
                         text: "Lista de usuários",
                         style: styles.headerText,
                     }}
                     rightComponent={{
+                        size: 35,
                         icon: "home",
                         color: "#D16E0B",
-                        size: 40,
-                        onPress: () => navigation.navigate("Login"),
+                        onPress: () => navigation.navigate("Feed"),
                     }}
                 />
                 <View style={styles.listContainer}>
-                    <FlatList
-                        keyExtractor={(user) => user.key.toString()}
-                        data={usuarios}
-                        renderItem={itemUsuario}
-                    />
+                    {usuarios !== undefined ? (
+                        <FlatList
+                            keyExtractor={(user) => user.id.toString()}
+                            data={usuarios}
+                            renderItem={itemUsuario}
+                        />
+                    ) : null}
                 </View>
             </ImageBackground>
             <StatusBar style="light" />
