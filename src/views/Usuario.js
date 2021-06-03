@@ -19,8 +19,7 @@ const Usuario = ({ navigation, route }) => {
     const [mostraSenha, setMostraSenha] = useState(false);
     const [sexo, setSexo] = useState("");
 
-    const editarUsuario = (usuarioEditado) =>
-        dispatch(editarUsuarioAction(usuario));
+    const editarUsuario = (usuario) => dispatch(editarUsuarioAction(usuario));
 
     const mostrarSenha = () => {
         setMostraSenha(!mostraSenha);
