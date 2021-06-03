@@ -1,16 +1,27 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, {useState, useContext} from "react";
 import { View, Text, ImageBackground, TouchableOpacity, Modal} from "react-native";
 import { styles } from "../../style/style";
 import { Header} from "react-native-elements";
+import IdeiaService from "../../../services/IdeiaService"
+import {IdeiaContext} from "./IdeiaContext"
 
 const DeletIdeias = (props) => {
 
-  const { openIdeiaModal, closeIdeiaModal, selectedIdeia } = props
+  const { openIdeiaModal, closeIdeiaModal} = props;
+  const [msgErro, setMsgErro] = useState("")
+  const [ideia, setIdeia] = useContext(IdeiaContext)
 
   const deletIdeia = () => {
-    props.deletIdeia(props.selectedIdeia.id)
-    props.closeIdeiaModal();
+    const id = ideia.id
+    IdeiaService.remove(id)
+                .then( resp => {
+                  props.deletIdeia(ideia.titulo)
+                  props.closeIdeiaModal();
+                })
+                .catch( error => {
+                  setMsgErro("Erro de conexão com API.")
+                })
   }
 
     return (
@@ -31,7 +42,7 @@ const DeletIdeias = (props) => {
                 />
                 <ImageBackground source={require('../../images/fundo1.png')} style={styles.bgImage}>
                 <View style={styles.containerExclusao}>    
-                  <Text style={styles.tituloExclusao}>Deseja excluir a ideia: {selectedIdeia.titulo} ? </Text>
+                  <Text style={styles.tituloExclusao}>Deseja excluir a ideia: {ideia.titulo} ? </Text>
 
                   <View style={styles.botaoContainer}>
 
