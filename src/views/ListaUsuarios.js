@@ -3,8 +3,6 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { ImageBackground, FlatList, Alert, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Header, ListItem, Button, Icon } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
-import { usuarioExcluido } from "../redux/Actions/userActions";
 import { styles } from "../style/style";
 import { salveUsuarios } from "../storage/storage";
 import { useFocusEffect } from "@react-navigation/core";

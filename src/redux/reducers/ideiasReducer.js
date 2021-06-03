@@ -1,4 +1,4 @@
-import { ADD_IDEIA, EXCLUI_IDEIA, EDITA_IDEIA } from "../Actions/ideiaActions";
+import { ADD_IDEIA, EXCLUI_IDEIA, EDITA_IDEIA } from "../actions/ideiasActions";
 
 const initialState = {
     ideias: [],
