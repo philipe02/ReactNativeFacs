@@ -19,33 +19,14 @@ const EditIdeias = (props) => {
     homeSimNao:""
   }
 
-  /*const [ideia, setIdeia] = useState(initialIdeiasState)
-  const [checked, setChecked] = useState(ideia.benefMalef);
-  const [isEnabled, setIsEnabled] = useState(ideia.homeSimNao); */
-  const [checked, setChecked] = useContext(IdeiaContext); //resolver
-  const [isEnabled, setIsEnabled] = useContext(IdeiaContext); //resolver
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const { openIdeiaModal, closeIdeiaModal } = props
   const [msgErro, setMsgErro] = useState("")
   const [ideia, setIdeia] = useContext(IdeiaContext)
 
-/*   useEffect(() => {
-    const data = {
-        id: props.selectedIdeia.id,
-        titulo: props.selectedIdeia.titulo,
-        desc: props.selectedIdeia.desc,
-        tema: props.selectedIdeia.tema,
-        benefMalef: props.selectedIdeia.benefMalef, 
-        homeSimNao: props.selectedIdeia.homeSimNao
-      };
-    setIsEnabled(data.homeSimNao)
-    setChecked(data.benefMalef)
-    setIdeia(data)
-}, []) */
-
   const handleChance = (value, name) => {
     setIdeia({...ideia, [name]: value})
   }
+
 
   const editIdeia = () => {
     /* if(!ideia.titulo || ideia.titulo === "")
@@ -56,36 +37,18 @@ const EditIdeias = (props) => {
       Alert.alert("Selecione o tema abordado.")
     else if (!checked){
       Alert.alert("Indique se a ideia resolve um malefício ou traz um benefício.");
-    } 
-    else{
-      props.editIdeia({
-        id: ideia.id,
-        titulo: ideia.titulo,
-        desc: ideia.desc,
-        tema: ideia.tema,
-        benefMalef: checked, 
-        homeSimNao: isEnabled
-      })
-      props.closeIdeiaModal();      
-    } */
+    }  */
     const id = ideia.id
     const data = {
       titulo: ideia.titulo,
       desc: ideia.desc,
       tema: ideia.tema,
-      benefMalef: checked, 
-      homeSimNao: isEnabled 
+      benefMalef: ideia.benefMalef, 
+      homeSimNao: ideia.homeSimNao 
     }
+    console.log(JSON.stringify(data))
     IdeiaService.update(id, data)
                 .then(resp =>{
-/*                   props.editIdeia({
-                    id: resp.data.id,
-                    titulo: resp.data.titulo,
-                    desc: resp.data.desc,
-                    tema: resp.data.tema,
-                    benefMalef: resp.data.checked0, 
-                    homeSimNao: isEnabled
-                  }); */
                   props.closeIdeiaModal();
                 })
                 .catch( error => {
@@ -144,7 +107,7 @@ const EditIdeias = (props) => {
                     justifyContent:'center',
                   }}
                   multiline={true}
-                  numberOfLines={4}
+                  numberOfLines={4}S
                   maxLength={150}
                   errorStyle={{
                     height:0
@@ -157,18 +120,17 @@ const EditIdeias = (props) => {
                 <View style={{ flexDirection: 'row' }}>
                   <Text style={styles.textRadio}>Benefício:</Text>
                   <RadioButton
-                    value={ideia.benefMalef}
+                  value='first'
                     color="#D16E0B"
-                    onPress={() => setChecked('Benefício')}
-                    status={ checked === 'Benefício' ? 'checked' : 'unchecked' }
+                    onPress={() => {handleChance('Benefício', "benefMalef") }}
+                    status={ ideia.benefMalef === 'Benefício' ? 'checked' : 'unchecked' }
                   />
                   <Text style={styles.textRadio}>Malefício:</Text>
                   <RadioButton
-                    value={ideia.benefMalef}
-                    value='Malefício'
+                    value='second'
                     color="#D16E0B"
-                    onPress={() => setChecked('Malefício')}
-                    status={ checked === 'Malefício' ? 'checked' : 'unchecked' }
+                    onPress={() => {handleChance('Malefício', "benefMalef") }}
+                    status={ ideia.benefMalef === 'Malefício' ? 'checked' : 'unchecked' }
                   />
                 </View>
 
@@ -180,10 +142,10 @@ const EditIdeias = (props) => {
                   style={{ height: 40, width: 345, marginLeft:8, backgroundColor:'#fff'}}
                 >
                   <Picker.Item label="Selecione o tema abordado" value="temaPadrao"/>
-                  <Picker.Item label="Recursos Humanos" value="recursoshumanos"/>
+                  <Picker.Item label="Recursos Humanos" value="Recursos Humanos"/>
                   <Picker.Item label="TI" value="TI"/>
-                  <Picker.Item label="Administração" value="adm"/>
-                  <Picker.Item label="Finanças" value="financas"/>
+                  <Picker.Item label="Administração" value="Administração"/>
+                  <Picker.Item label="Finanças" value="Finanças"/>
                 </Picker>
 
                 <Text style={{...styles.tituloInput, marginTop:10}}>Essa ideia se enquandra no contexto atual da empresa (Home office) ? </Text>
@@ -191,10 +153,10 @@ const EditIdeias = (props) => {
                     <Text style={{fontSize:10, color:'white'}}>Laranja (não) / Verde (sim)</Text>
                     <Switch
                       trackColor={{ false: "white", true: "white" }}
-                      thumbColor={isEnabled ? "#1281AB" : "#E37B09"}
+                      thumbColor={ideia.homeSimNao ? "#1281AB" : "#E37B09"}
                       ios_backgroundColor="#3e3e3e"
-                      onValueChange={toggleSwitch}
-                      value={isEnabled}
+                      onValueChange={() => {handleChance(!ideia.homeSimNao, "homeSimNao") }}
+                      value={ideia.homeSimNao}
                     />
                  </View>
 

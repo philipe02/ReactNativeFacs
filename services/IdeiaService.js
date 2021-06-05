@@ -9,7 +9,7 @@ const get = id => {
 }
 
 const create = data => {
-    return ideas.post('/ideias/', data)
+    return ideas.post('/ideias/', data)  
 }
 
 const update = (id, data) => {

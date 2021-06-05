@@ -38,18 +38,7 @@ const AddIdeias = (props) => {
     else if (!checked){
       Alert.alert("Indique se a ideia resolve um malefício ou traz um benefício.");
     } 
-    else {
-      props.adicionarIdeia({
-        id: ideia.id,
-        titulo: ideia.titulo,
-        desc: ideia.desc,
-        tema: ideia.tema,
-        benefMalef: checked, 
-        homeSimNao: isEnabled
-      });
-      props.closeIdeiaModal();
-    }
-  }; */
+ */
 
   const addIdeia = async () => {
     const data = {

@@ -16,14 +16,13 @@ function ListaIdeia({ navigation }) {
   const [isEditIdeiaModalOpen, setIsEditIdeiaModalOpen] = useState(false);
   const [isDeletIdeiaModalOpen, setIsDeletIdeiaModalOpen] = useState(false);
   const [ideias, setIdeias] = useState([]);
-  //const [selectedIdeia, setSelectedIdeia] = useState(false);
   const [msgErro, setMsgErro] = useState("")
   const [ideia, setIdeia] = useContext(IdeiaContext)
 
     
     useEffect(() => {
         getData()
-    })
+    }, [])
 
     const getData = () =>{
         setMsgErro("")
@@ -55,36 +54,11 @@ function ListaIdeia({ navigation }) {
   useEffect(() => {
     setIdeias(ideias.map((idea) => (idea.id == ideia.id ? ideia : idea)));
   }, [ideia])
-/*   const editIdeia = (data) => {
-    setIdeias(ideias.map((idea) => (idea.id == data.id ? data : idea)));
-  }; */
 
   const deletIdeia = (id) => {
     setIdeias(ideias.filter((idea) => idea.id !== id));
   };
 
-
-/*   //vai retornar as ideas que já estão salvas
-  useEffect(() => {
-    async function carregaIdeias() {
-      const ideiaStorage = await AsyncStorage.getItem("@idea");
-
-      if (ideiaStorage) {
-        setIdeias(JSON.parse(ideiaStorage));
-      }
-    }
-
-    carregaIdeias();
-  }, []);
-
-  //vai monitorar e atualizar a função carregaIdeias a cada ação, seja de excluir, editar ou add
-  useEffect(() => {
-    async function salveIdeia() {
-      await AsyncStorage.setItem("@idea", JSON.stringify(ideias));
-    }
-
-    salveIdeia();
-  }, [ideias]); */
 
   return (
     <>
@@ -130,7 +104,6 @@ function ListaIdeia({ navigation }) {
                     onPress={() => {
                       toggleEditIdeia();
                       setIdeia(data);
-                      /* setSelectedIdeia(data); */
                     }}
                   >
                     <MaterialIcons name="edit" size={32} color="#E37B09" />
@@ -140,7 +113,6 @@ function ListaIdeia({ navigation }) {
                     onPress={() => {
                       toggleDeletIdeia();
                       setIdeia(data);
-                      /* setSelectedIdeia(data); */
                     }}
                   >
                     <MaterialIcons
@@ -165,8 +137,6 @@ function ListaIdeia({ navigation }) {
               <EditIdeias
                 openIdeiaModal={isEditIdeiaModalOpen}
                 closeIdeiaModal={toggleEditIdeia}
-                 /* selectedIdeia={selectedIdeia} 
-                editIdeia={editIdeia} */
               />
             ) : null}
 
@@ -174,7 +144,6 @@ function ListaIdeia({ navigation }) {
               <DeletIdeias
                 openIdeiaModal={isDeletIdeiaModalOpen}
                 closeIdeiaModal={toggleDeletIdeia}
-                /* selectedIdeia={selectedIdeia} */
                 deletIdeia={deletIdeia}
               />
             ) : null}
