@@ -3,6 +3,7 @@ import {
     EXCLUI_USUARIO,
     EDITA_USUARIO,
     USUARIO_LOGADO,
+    CARREGA_USUARIOS,
 } from "../actions/usuarioActions";
 
 const initialState = {
@@ -14,16 +15,11 @@ const actions = {
     USUARIO_LOGADO(state, usuarioLogin) {
         return { ...state, usuarioAtual: usuarioLogin };
     },
+    CARREGA_USUARIOS(state, usuarios) {
+        return { ...state, usuarios: usuarios };
+    },
     ADD_USUARIO(state, usuarioNovo) {
-        let listaUsuarios = state.usuarios;
-        try {
-            let idNovoUsuario = listaUsuarios[listaUsuarios.length - 1].id + 1;
-            usuarioNovo = { id: idNovoUsuario, ...usuarioNovo };
-            return { ...state, usuarios: [...listaUsuarios, usuarioNovo] };
-        } catch {
-            usuarioNovo = { id: 1, ...usuarioNovo };
-            return { ...state, usuarios: [...listaUsuarios, usuarioNovo] };
-        }
+        return { ...state, usuarios: [...state.usuarios, usuarioNovo] };
     },
     EDITA_USUARIO(state, usuarioEditado) {
         let listaUsuarios = state.usuarios;

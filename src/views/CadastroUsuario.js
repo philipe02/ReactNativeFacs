@@ -1,9 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { ScrollView, View, Text, ImageBackground, Alert } from "react-native";
-/* import AsyncStorage from "@react-native-async-storage/async-storage"; */
 import { Input, Button, CheckBox } from "react-native-elements";
-/* import { salveUsuarios } from "../storage/storage"; */
 import { useSelector, useDispatch } from "react-redux";
 import { styles } from "../style/style";
 import { Picker } from "@react-native-picker/picker";
@@ -80,18 +78,9 @@ const CadastroUsuario = ({ navigation }) => {
                         value={user.email}
                     />
                     <Text style={styles.formText}>Sexo</Text>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-around",
-                        }}
-                    >
+                    <View style={styles.sexoContainer}>
                         <CheckBox
-                            containerStyle={{
-                                width: 100,
-                                backgroundColor: "transparent",
-                                borderColor: "transparent",
-                            }}
+                            containerStyle={styles.checkBoxContainer}
                             textStyle={{ color: "#fff", fontSize: 25 }}
                             size={35}
                             onPress={() => {
@@ -102,11 +91,7 @@ const CadastroUsuario = ({ navigation }) => {
                             title="M"
                         />
                         <CheckBox
-                            containerStyle={{
-                                width: 100,
-                                backgroundColor: "transparent",
-                                borderColor: "transparent",
-                            }}
+                            containerStyle={styles.checkBoxContainer}
                             textStyle={{ color: "#fff", fontSize: 25 }}
                             onPress={() => {
                                 preencherSexo("F");
@@ -114,6 +99,16 @@ const CadastroUsuario = ({ navigation }) => {
                             checked={sexo === "F"}
                             size={35}
                             title="F"
+                        />
+                        <CheckBox
+                            containerStyle={styles.checkBoxContainer}
+                            textStyle={{ color: "#fff", fontSize: 25 }}
+                            onPress={() => {
+                                preencherSexo("O");
+                            }}
+                            checked={sexo === "O"}
+                            size={35}
+                            title="O"
                         />
                     </View>
                     <Text style={styles.formText}>Setor de atuação</Text>

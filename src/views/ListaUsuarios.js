@@ -1,12 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ImageBackground, FlatList, Alert, View } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { Header, ListItem, Button, Icon } from "react-native-elements";
 import { styles } from "../style/style";
-import { salveUsuarios } from "../storage/storage";
-import { useFocusEffect } from "@react-navigation/core";
-import { excluirUsuarioAction } from "../redux/actions/usuarioActions";
+import {
+    excluirUsuarioAction,
+    carregarUsuariosAction,
+} from "../redux/actions/usuarioActions";
 import { useDispatch, useSelector } from "react-redux";
 
 const ListaUsuario = ({ navigation }) => {
@@ -16,25 +17,7 @@ const ListaUsuario = ({ navigation }) => {
     const dispatch = useDispatch();
 
     const excluirUsuario = (usuario) => dispatch(excluirUsuarioAction(usuario));
-
-    /* useFocusEffect(
-        useCallback(() => {
-            async function carregaUsuarios() {
-                const usuariosStorage = await AsyncStorage.getItem("@usuarios");
-                if (usuariosStorage) {
-                    setUsuarios(JSON.parse(usuariosStorage));
-                }
-            }
-            async function carregaUsuarioAtual() {
-                const usuarioAtualStorage = await AsyncStorage.getItem("@usuarioAtual");
-                if (usuarioAtualStorage) {
-                    setUsuarioAtual(JSON.parse(usuarioAtualStorage));
-                }
-            }
-            carregaUsuarioAtual();
-            carregaUsuarios();
-        }, [])
-    ); */
+    useEffect(() => carregarUsuariosAction, [usuarios]);
 
     /* useEffect(() => {
         usuarios !== undefined ? salveUsuarios(usuarios) : null;
@@ -56,7 +39,11 @@ const ListaUsuario = ({ navigation }) => {
         return (
             <>
                 <Button
-                    onPress={() => navigation.navigate("Usuário", usuario)}
+                    onPress={() => {
+                        usuario.id === usuarioAtual.id
+                            ? navigation.navigate("Perfil", usuario)
+                            : navigation.navigate("Usuário", usuario);
+                    }}
                     type="clear"
                     icon={<Icon name="edit" size={25} color="orange" />}
                 />
@@ -116,7 +103,12 @@ const ListaUsuario = ({ navigation }) => {
                         size: 35,
                         icon: "home",
                         color: "#D16E0B",
-                        onPress: () => navigation.navigate("Feed"),
+                        onPress: () => {
+                            console.log(
+                                usuarioAtual,
+                                usuarios
+                            ); /* navigation.navigate("Feed") */
+                        },
                     }}
                 />
                 <View style={styles.listContainer}>

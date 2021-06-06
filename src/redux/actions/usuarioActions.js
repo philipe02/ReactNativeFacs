@@ -2,6 +2,8 @@ export const ADD_USUARIO = "ADD_USUARIO";
 export const USUARIO_LOGADO = "USUARIO_LOGADO";
 export const EDITA_USUARIO = "EDITA_USUARIO";
 export const EXCLUI_USUARIO = "EXCLUI_USUARIO";
+export const CARREGA_USUARIOS = "CARREGA_USUARIOS";
+import UserService from "../../../services/UserService";
 
 export const logarUsuarioAction = (usuarioLogin) => (dispatch) => {
     dispatch({
@@ -9,21 +11,47 @@ export const logarUsuarioAction = (usuarioLogin) => (dispatch) => {
         payload: usuarioLogin,
     });
 };
+export const carregarUsuariosAction = () => (dispatch) => {
+    UserService.getAll()
+        .then((res) => {
+            dispatch({
+                type: CARREGA_USUARIOS,
+                payload: res.data,
+            });
+        })
+        .catch(console.log);
+};
 export const cadastrarUsuarioAction = (usuarioNovo) => (dispatch) => {
-    dispatch({
-        type: ADD_USUARIO,
-        payload: usuarioNovo,
-    });
+    let usuarioNovoJson = JSON.stringify(usuarioNovo);
+    console.log(usuarioNovoJson);
+    UserService.create(usuarioNovoJson)
+        .then((res) => {
+            dispatch({
+                type: ADD_USUARIO,
+                payload: res.data,
+            });
+        })
+        .catch(console.log);
 };
 export const editarUsuarioAction = (usuarioEditado) => (dispatch) => {
-    dispatch({
-        type: EDITA_USUARIO,
-        payload: usuarioEditado,
-    });
+    let usuarioEditadoJson = JSON.stringify(usuarioEditado);
+    console.log(usuarioEditadoJson);
+    UserService.update(usuarioEditado.id, usuarioEditadoJson)
+        .then((res) => {
+            dispatch({
+                type: EDITA_USUARIO,
+                payload: res.data,
+            });
+        })
+        .catch(console.log);
 };
 export const excluirUsuarioAction = (usuarioDeletar) => (dispatch) => {
-    dispatch({
-        type: EXCLUI_USUARIO,
-        payload: usuarioDeletar,
-    });
+    UserService.remove(usuarioDeletar.id)
+        .then((res) => {
+            dispatch({
+                type: EXCLUI_USUARIO,
+                payload: res.data,
+            });
+        })
+        .catch(console.log);
 };

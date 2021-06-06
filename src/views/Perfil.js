@@ -1,7 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView, View, Text, ImageBackground, Alert } from "react-native";
-/* import AsyncStorage from "@react-native-async-storage/async-storage"; */
 import {
     Input,
     Button,
@@ -11,8 +10,6 @@ import {
     CheckBox,
 } from "react-native-elements";
 import { styles } from "../style/style";
-/* import { useFocusEffect } from "@react-navigation/core";
-import { salveUsuarioAtual, salveUsuarios } from "../storage/storage"; */
 import { Picker } from "@react-native-picker/picker";
 import { useDispatch, useSelector } from "react-redux";
 import { editarUsuarioAction } from "../redux/actions/usuarioActions";
@@ -22,17 +19,16 @@ const Perfil = ({ navigation, route }) => {
         (state) => state.UsuarioReducer
     );
     const dispatch = useDispatch();
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(usuarioAtual);
     const [ideias, setIdeias] = useState([]);
     const [mostraSenha, setMostraSenha] = useState(false);
-    const [sexo, setSexo] = useState("");
+    const [sexo, setSexo] = useState(usuarioAtual.sexo);
 
     const editarUsuario = (usuario) => dispatch(editarUsuarioAction(usuario));
 
     const handleEditar = () => {
-        console.log(usuarios, usuarioAtual);
-        /* editarUsuario(user);
-        Alert.alert("Usuário editado"); */
+        editarUsuario(user);
+        Alert.alert("Usuário editado");
     };
 
     const mostrarSenha = () => {
@@ -45,42 +41,9 @@ const Perfil = ({ navigation, route }) => {
         }
     };
 
-    /* useFocusEffect(
-        useCallback(() => {
-            async function carregaIdeias() {
-                const ideiaStorage = await AsyncStorage.getItem("@idea");
-                if (ideiaStorage) {
-                    setIdeias(JSON.parse(ideiaStorage));
-                }
-            }
-            async function carregaUsuarios() {
-                const usuariosStorage = await AsyncStorage.getItem("@usuarios");
-                if (usuariosStorage) {
-                    setUsuarios(JSON.parse(usuariosStorage));
-                }
-            }
-            async function carregaUsuarioAtual() {
-                const usuarioAtualStorage = await AsyncStorage.getItem(
-                    "@usuarioAtual"
-                );
-                if (usuarioAtualStorage) {
-                    setUser(JSON.parse(usuarioAtualStorage));
-                    setSexo(JSON.parse(usuarioAtualStorage).sexo);
-                }
-            }
-            carregaUsuarios();
-            carregaUsuarioAtual();
-            carregaIdeias();
-        }, [])
-    ); */
-
-    /* useEffect(() => {
+    useEffect(() => {
         setUser({ ...user, sexo: sexo });
-    }, [sexo]); */
-
-    /* useEffect(() => {
-        usuarios !== undefined ? salveUsuarios(usuarios) : null;
-    }, [usuarios]); */
+    }, [sexo]);
 
     const itemIdeias = (ideia) => {
         return (
@@ -150,18 +113,9 @@ const Perfil = ({ navigation, route }) => {
                             value={user.email}
                         />
                         <Text style={styles.formText}>Sexo</Text>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "space-around",
-                            }}
-                        >
+                        <View style={styles.sexoContainer}>
                             <CheckBox
-                                containerStyle={{
-                                    width: 100,
-                                    backgroundColor: "transparent",
-                                    borderColor: "transparent",
-                                }}
+                                containerStyle={styles.checkBoxContainer}
                                 textStyle={{ color: "#fff", fontSize: 25 }}
                                 size={35}
                                 onPress={() => {
@@ -172,11 +126,7 @@ const Perfil = ({ navigation, route }) => {
                                 title="M"
                             />
                             <CheckBox
-                                containerStyle={{
-                                    width: 100,
-                                    backgroundColor: "transparent",
-                                    borderColor: "transparent",
-                                }}
+                                containerStyle={styles.checkBoxContainer}
                                 textStyle={{ color: "#fff", fontSize: 25 }}
                                 onPress={() => {
                                     preencherSexo("F");
@@ -184,6 +134,16 @@ const Perfil = ({ navigation, route }) => {
                                 checked={sexo === "F"}
                                 size={35}
                                 title="F"
+                            />
+                            <CheckBox
+                                containerStyle={styles.checkBoxContainer}
+                                textStyle={{ color: "#fff", fontSize: 25 }}
+                                onPress={() => {
+                                    preencherSexo("O");
+                                }}
+                                checked={sexo === "O"}
+                                size={35}
+                                title="O"
                             />
                         </View>
                         <Text style={styles.formText}>Setor de atuação</Text>

@@ -1,24 +1,22 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, View, ImageBackground, Image, Alert } from "react-native";
-/* import AsyncStorage from "@react-native-async-storage/async-storage"; */
 import { Input, Button } from "react-native-elements";
 import { useSelector, useDispatch } from "react-redux";
-/* import { salveUsuarioAtual } from "../storage/storage"; */
 import { logarUsuarioAction } from "../redux/actions/usuarioActions";
 import { styles } from "../style/style";
-/* import { useFocusEffect } from "@react-navigation/core"; */
+import { carregarUsuariosAction } from "../redux/actions/usuarioActions";
 
 const Login = ({ navigation }) => {
     const [user, setUser] = useState({});
     const { usuarioAtual, usuarios } = useSelector(
         (state) => state.UsuarioReducer
     );
+
     const dispatch = useDispatch();
-    /* const logarUsuario = (usuario) => {
-        salveUsuarioAtual(usuario);
-    }; */
+
     const logarUsuario = (usuario) => dispatch(logarUsuarioAction(usuario));
+
     const handleLogin = () => {
         const usuarioEncontrado = usuarios.find(
             (value) =>
@@ -28,20 +26,17 @@ const Login = ({ navigation }) => {
             logarUsuario(usuarioEncontrado);
             setUser({});
             navigation.navigate("Menu");
-        } else Alert.alert("Usuário ou senha incorretos");
+        } else {
+            console.log(usuarios);
+            Alert.alert("Usuário ou senha incorretos");
+        }
     };
 
-    /* useFocusEffect(
-    useCallback(() => {
-        async function carregaUsuarios() {
-        const usuariosStorage = await AsyncStorage.getItem("@usuarios");
-        if (usuariosStorage) {
-            setUsuarios(JSON.parse(usuariosStorage));
-        }
-        }
+    const carregaUsuarios = () => dispatch(carregarUsuariosAction());
+    useEffect(() => {
         carregaUsuarios();
-    }, [])
-  ); */
+    }, []);
+
     return (
         <ScrollView>
             <ImageBackground
