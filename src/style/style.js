@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
         marginBottom: 20,
     },
     body: { flex: 1, justifyContent: "center" },
-    listItemContainer: { backgroundColor: "#fff", marginTop: 10 },
+    listItemContainer: { backgroundColor: "#fff", marginBottom: 10 },
     listItemTitulo: { color: "#293241", fontSize: 25, fontWeight: "bold" },
     listItemSubtitulo: { color: "#293241", fontSize: 20 },
     login: { flex: 1, justifyContent: "center" },

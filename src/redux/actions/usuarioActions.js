@@ -22,9 +22,7 @@ export const carregarUsuariosAction = () => (dispatch) => {
         .catch(console.log);
 };
 export const cadastrarUsuarioAction = (usuarioNovo) => (dispatch) => {
-    let usuarioNovoJson = JSON.stringify(usuarioNovo);
-    console.log(usuarioNovoJson);
-    UserService.create(usuarioNovoJson)
+    UserService.create(usuarioNovo)
         .then((res) => {
             dispatch({
                 type: ADD_USUARIO,
@@ -34,9 +32,7 @@ export const cadastrarUsuarioAction = (usuarioNovo) => (dispatch) => {
         .catch(console.log);
 };
 export const editarUsuarioAction = (usuarioEditado) => (dispatch) => {
-    let usuarioEditadoJson = JSON.stringify(usuarioEditado);
-    console.log(usuarioEditadoJson);
-    UserService.update(usuarioEditado.id, usuarioEditadoJson)
+    UserService.update(usuarioEditado.id, usuarioEditado)
         .then((res) => {
             dispatch({
                 type: EDITA_USUARIO,
