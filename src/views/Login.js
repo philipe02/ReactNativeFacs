@@ -27,7 +27,6 @@ const Login = ({ navigation }) => {
             setUser({});
             navigation.navigate("Menu");
         } else {
-            console.log(usuarios);
             Alert.alert("Usuário ou senha incorretos");
         }
     };

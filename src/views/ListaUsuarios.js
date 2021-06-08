@@ -117,6 +117,7 @@ const ListaUsuario = ({ navigation }) => {
                             keyExtractor={(user) => user.id.toString()}
                             data={usuarios}
                             renderItem={itemUsuario}
+                            style={{ marginBottom: 30, marginTop: 10 }}
                         />
                     ) : null}
                 </View>

@@ -10,15 +10,9 @@ const persistUsuarioConfig = {
     storage: AsyncStorage,
     whitelist: ["usuarios"],
 };
-const persistIdeiasConfig = {
-    key: "ideas",
-    storage: AsyncStorage,
-    whitelist: ["ideias"],
-};
 
 const rootReducer = combineReducers({
     UsuarioReducer: persistReducer(persistUsuarioConfig, UsuarioReducer),
-    IdeiasReducer: persistReducer(persistIdeiasConfig, IdeiasReducer),
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));
