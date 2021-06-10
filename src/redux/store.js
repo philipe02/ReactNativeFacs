@@ -3,7 +3,6 @@ import thunk from "redux-thunk";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { persistStore, persistReducer } from "redux-persist";
 import UsuarioReducer from "./reducers/usuarioReducer";
-import IdeiasReducer from "./reducers/ideiasReducer";
 
 const persistUsuarioConfig = {
     key: "user",

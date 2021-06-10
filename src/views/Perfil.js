@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { ScrollView, View, Text, ImageBackground, Alert } from "react-native";
 import {
     Input,
@@ -13,6 +13,7 @@ import { styles } from "../style/style";
 import { Picker } from "@react-native-picker/picker";
 import { useDispatch, useSelector } from "react-redux";
 import { editarUsuarioAction } from "../redux/actions/usuarioActions";
+import IdeiaService from "../../services/IdeiaService";
 
 const Perfil = ({ navigation, route }) => {
     const { usuarioAtual, usuarios } = useSelector(
@@ -20,10 +21,19 @@ const Perfil = ({ navigation, route }) => {
     );
     const dispatch = useDispatch();
     const [user, setUser] = useState(usuarioAtual);
-    const [ideias, setIdeias] = useState([]);
     const [mostraSenha, setMostraSenha] = useState(false);
     const [sexo, setSexo] = useState(usuarioAtual.sexo);
+    const [ideias, setIdeias] = useState([]);
 
+    const getData = () => {
+        IdeiaService.getAll()
+            .then((res) => {
+                setIdeias(res.data);
+            })
+            .catch(console.log);
+    };
+    useEffect(getData, []);
+    useEffect(() => console.log(ideias, usuarioAtual), [ideias]);
     const editarUsuario = (usuario) => dispatch(editarUsuarioAction(usuario));
 
     const handleEditar = () => {
@@ -206,14 +216,14 @@ const Perfil = ({ navigation, route }) => {
                         }}
                     >
                         <Text style={styles.secaoTitulo}>Ideias</Text>
-                        {!ideias.filter((ideia) => ideia.userId === user.id)
+                        {!ideias.filter((ideia) => ideia.userId == user.id)
                             .length ? (
                             <Text style={styles.semIdeiasText}>
                                 Não há ideias para serem mostradas
                             </Text>
                         ) : (
                             ideias
-                                .filter((ideia) => ideia.userId === user.id)
+                                .filter((ideia) => ideia.userId == user.id)
                                 .map((ideia) => itemIdeias(ideia))
                         )}
                     </View>
