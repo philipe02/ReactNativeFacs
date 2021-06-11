@@ -3,14 +3,12 @@ import React, { useState, useEffect, useContext } from "react";
 import {styles} from "../style/style";
 import {StatusBar} from "expo-status-bar";
 import {FontAwesome} from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ListItem, Avatar, Header, Button, Icon } from "react-native-elements";
 import { Text, View, FlatList, ImageBackground, TouchableOpacity, Modal, ScrollView } from "react-native";
 
 import users from "./Users";
 
 import ComentarioService     from "../../services/ComentarioService";
-import ListaComentario       from "../components/comentarios/ListaComentario";
 import AdicionarComentario   from "../components/comentarios/AdicionarComentario";
 import EditarComentario      from "../components/comentarios/EditarComentario";
 import DeletarComentario     from "../components/comentarios/DeletarComentario";
