@@ -1,12 +1,13 @@
 import React, {useState} from "react"
 
-//componente utilizado para obter e manipular os dados 
+//componente utilizado para obter e manular os dados
 //retorna um objeto e um método de acesso ao objeto
-const IdeiaContext = React.createContext ([ {}, () => {}]) 
+const IdeiaContext = React.createContext([{}, () => {}]);
 
 //concede o acesso ao contexto
-const IdeiaProvider = (props) =>  {
+const IdeiaProvider = (props) => {
     const ideiaInicitial = {
+        userId: null,
         titulo: "",
         desc: "",
         tema: "Selecione um tema",
@@ -14,7 +15,7 @@ const IdeiaProvider = (props) =>  {
         homeSimNao:false
     }
 
-    const [ideia, setIdeia] = useState(ideiaInicitial)
+    const [ideia, setIdeia] = useState(ideiaInicitial);
     return (
         <IdeiaContext.Provider value={[ideia, setIdeia]}>
             {props.children}
@@ -26,3 +27,5 @@ export {
     IdeiaContext, 
     IdeiaProvider
 }
+
+export { IdeiaContext, IdeiaProvider };
