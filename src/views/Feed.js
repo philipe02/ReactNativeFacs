@@ -1,86 +1,68 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect, useContext } from "react";
+
 import {styles} from "../style/style";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-    Text,
-    View,
-    FlatList,
-    ImageBackground,
-    TouchableOpacity,
-    Modal,
-    ScrollView,
-} from "react-native";
-import {ListItem, Avatar, Header, Button, Icon} from "react-native-elements";
+import {StatusBar} from "expo-status-bar";
 import {FontAwesome} from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ListItem, Avatar, Header, Button, Icon } from "react-native-elements";
+import { Text, View, FlatList, ImageBackground, TouchableOpacity, Modal, ScrollView } from "react-native";
 
 import users from "./Users";
-import ListaComentario from "../components/comentarios/ListaComentario";
-import AdicionarComentario from "../components/comentarios/AdicionarComentario";
-import EditarComentario from "../components/comentarios/EditarComentario";
-import DeletarComentario from "../components/comentarios/DeletarComentario";
-import {StatusBar} from "expo-status-bar";
+
+import ComentarioService     from "../../services/ComentarioService";
+import ListaComentario       from "../components/comentarios/ListaComentario";
+import AdicionarComentario   from "../components/comentarios/AdicionarComentario";
+import EditarComentario      from "../components/comentarios/EditarComentario";
+import DeletarComentario     from "../components/comentarios/DeletarComentario";
+import { ContextComentario } from "../components/comentarios/ContextComentario";
 
 const Feed = ({navigation}) => {
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+    const [modalVisible, setModalVisible]           = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen]       = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [comentario, setComentario] = useState(ListaComentario);
 
+    const [comentario, setComentario] = useState([]);
+    const [comentarios, setComentarios] = useContext(ContextComentario);
+
+    const [errorMessage, setErrorMessage] = useState('');
     const [selectedCode, setSelectedCode] = useState(false);
-    const [selectedComentario, setSelectedComentario] = useState(false);
-
-    const [modalVisible, setModalVisible] = useState(false);
+    //const [selectedComentario, setSelectedComentario] = useState(false);
     const [selectedIdeiaClick, setSelectedIdeiaClick] = useState(false);
 
-    const toogleListaComentario = () => {
-        setModalVisible(!modalVisible);
-    };
-
-    const toggleAdicionarComentario = () => {
-        setIsAddModalOpen(!isAddModalOpen);
-    };
-
-    const toggleEditarComentario = () => {
-        setIsUpdateModalOpen(!isUpdateModalOpen);
-    };
-
-    const toggleDeletarComentario = () => {
-        setIsDeleteModalOpen(!isDeleteModalOpen);
-    };
+    const toogleListaComentario     = () => setModalVisible(!modalVisible);
+    const toggleAdicionarComentario = () => setIsAddModalOpen(!isAddModalOpen);
+    const toggleEditarComentario    = () => setIsUpdateModalOpen(!isUpdateModalOpen);
+    const toggleDeletarComentario   = () => setIsDeleteModalOpen(!isDeleteModalOpen);
 
     const adicionarComentario = (data) => {
-        try {
-            let idNovoComentario = comentario[comentario.length - 1].id + 1;
-            data = {id: idNovoComentario, ...data};
-            setComentario([...comentario, data]);
-        } catch {
-            data = {id: 1, ...data};
-            setComentario([...comentario, data]);
-        }
-    };
-
-    const editarComentario = (data) => {
-        setComentario(comentario.map((com) => (com.id == data.id ? data : com)));
+        setComentario([...comentario, data]);
     };
 
     const deletarComentario = (data) => {
         setComentario(comentario.filter((com) => com.id != data));
     };
 
-    useEffect(() => {
-        async function CarregarComentario() {
-            const commentStorage = await AsyncStorage.getItem("@comentario");
-            if (commentStorage) setComentario(JSON.parse(commentStorage));
-        }
+    const getData = () => {
+        setErrorMessage('')
 
-        CarregarComentario();
+        ComentarioService.getAll()
+                .then(res => {
+                    setComentario(res.data)
+                })
+                .catch(err => {
+                    setErrorMessage(`Erro ao conectar com a API: ${err}`)
+                })
+    }
+
+    useEffect(() => {
+        getData();
     }, []);
 
     useEffect(() => {
-        async function SalvarComentario() {
-            await AsyncStorage.setItem("@comentario", JSON.stringify(comentario));
-        }
-    }, [comentario]);
+        setComentario(comentario.map(com => com.id == comentarios.id ? comentarios : com))
+    }, [comentarios]);
 
     function renderUserItems({item: user}) {
         return (
@@ -194,7 +176,7 @@ const Feed = ({navigation}) => {
                                                                             }
                                                                             onPress={() => {
                                                                                 toggleEditarComentario();
-                                                                                setSelectedComentario(data);
+                                                                                setComentarios(data);
                                                                             }}
                                                                     />
                                                                     <Button
@@ -206,7 +188,7 @@ const Feed = ({navigation}) => {
                                                                             }
                                                                             onPress={() => {
                                                                                 toggleDeletarComentario();
-                                                                                setSelectedComentario(data);
+                                                                                setComentarios(data);
                                                                             }}
                                                                     />
                                                                 </View>
@@ -241,8 +223,6 @@ const Feed = ({navigation}) => {
                                     <EditarComentario
                                             isOpen={isUpdateModalOpen}
                                             isClose={toggleEditarComentario}
-                                            editarComentario={editarComentario}
-                                            selectedComentario={selectedComentario}
                                     />
                             ) : null}
 
@@ -251,7 +231,6 @@ const Feed = ({navigation}) => {
                                             isOpen={isDeleteModalOpen}
                                             isClose={toggleDeletarComentario}
                                             deletarComentario={deletarComentario}
-                                            selectedComentario={selectedComentario}
                                     />
                             ) : null}
                         </View>

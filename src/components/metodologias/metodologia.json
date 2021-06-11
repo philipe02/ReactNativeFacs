@@ -25,5 +25,13 @@
         "objective" : "Pessoal",
         "description" : "Com as respostas, é possível direcionar as ações da equipe de marketing para conseguir trabalhar de maneira efetiva com os potenciais clientes e conseguir reverter em vendas. Caso contrário, a empresa sofrerá para estabelecer um relacionamento e, consequentes, negócios.",
         "references" : "Sim"
+    },
+    {
+        "id": 3,
+        "title": "React Native",
+        "area": "Tecnologias",
+        "definition": "Um Framework é um facilitador no desenvolvimento de diversas aplicações e, sem dúvida, sua utilização poupa tempo e custos para quem utiliza, pois de forma mais básica, é um conjunto de bibliotecas utilizadas para criar uma base, onde as aplicações são construídas, um otimizador de recursos",
+        "objective": "Pessoal",
+        "description": "É notável a crescente demanda do uso de aplicativos móveis nos últimos anos. Pensando nisso, diversas empresas desenvolvem suas soluções para facilitar a criação destes aplicativos. Com o React Native, o Facebook lançou uma solução incrível para o desenvolvimento multiplataforma utilizando apenas código Javascript, o que facilita (e muito) os desenvolvedores que já possuem conhecimento em desenvolvimento web e até os que não possuem, já que é um framework com alta curva de aprendizado."
     }
 ]

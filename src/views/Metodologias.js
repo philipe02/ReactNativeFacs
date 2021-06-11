@@ -1,29 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { styles } from '../style/style';
-import { Text, View, FlatList, ImageBackground, TouchableOpacity, Modal, ScrollView } from 'react-native';
+
+import { styles    } from '../style/style';
+import { StatusBar } from 'expo-status-bar';
+import { Searchbar } from 'react-native-paper';
 import { ListItem, Button, Icon, Header } from 'react-native-elements';
+import { Text, View, FlatList, ImageBackground, TouchableOpacity, Modal, ScrollView } from 'react-native';
 
-import { Searchbar } from "react-native-paper";
-
-import AdicionarMetodologia from '../components/metodologias/AdicionarMetodologia';
-import EditarMetodologia from '../components/metodologias/EditarMetodologia';
-import DeletarMetodologia from '../components/metodologias/DeletarMetodologia';
+import MetodologiaService     from '../../services/MetodologiaService';
+import AdicionarMetodologia   from '../components/metodologias/AdicionarMetodologia';
+import EditarMetodologia      from '../components/metodologias/EditarMetodologia';
+import DeletarMetodologia     from '../components/metodologias/DeletarMetodologia';
 import { ContextMetodologia } from '../components/metodologias/ContextMetodologia';
-import MetodologiaService from '../../services/MetodologiaService';
-
-import { StatusBar } from "expo-status-bar";
 
 const Metodologias = ({ navigation }) => {
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+    const [modalVisible, setModalVisible]           = useState(false);
+    const [isAddModalOpen, setIsAddModalOpen]       = useState(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
 
-    const [metodo, setMetodo] = useState([]);
-    const [search, setSearch] = useState('');
-    const [filtered, setFiltered] = useState([]);
+    const [metodo, setMetodo]             = useState([]);
+    const [search, setSearch]             = useState('');
+    const [filtered, setFiltered]         = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-    const [metodologia, setMetodologia] = useContext(ContextMetodologia);
+    const [metodologia, setMetodologia]   = useContext(ContextMetodologia);
 
     const getData = () => {
         setErrorMessage('')
@@ -54,10 +54,10 @@ const Metodologias = ({ navigation }) => {
         }
     };
 
-    const toggleDetalhesMetodologia = () => setModalVisible(!modalVisible);
+    const toggleDetalhesMetodologia  = () => setModalVisible(!modalVisible);
     const toggleAdicionarMetodologia = () => setIsAddModalOpen(!isAddModalOpen);
-    const toggleEditarMetodologia = () => setIsUpdateModalOpen(!isUpdateModalOpen);
-    const toggleDeletarMetodologia = () => setIsDeleteModalOpen(!isDeleteModalOpen);
+    const toggleEditarMetodologia    = () => setIsUpdateModalOpen(!isUpdateModalOpen);
+    const toggleDeletarMetodologia   = () => setIsDeleteModalOpen(!isDeleteModalOpen);
 
     const adicionarMetodologia = (data) => {
         setMetodo([data, ...metodo]);
@@ -65,8 +65,8 @@ const Metodologias = ({ navigation }) => {
     };
 
     const deletarMetodologia = (data) => {
-        setMetodo(metodo.filter((com) => com.id !== data));
-        setFiltered(filtered.filter((com) => com.id !== data));
+        setMetodo(metodo.filter((item) => item.id !== data));
+        setFiltered(filtered.filter((item) => item.id !== data));
     };
 
     useEffect(() => {
@@ -171,7 +171,7 @@ const Metodologias = ({ navigation }) => {
                             />
 
                             <FlatList
-                                    data={metodo}
+                                    data={filtered}
                                     renderItem={renderDataItems}
                                     keyExtractor={(items, index) => index.toString()}
                             />

@@ -16,7 +16,7 @@ const DeletarMetodologia = (props) => {
 
         MetodologiaService.remove(id)
                 .then(res => {
-                    props.deletarMetodologia(metodologia.title)
+                    props.deletarMetodologia(metodologia.id)
                     props.isClose()
                 })
                 .catch(err => {

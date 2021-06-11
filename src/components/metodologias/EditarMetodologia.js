@@ -1,11 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, Modal, TouchableOpacity, Picker, ScrollView } from 'react-native';
-import { styles } from '../../style/style';
-import { HelperText, RadioButton, Snackbar, Switch, TextInput } from 'react-native-paper';
-import ListaMetodologia from './ListaMetodologia';
 
+import { styles } from '../../style/style';
 import { ContextMetodologia } from './ContextMetodologia';
 import MetodologiaService from '../../../services/MetodologiaService';
+import { View, Text, Modal, TouchableOpacity, Picker, ScrollView } from 'react-native';
+import { HelperText, RadioButton, Snackbar, Switch, TextInput } from 'react-native-paper';
 
 const EditarMetodologia = (props) => {
 
@@ -16,13 +15,13 @@ const EditarMetodologia = (props) => {
         definition: false,
     }
 
-    const [metodologia, setMetodologia] = useContext(ContextMetodologia);
-    const [addInvalid, setAddInvalid] = useState(stateInitialValidate);
     const [errorMessage, setErrorMessage] = useState('');
+    const [addInvalid, setAddInvalid] = useState(stateInitialValidate);
+    const [metodologia, setMetodologia] = useContext(ContextMetodologia);
 
     const {isOpen, isClose} = props;
     const [error, setError] = useState(false);
-    const [checked, setChecked] = useState('');
+    const [checked, setChecked] = useState(metodologia.references);
     const onDismissSnackBar = () => setError(false);
 
     const [isSwitch, setIsSwitch] = useState(metodologia.objective == 'Profissional');
@@ -45,7 +44,8 @@ const EditarMetodologia = (props) => {
         if(addInvalid.title ||
                 addInvalid.area ||
                 addInvalid.definition ||
-                addInvalid.description || checked === '') {
+                addInvalid.description || checked == '') {
+
             setError(true)
         } else {
             setError(false)
@@ -193,14 +193,14 @@ const EditarMetodologia = (props) => {
                                         color="#1281AB"
                                         value={ metodologia.area }
                                         onPress={() => setChecked('Sim')}
-                                        status={ metodologia.references === 'Sim' ? 'checked' : 'unchecked' }
+                                        status={ checked === 'Sim' ? 'checked' : 'unchecked' }
                                 />
                                 <Text style={{...styles.label, marginRight: 45}}>Sim</Text>
                                 <RadioButton
                                         color="#1281AB"
                                         value={ metodologia.area }
                                         onPress={() => setChecked('Não')}
-                                        status={ metodologia.references === 'Não' ? 'checked' : 'unchecked' }
+                                        status={ checked === 'Não' ? 'checked' : 'unchecked' }
                                 />
                                 <Text style={styles.label}>Não</Text>
                             </View>

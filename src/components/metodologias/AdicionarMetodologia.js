@@ -8,12 +8,12 @@ import MetodologiaService from '../../../services/MetodologiaService';
 const AdicionarMetodologia = (props) => {
 
     const initialStateMetodologia = {
-        title : '',
-        area: '',
-        description: '',
-        definition: '',
-        objective: '',
-        references: ''
+        title       : '',
+        area        : '',
+        description : '',
+        definition  : '',
+        objective   : '',
+        references  : ''
     }
 
     const stateInitialValidate = {
@@ -23,9 +23,9 @@ const AdicionarMetodologia = (props) => {
         definition: false,
     }
 
-    const [metodologia, setMetodologia] = useState(initialStateMetodologia);
-    const [addInvalid, setAddInvalid] = useState(stateInitialValidate);
     const [errorMessage, setErrorMessage] = useState('');
+    const [addInvalid, setAddInvalid] = useState(stateInitialValidate);
+    const [metodologia, setMetodologia] = useState(initialStateMetodologia);
 
     const [error, setError] = useState(false)
     const [checked, setChecked] = useState('');
@@ -77,11 +77,9 @@ const AdicionarMetodologia = (props) => {
                             objective: res.data.objective,
                             references: checked
                         })
-                        console.log(data)
                         props.isClose()
                     })
                     .catch(err => {
-                        console.warn('nao foi')
                         setErrorMessage(`Erro ao conectar com a API: ${err}`)
                     })
         }
