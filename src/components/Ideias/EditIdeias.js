@@ -10,14 +10,14 @@ import {IdeiaContext} from "./IdeiaContext"
 
 const EditIdeias = (props) => {
 
-  const initialIdeiasState = {
+/*   const initialIdeiasState = {
     id:"",
     titulo: "",
     desc: "",
     tema: "Selecione um tema",
     benefMalef: "",
     homeSimNao:""
-  }
+  } */
 
   const { openIdeiaModal, closeIdeiaModal } = props
   const [msgErro, setMsgErro] = useState("")
@@ -29,7 +29,7 @@ const EditIdeias = (props) => {
 
 
   const editIdeia = () => {
-    /* if(!ideia.titulo || ideia.titulo === "")
+/*     if(!ideia.titulo || ideia.titulo === "")
       Alert.alert("Título Obrigatório.")
     else if(!ideia.desc || ideia.desc === "")
       Alert.alert("Descrição Obrigatória.")
@@ -46,7 +46,6 @@ const EditIdeias = (props) => {
       benefMalef: ideia.benefMalef, 
       homeSimNao: ideia.homeSimNao 
     }
-    console.log(JSON.stringify(data))
     IdeiaService.update(id, data)
                 .then(resp =>{
                   props.closeIdeiaModal();
@@ -120,7 +119,7 @@ const EditIdeias = (props) => {
                 <View style={{ flexDirection: 'row' }}>
                   <Text style={styles.textRadio}>Benefício:</Text>
                   <RadioButton
-                  value='first'
+                    value='first'
                     color="#D16E0B"
                     onPress={() => {handleChance('Benefício', "benefMalef") }}
                     status={ ideia.benefMalef === 'Benefício' ? 'checked' : 'unchecked' }

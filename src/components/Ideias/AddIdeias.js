@@ -188,14 +188,14 @@ const AddIdeias = (props) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-				onPress={closeIdeiaModal}
-				style={{
-					...styles.botaoSalveCancel,
-					marginVertical: 0,
-					position: "absolute",
-					right: 30,
-					backgroundColor: "red",
-				}}
+              onPress={closeIdeiaModal}
+              style={{
+                    ...styles.botaoSalveCancel,
+                    marginVertical: 0,
+                    position: "absolute",
+                    right: 30,
+                    backgroundColor: "red",
+                }}
             >
               <Text style={styles.textBotaoSalveCancel}>Cancelar</Text>
             </TouchableOpacity>

@@ -1,4 +1,4 @@
-import ideas from '../http-common'
+import ideas from '../http-commonIdeias'
 
 const getAll = () => {
     return ideas.get("/ideias")
