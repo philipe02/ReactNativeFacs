@@ -21,8 +21,10 @@ Philipe Santos - philipe02,
 3. Perfil, Usuário, ListaUsuarios, Login, CadastroUsuário - Philipe Santos
 
 ### Vídeo
-Link: https://youtu.be/GqFUesbsF7c
+Link N1: https://youtu.be/GqFUesbsF7c
+
+Link N2:   
 
 ### MockApi
 
-Link: https://60b14c0962ab150017ae0c67.mockapi.io/
+Link Mock Ideias: https://mockapi.io/projects/60b14c0962ab150017ae0c68/ideias
