@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 
-//componente utilizado para obter e manular os dados 
+//componente utilizado para obter e manipular os dados 
 //retorna um objeto e um método de acesso ao objeto
 const IdeiaContext = React.createContext ([ {}, () => {}]) 
 

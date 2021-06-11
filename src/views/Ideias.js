@@ -129,7 +129,7 @@ function ListaIdeia({ navigation }) {
               <AddIdeias
                 openIdeiaModal={isAddIdeiaModalOpen}
                 closeIdeiaModal={toggleAddIdeia}
-                adicionarIdeia={adicionarIdea}
+                addIdeia={adicionarIdea}
               />
             ) : null}
 

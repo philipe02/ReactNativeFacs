@@ -16,7 +16,7 @@ const DeletIdeias = (props) => {
     const id = ideia.id
     IdeiaService.remove(id)
                 .then( resp => {
-                  props.deletIdeia(ideia.titulo)
+                  props.deletIdeia(ideia.id)
                   props.closeIdeiaModal();
                 })
                 .catch( error => {

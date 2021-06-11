@@ -1,14 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import {
-  View,
-  ImageBackground,
-  FlatList,
-  TouchableOpacity,
-  Text,
-  Modal,
-  ScrollView,
-} from "react-native";
+import { View, ImageBackground, FlatList, TouchableOpacity, Text, Modal, ScrollView } from "react-native";
 import { Header, ListItem, Avatar } from "react-native-elements";
 import { styles } from "../style/style";
 import ranks from "../data/rankingIdeias";

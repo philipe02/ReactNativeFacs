@@ -27,45 +27,40 @@ const AddIdeias = (props) => {
     setIdeia({ ...ideia, [name]: value });
   };
 
-/*   const addIdeia = async () => {
-    //validação de campos obrigatórios
-    if (!ideia.titulo || ideia.titulo === "")
-      Alert.alert("Título Obrigatório.");
-    else if (!ideia.desc || ideia.desc === "")
-      Alert.alert("Descrição Obrigatória.");
-    else if (ideia.tema === "Selecione um tema")
-      Alert.alert("Selecione o tema abordado.");
-    else if (!checked){
-      Alert.alert("Indique se a ideia resolve um malefício ou traz um benefício.");
-    } 
- */
-
   const addIdeia = async () => {
-    const data = {
-        id: ideia.id,
-        titulo: ideia.titulo,
-        desc: ideia.desc,
-        tema: ideia.tema,
-        benefMalef: checked, 
-        homeSimNao: isEnabled 
-    }
-
-    IdeiaService.create(data)
-                .then( resp => {
-                  props.addIdeia({
-                    id: resp.data.id,
-                    titulo: resp.data.titulo,
-                    desc: resp.data.desc,
-                    tema: resp.data.tema,
-                    benefMalef: checked, 
-                    homeSimNao: isEnabled                    
+    if(!ideia.titulo || ideia.titulo === "")
+      Alert.alert("Título Obrigatório.")
+    else if(!ideia.desc || ideia.desc === "")
+      Alert.alert("Descrição Obrigatória.")
+    else if(ideia.tema === "Selecione um tema")
+      Alert.alert("Selecione o tema abordado.")
+    else {
+      const data = {
+          id: ideia.id,
+          titulo: ideia.titulo,
+          desc: ideia.desc,
+          tema: ideia.tema,
+          benefMalef: checked, 
+          homeSimNao: isEnabled 
+      }
+      IdeiaService.create(data)
+                  .then( resp => {
+                    props.addIdeia({
+                      id: resp.data.id,
+                      titulo: resp.data.titulo,
+                      desc: resp.data.desc,
+                      tema: resp.data.tema,
+                      benefMalef: checked, 
+                      homeSimNao: isEnabled                    
+                    })
+                    props.closeIdeiaModal();
                   })
-                  props.closeIdeiaModal();
-                })
-                .catch( error => {
-                    setMsgErro("Erro de conexão com API.")
-                })
-    }
+                  .catch( error => {
+                    console.log(error)
+                      setMsgErro("Erro de conexão com API.")
+                  })
+      }
+  }
 
   return (
     <View style={styles.container}>

@@ -10,15 +10,6 @@ import {IdeiaContext} from "./IdeiaContext"
 
 const EditIdeias = (props) => {
 
-/*   const initialIdeiasState = {
-    id:"",
-    titulo: "",
-    desc: "",
-    tema: "Selecione um tema",
-    benefMalef: "",
-    homeSimNao:""
-  } */
-
   const { openIdeiaModal, closeIdeiaModal } = props
   const [msgErro, setMsgErro] = useState("")
   const [ideia, setIdeia] = useContext(IdeiaContext)
@@ -29,31 +20,30 @@ const EditIdeias = (props) => {
 
 
   const editIdeia = () => {
-/*     if(!ideia.titulo || ideia.titulo === "")
+    if(!ideia.titulo || ideia.titulo === "")
       Alert.alert("Título Obrigatório.")
     else if(!ideia.desc || ideia.desc === "")
       Alert.alert("Descrição Obrigatória.")
     else if(ideia.tema === "Selecione um tema")
       Alert.alert("Selecione o tema abordado.")
-    else if (!checked){
-      Alert.alert("Indique se a ideia resolve um malefício ou traz um benefício.");
-    }  */
-    const id = ideia.id
-    const data = {
-      titulo: ideia.titulo,
-      desc: ideia.desc,
-      tema: ideia.tema,
-      benefMalef: ideia.benefMalef, 
-      homeSimNao: ideia.homeSimNao 
+    else {
+        const id = ideia.id
+        const data = {
+          titulo: ideia.titulo,
+          desc: ideia.desc,
+          tema: ideia.tema,
+          benefMalef: ideia.benefMalef, 
+          homeSimNao: ideia.homeSimNao 
+        }
+        IdeiaService.update(id, data)
+                    .then(resp =>{
+                        props.closeIdeiaModal();
+                    })
+                    .catch( error => {
+                        setMsgErro("Erro de conexão com API.")
+                    })
+        }
     }
-    IdeiaService.update(id, data)
-                .then(resp =>{
-                  props.closeIdeiaModal();
-                })
-                .catch( error => {
-                    setMsgErro("Erro de conexão com API.")
-                })
-  }
 
     return (
             <View style={styles.container}>
