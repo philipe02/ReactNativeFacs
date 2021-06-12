@@ -23,7 +23,7 @@ Philipe Santos - philipe02,
 ### Vídeo
 Link N1: https://youtu.be/GqFUesbsF7c
 
-Link N2:   
+Link N2: https://youtu.be/MAvsg5Cd58U  
 
 ### MockApi
 
