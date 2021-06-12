@@ -1,21 +1,34 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Modal, Text, TouchableOpacity } from 'react-native';
 import { styles } from '../../style/style';
 
+import { ContextMetodologia } from './ContextMetodologia';
+import MetodologiaService from '../../../services/MetodologiaService';
+
 const DeletarMetodologia = (props) => {
 
-    const { isOpen, isClose, selectedMetodologia } = props
+    const { isOpen, isClose } = props
+    const [metodologia, setMetodologia] = useContext(ContextMetodologia);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const deletarMetodologia = () => {
-        props.deletarMetodologia(props.selectedMetodologia.id)
-        props.isClose()
+        const id = metodologia.id
+
+        MetodologiaService.remove(id)
+                .then(res => {
+                    props.deletarMetodologia(metodologia.id)
+                    props.isClose()
+                })
+                .catch(err => {
+                    setErrorMessage(`Erro ao conectar com a API: ${err}`)
+                })
     }
 
     return(
         <Modal visible={ isOpen } onRequestClose={ isClose } animationType="slide" transparent>
             <View style={ styles.centeredView }>
                 <View style={ styles.modalView }>
-                    <Text style={ styles.title }>Deseja apagar essa metodologia? ({ selectedMetodologia.id })</Text>
+                    <Text style={ styles.title }>Deseja apagar essa metodologia? ({ metodologia.title })</Text>
                     <Text style={ styles.text }>Para confirmar aperte em OK</Text>
 
                     <View style={ styles.groupButton }>

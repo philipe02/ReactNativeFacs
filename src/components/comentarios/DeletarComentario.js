@@ -1,48 +1,62 @@
-import React from "react";
-import { View, Modal, Text, TouchableOpacity } from "react-native";
+import React, {useContext, useState} from "react";
+
 import { styles } from "../../style/style";
+import { ContextComentario } from "./ContextComentario";
+import ComentarioService from "../../../services/ComentarioService";
+import { View, Modal, Text, TouchableOpacity } from "react-native";
 
 const DeletarComentario = (props) => {
-  const { isOpen, isClose, selectedComentario } = props;
 
-  const deletarComentario = () => {
-    props.deletarComentario(props.selectedComentario.id);
-    props.isClose();
-  };
+    const { isOpen, isClose } = props;
+    const [comentarios, setComentarios] = useContext(ContextComentario);
+    const [errorMessage, setErrorMessage] = useState('');
 
-  return (
-    <Modal
-      visible={isOpen}
-      onRequestClose={isClose}
-      animationType="slide"
-      transparent
-    >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text style={styles.title}>
-            Deseja apagar esse comentario? ({selectedComentario.id})
-          </Text>
-          <Text style={styles.text}>Para confirmar aperte em OK</Text>
+    const deletarComentario = () => {
 
-          <View style={styles.groupButton}>
-            <TouchableOpacity
-              onPress={deletarComentario}
-              style={{ ...styles.button, backgroundColor: "#1281AB" }}
+        const id = comentarios.id;
+        ComentarioService.remove(id)
+                         .then(res => {
+                             props.deletarComentario(comentarios.id);
+                             props.isClose();
+                         })
+                         .catch(err => {
+                             setErrorMessage(`Erro ao conectar com a API: ${err}`)
+                         })
+    };
+
+    return (
+            <Modal
+                    visible={isOpen}
+                    onRequestClose={isClose}
+                    animationType="slide"
+                    transparent
             >
-              <Text style={styles.btnText}>OK</Text>
-            </TouchableOpacity>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.title}>
+                            Deseja apagar esse comentario? ({comentarios.id})
+                        </Text>
+                        <Text style={styles.text}>Para confirmar aperte em OK</Text>
 
-            <TouchableOpacity
-              onPress={isClose}
-              style={{ ...styles.button, backgroundColor: "#E76F51" }}
-            >
-              <Text style={styles.btnText}>Cancelar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </Modal>
-  );
+                        <View style={styles.groupButton}>
+                            <TouchableOpacity
+                                    onPress={deletarComentario}
+                                    style={{ ...styles.button, backgroundColor: "#1281AB" }}
+                            >
+                                <Text style={styles.btnText}>OK</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                    onPress={isClose}
+                                    style={{ ...styles.button, backgroundColor: "#E76F51" }}
+                            >
+                                <Text style={styles.btnText}>Cancelar</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+    );
 };
 
 export default DeletarComentario;

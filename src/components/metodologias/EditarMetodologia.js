@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Modal, TouchableOpacity, Picker, ScrollView } from 'react-native';
+import React, { useState, useContext } from 'react';
+
 import { styles } from '../../style/style';
-import {HelperText, RadioButton, Snackbar, Switch, TextInput} from "react-native-paper";
-import ListaMetodologia from './ListaMetodologia';
+import { ContextMetodologia } from './ContextMetodologia';
+import MetodologiaService from '../../../services/MetodologiaService';
+import { View, Text, Modal, TouchableOpacity, Picker, ScrollView } from 'react-native';
+import { HelperText, RadioButton, Snackbar, Switch, TextInput } from 'react-native-paper';
 
 const EditarMetodologia = (props) => {
 
@@ -13,14 +15,17 @@ const EditarMetodologia = (props) => {
         definition: false,
     }
 
-    const {isOpen, isClose} = props
-    const onDismissSnackBar = () => setError(false);
-    const [error, setError] = useState(false)
-    const [metodologia, setMetodologia] = useState(ListaMetodologia);
+    const [errorMessage, setErrorMessage] = useState('');
     const [addInvalid, setAddInvalid] = useState(stateInitialValidate);
-    const [checked, setChecked] = useState('');
+    const [metodologia, setMetodologia] = useContext(ContextMetodologia);
 
-    const [isSwitch, setIsSwitch] = useState(props.selectedMetodologia.objective == 'Profissional');
+    const {isOpen, isClose} = props;
+    const [error, setError] = useState(false);
+    const [checked, setChecked] = useState(metodologia.references);
+    const onDismissSnackBar = () => setError(false);
+
+    const [isSwitch, setIsSwitch] = useState(metodologia.objective == 'Profissional');
+
     const onToggleSwitch = () => {
         setIsSwitch(!isSwitch);
         setMetodologia({...metodologia, ['objective'] :  isSwitch ? 'Pessoal' : 'Profissional'})
@@ -35,35 +40,42 @@ const EditarMetodologia = (props) => {
         }
     }
 
-    useEffect( () => {
-        const data = {
-            id : props.selectedMetodologia.id,
-            area: props.selectedMetodologia.area,
-            title : props.selectedMetodologia.title,
-            objective: props.selectedMetodologia.objective,
-            definition: props.selectedMetodologia.definition,
-            description : props.selectedMetodologia.description,
-            references: props.selectedMetodologia.references,
-        };
-        setMetodologia(data)
-        setChecked(data.references)
-    }, [])
-
     const editarMetodologia = () => {
-        if(addInvalid.title || addInvalid.area || addInvalid.definition || addInvalid.description || checked === '') {
+        if(addInvalid.title ||
+                addInvalid.area ||
+                addInvalid.definition ||
+                addInvalid.description || checked == '') {
+
             setError(true)
         } else {
             setError(false)
-            props.editarMetodologia({
-                id: props.selectedMetodologia.id,
-                references : checked,
-                area: metodologia.area,
+
+            const id = metodologia.id
+            const data = {
                 title : metodologia.title,
-                objective: metodologia.objective,
+                area: metodologia.area,
+                description: metodologia.description,
                 definition: metodologia.definition,
-                description : metodologia.description
-            })
-            props.isClose()
+                objective: metodologia.objective,
+                references: metodologia.references
+            }
+
+            MetodologiaService.update(id, data)
+                    .then(res => {
+                        setMetodologia({
+                            id: res.data.id,
+                            title : res.data.title,
+                            area: res.data.area,
+                            description: res.data.description,
+                            definition: res.data.definition,
+                            objective: res.data.objective,
+                            references: res.data.references
+                        })
+                        props.isClose()
+                    })
+                    .catch(err => {
+                        setErrorMessage(`Erro ao conectar na API: ${err}`)
+                    })
         }
     }
 
@@ -104,7 +116,7 @@ const EditarMetodologia = (props) => {
                             <View style={{borderColor: "#919191", borderWidth: 1, borderRadius: 5, backgroundColor: "#eeecec"}}>
                                 <Picker
                                         value={ metodologia.area }
-                                        selectedValue={props.selectedMetodologia.area}
+                                        selectedValue={metodologia.area}
                                         style={{...styles.input, width: '100%', height:55}}
                                         onValueChange={(text) => handleChange(text, 'area')}
                                 >

@@ -3,9 +3,18 @@ import { RadioButton, HelperText, TextInput, Snackbar, Switch } from 'react-nati
 import { View, Text, Modal, TouchableOpacity, Picker, ScrollView } from 'react-native';
 
 import { styles } from '../../style/style';
-import ListaMetodologia from './ListaMetodologia';
+import MetodologiaService from '../../../services/MetodologiaService';
 
 const AdicionarMetodologia = (props) => {
+
+    const initialStateMetodologia = {
+        title       : '',
+        area        : '',
+        description : '',
+        definition  : '',
+        objective   : '',
+        references  : ''
+    }
 
     const stateInitialValidate = {
         area: false,
@@ -14,13 +23,14 @@ const AdicionarMetodologia = (props) => {
         definition: false,
     }
 
-    const [metodologia, setMetodologia] = useState(ListaMetodologia);
+    const [errorMessage, setErrorMessage] = useState('');
     const [addInvalid, setAddInvalid] = useState(stateInitialValidate);
+    const [metodologia, setMetodologia] = useState(initialStateMetodologia);
 
     const [error, setError] = useState(false)
     const [checked, setChecked] = useState('');
-
     const [isSwitch, setIsSwitch] = useState(false);
+
     const onToggleSwitch = () => {
         setIsSwitch(!isSwitch);
         setMetodologia({...metodologia, ['objective'] :  isSwitch ? 'Pessoal' : 'Profissional'})
@@ -42,20 +52,36 @@ const AdicionarMetodologia = (props) => {
         if(metodologia.title === "" ||
                 metodologia.area === "" ||
                 metodologia.definition === "" ||
-                metodologia.description === "" ||
-                checked === '') {
+                metodologia.description === "" || checked === '') {
             setError(true)
         } else {
             setError(false)
-            props.adicionarMetodologia({
-                references : checked,
-                area: metodologia.area,
+
+            const data = {
                 title : metodologia.title,
-                objective: metodologia.objective,
+                area: metodologia.area,
+                description: metodologia.description,
                 definition: metodologia.definition,
-                description : metodologia.description
-            })
-            props.isClose()
+                objective: metodologia.objective,
+                references: checked
+            }
+
+            MetodologiaService.create(data)
+                    .then(res => {
+                        props.adicionarMetodologia({
+                            id: res.data.id,
+                            title : res.data.title,
+                            area: res.data.area,
+                            description: res.data.description,
+                            definition: res.data.definition,
+                            objective: res.data.objective,
+                            references: checked
+                        })
+                        props.isClose()
+                    })
+                    .catch(err => {
+                        setErrorMessage(`Erro ao conectar com a API: ${err}`)
+                    })
         }
     }
 
