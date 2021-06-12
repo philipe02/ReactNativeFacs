@@ -1,55 +1,46 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { Text, View } from "react-native";
-import { Header } from "react-native-elements";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import React, { useEffect } from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { styles } from "./style/style";
-import Ideias from "./components/Ideias";
-import Usuario from "./components/Usuario";
-import Feed from "./components/Feed";
 
-const Drawer = createDrawerNavigator();
+import Login from "./src/views/Login";
+import Menu from "./src/views/Menu";
+import Usuario from "./src/views/Usuario";
+import CadastroUsuario from "./src/views/CadastroUsuario";
 
-const TelaInicial = ({ navigation }) => {
-  return (
-    <>
-      <Header
-        containerStyle={{ height: 80 }}
-        leftComponent={{
-          icon: "menu",
-          color: "#fff",
-          onPress: navigation.openDrawer,
-          size: 40,
-        }}
-        centerComponent={{
-          text: "Tela inicial",
-          style: styles.headerText,
-        }}
-        rightComponent={{
-          icon: "home",
-          color: "#fff",
-          size: 40,
-          onPress: () => navigation.navigate("Inicio"),
-        }}
-      />
-      <View style={styles.container}>
-        <Text>Tela inicial</Text>
-      </View>
-      <StatusBar style="light" />
-    </>
-  );
-};
+import { ProviderMetodologia } from "./src/components/metodologias/ContextMetodologia";
+import { ProviderComentario } from "./src/components/comentarios/ContextComentario";
+import { Provider } from "react-redux";
+import { store } from "./src/redux/store";
+import { IdeiaProvider } from "./src/components/Ideias/IdeiaContext";
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Inicio">
-        <Drawer.Screen name="Inicio" component={TelaInicial} />
-        <Drawer.Screen name="Ideias" component={Ideias} />
-        <Drawer.Screen name="Usuario" component={Usuario} />
-        <Drawer.Screen name="Feed" component={Feed} />
-      </Drawer.Navigator>
-    </NavigationContainer>
-  );
+const Stack = createStackNavigator();
+
+export default function App({ navigation }) {
+    return (
+        <Provider store={store}>
+            <IdeiaProvider>
+                <ProviderMetodologia>
+                    <ProviderComentario>
+                        <NavigationContainer>
+                            <Stack.Navigator
+                                initialRouteName="Login"
+                                screenOptions={{ headerShown: false }}
+                            >
+                                <Stack.Screen name="Login" component={Login} />
+                                <Stack.Screen name="Menu" component={Menu} />
+                                <Stack.Screen
+                                    name="Criar Usuário"
+                                    component={CadastroUsuario}
+                                />
+                                <Stack.Screen
+                                    name="Usuário"
+                                    component={Usuario}
+                                />
+                            </Stack.Navigator>
+                        </NavigationContainer>
+                    </ProviderComentario>
+                </ProviderMetodologia>
+            </IdeiaProvider>
+        </Provider>
+    );
 }
