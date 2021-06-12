@@ -1,30 +1,20 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { View, Text, ImageBackground, TouchableOpacity, Modal, Alert, Switch} from "react-native";
+import {
+    View,
+    Text,
+    ImageBackground,
+    TouchableOpacity,
+    Modal,
+    Alert,
+    Switch,
+} from "react-native";
 import { styles } from "../../style/style";
 import { Header, Input } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import { RadioButton } from "react-native-paper";
-import IdeiaService from "../../../services/IdeiaService"
+import IdeiaService from "../../../services/IdeiaService";
 import { useSelector } from "react-redux";
-
-const AddIdeias = (props) => {
-  const initialIdeiasState = {
-    titulo: "",
-    desc: "",
-    tema: "Selecione um tema",
-    benefMalef: "",
-    homeSimNao:false
-  };
-
-  const [ideia, setIdeia] = useState(initialIdeiasState);
-  const [checked, setChecked] = useState(ideia.benefMalef);
-  const [isEnabled, setIsEnabled] = useState(ideia.homeSimNao);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-  const { openIdeiaModal, closeIdeiaModal } = props;
-  const [msgErro, setMsgErro] = useState("")
-
-
 
 const AddIdeias = (props) => {
     const initialIdeiasState = {
@@ -41,45 +31,48 @@ const AddIdeias = (props) => {
     const [isEnabled, setIsEnabled] = useState(ideia.homeSimNao);
     const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
     const { openIdeiaModal, closeIdeiaModal } = props;
+    const [msgErro, setMsgErro] = useState("");
 
     const handleChance = (value, name) => {
         setIdeia({ ...ideia, [name]: value });
     };
 
-  const addIdeia = async () => {
-    if(!ideia.titulo || ideia.titulo === "")
-      Alert.alert("Título Obrigatório.")
-    else if(!ideia.desc || ideia.desc === "")
-      Alert.alert("Descrição Obrigatória.")
-    else if(ideia.tema === "Selecione um tema")
-      Alert.alert("Selecione o tema abordado.")
-    else {
-      const data = {
-          id: ideia.id,
-          titulo: ideia.titulo,
-          desc: ideia.desc,
-          tema: ideia.tema,
-          benefMalef: checked, 
-          homeSimNao: isEnabled 
-      }
-      IdeiaService.create(data)
-                  .then( resp => {
+    const addIdeia = async () => {
+        if (!ideia.titulo || ideia.titulo === "")
+            Alert.alert("Título Obrigatório.");
+        else if (!ideia.desc || ideia.desc === "")
+            Alert.alert("Descrição Obrigatória.");
+        else if (ideia.tema === "Selecione um tema")
+            Alert.alert("Selecione o tema abordado.");
+        else {
+            const data = {
+                id: ideia.id,
+                userId: usuarioAtual.id,
+                titulo: ideia.titulo,
+                desc: ideia.desc,
+                tema: ideia.tema,
+                benefMalef: checked,
+                homeSimNao: isEnabled,
+            };
+            IdeiaService.create(data)
+                .then((resp) => {
                     props.addIdeia({
-                      id: resp.data.id,
-                      titulo: resp.data.titulo,
-                      desc: resp.data.desc,
-                      tema: resp.data.tema,
-                      benefMalef: checked, 
-                      homeSimNao: isEnabled                    
-                    })
+                        id: resp.data.id,
+                        userId: resp.data.userId,
+                        titulo: resp.data.titulo,
+                        desc: resp.data.desc,
+                        tema: resp.data.tema,
+                        benefMalef: checked,
+                        homeSimNao: isEnabled,
+                    });
                     props.closeIdeiaModal();
-                  })
-                  .catch( error => {
-                    console.log(error)
-                      setMsgErro("Erro de conexão com API.")
-                  })
-      }
-  }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setMsgErro("Erro de conexão com API.");
+                });
+        }
+    };
     return (
         <View style={styles.container}>
             <Modal
@@ -143,54 +136,86 @@ const AddIdeias = (props) => {
                             handleChance(text, "desc");
                         }}
                     />
-        <Text style={styles.tituloInput}>Benefícios ou Malefícios: </Text>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={styles.textRadio}>Benefício:</Text>
-            <RadioButton
-              value='Benefício'
-              color="#D16E0B"
-              onPress={() => setChecked('Benefício')}
-              status={ checked === 'Benefício' ? 'checked' : 'unchecked' }
-            />
-            <Text style={styles.textRadio}>Malefício:</Text>
-            <RadioButton
-              value="Malefício"
-              color="#D16E0B"
-              onPress={() => setChecked('Malefício')}
-              status={ checked === 'Malefício' ? 'checked' : 'unchecked' }
-            />
-          </View>
+                    <Text style={styles.tituloInput}>
+                        Benefícios ou Malefícios:{" "}
+                    </Text>
+                    <View style={{ flexDirection: "row" }}>
+                        <Text style={styles.textRadio}>Benefício:</Text>
+                        <RadioButton
+                            value="Benefício"
+                            color="#D16E0B"
+                            onPress={() => setChecked("Benefício")}
+                            status={
+                                checked === "Benefício"
+                                    ? "checked"
+                                    : "unchecked"
+                            }
+                        />
+                        <Text style={styles.textRadio}>Malefício:</Text>
+                        <RadioButton
+                            value="Malefício"
+                            color="#D16E0B"
+                            onPress={() => setChecked("Malefício")}
+                            status={
+                                checked === "Malefício"
+                                    ? "checked"
+                                    : "unchecked"
+                            }
+                        />
+                    </View>
 
-          <Text style={styles.tituloInput}>Tema: </Text>
-          <Picker
-            selectedValue={ideia.tema}
-            onValueChange={(itemValue) => handleChance(itemValue, "tema")}
-            style={{
-              height: 40,
-              width: 345,
-              marginLeft: 8,
-              backgroundColor: "#fff",
-            }}
-          >
-            <Picker.Item label="Selecione o tema abordado" value="Tema Padrão" />
-            <Picker.Item label="Recursos Humanos" value="Recursos Humanos" />
-            <Picker.Item label="TI" value="TI" />
-            <Picker.Item label="Administração" value="Administração" />
-            <Picker.Item label="Finanças" value="Finanças" />
-          </Picker>
+                    <Text style={styles.tituloInput}>Tema: </Text>
+                    <Picker
+                        selectedValue={ideia.tema}
+                        onValueChange={(itemValue) =>
+                            handleChance(itemValue, "tema")
+                        }
+                        style={{
+                            height: 40,
+                            width: 345,
+                            marginLeft: 8,
+                            backgroundColor: "#fff",
+                        }}
+                    >
+                        <Picker.Item
+                            label="Selecione o tema abordado"
+                            value="Tema Padrão"
+                        />
+                        <Picker.Item
+                            label="Recursos Humanos"
+                            value="Recursos Humanos"
+                        />
+                        <Picker.Item label="TI" value="TI" />
+                        <Picker.Item
+                            label="Administração"
+                            value="Administração"
+                        />
+                        <Picker.Item label="Finanças" value="Finanças" />
+                    </Picker>
 
-          <Text style={{...styles.tituloInput, marginTop:10}}>Essa ideia se enquandra no contexto atual da empresa (Home office) ? </Text>
-          <View style={{flexDirection:"row", justifyContent:'space-between', marginRight:14, marginLeft:14}}>
-            <Text style={{fontSize:11, color:'white'}}>Laranja (não) / Verde (sim)</Text>
-            <Switch
-              trackColor={{ false: "white", true: "white" }}
-              thumbColor={isEnabled ? "#1281AB" : "#E37B09"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={isEnabled}
-            />
-          </View>
-
+                    <Text style={{ ...styles.tituloInput, marginTop: 10 }}>
+                        Essa ideia se enquandra no contexto atual da empresa
+                        (Home office) ?{" "}
+                    </Text>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            marginRight: 14,
+                            marginLeft: 14,
+                        }}
+                    >
+                        <Text style={{ fontSize: 11, color: "white" }}>
+                            Laranja (não) / Verde (sim)
+                        </Text>
+                        <Switch
+                            trackColor={{ false: "white", true: "white" }}
+                            thumbColor={isEnabled ? "#1281AB" : "#E37B09"}
+                            ios_backgroundColor="#3e3e3e"
+                            onValueChange={toggleSwitch}
+                            value={isEnabled}
+                        />
+                    </View>
 
                     <View style={styles.botaoContainer}>
                         <TouchableOpacity
@@ -205,8 +230,7 @@ const AddIdeias = (props) => {
                             </Text>
                         </TouchableOpacity>
 
-
-               <TouchableOpacity
+                        <TouchableOpacity
                             onPress={closeIdeiaModal}
                             style={{
                                 ...styles.botaoSalveCancel,
@@ -227,6 +251,5 @@ const AddIdeias = (props) => {
         </View>
     );
 };
-}
 
 export default AddIdeias;

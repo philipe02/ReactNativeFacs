@@ -33,7 +33,13 @@ const Perfil = ({ navigation, route }) => {
             .catch(console.log);
     };
     useEffect(getData, []);
-    useEffect(() => console.log(ideias, usuarioAtual), [ideias]);
+    useEffect(() => {
+        console.log(
+            ideias.filter((ideia) => ideia.userId === usuarioAtual.id),
+            usuarioAtual
+        );
+        getData();
+    }, [ideias]);
     const editarUsuario = (usuario) => dispatch(editarUsuarioAction(usuario));
 
     const handleEditar = () => {

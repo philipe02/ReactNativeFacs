@@ -1,24 +1,24 @@
-import { user } from "../http-common";
+import http from "../http-common";
 
 const getAll = () => {
-    return user.get("/users");
+    return http.user.get("/users");
 };
 
 const get = (id) => {
-    return user.get(`/users/${id}`);
+    return http.user.get(`/users/${id}`);
 };
 
 const create = (data) => {
-    return user.post("/users/", data);
+    return http.user.post("/users/", data);
 };
 
 const update = (id, data) => {
     console.log(data);
-    return user.put(`/users/${id}`, data);
+    return http.user.put(`/users/${id}`, data);
 };
 
 const remove = (id) => {
-    return user.delete(`/users/${id}`);
+    return http.user.delete(`/users/${id}`);
 };
 
 export default {

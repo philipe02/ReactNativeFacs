@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, { useState } from "react";
 
 //componente utilizado para obter e manular os dados
 //retorna um objeto e um método de acesso ao objeto
@@ -12,20 +12,15 @@ const IdeiaProvider = (props) => {
         desc: "",
         tema: "Selecione um tema",
         benefMalef: "",
-        homeSimNao:false
-    }
+        homeSimNao: false,
+    };
 
     const [ideia, setIdeia] = useState(ideiaInicitial);
     return (
         <IdeiaContext.Provider value={[ideia, setIdeia]}>
             {props.children}
         </IdeiaContext.Provider>
-    )
-}
-
-export {
-    IdeiaContext, 
-    IdeiaProvider
-}
+    );
+};
 
 export { IdeiaContext, IdeiaProvider };
