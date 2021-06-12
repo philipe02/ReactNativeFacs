@@ -14,6 +14,8 @@ import { Picker } from "@react-native-picker/picker";
 import { useDispatch, useSelector } from "react-redux";
 import { editarUsuarioAction } from "../redux/actions/usuarioActions";
 import IdeiaService from "../../services/IdeiaService";
+import { IdeiasContext } from "../components/Ideias/IdeiaContext";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Perfil = ({ navigation, route }) => {
     const { usuarioAtual, usuarios } = useSelector(
@@ -23,7 +25,7 @@ const Perfil = ({ navigation, route }) => {
     const [user, setUser] = useState(usuarioAtual);
     const [mostraSenha, setMostraSenha] = useState(false);
     const [sexo, setSexo] = useState(usuarioAtual.sexo);
-    const [ideias, setIdeias] = useState([]);
+    const [ideias, setIdeias] = useContext(IdeiasContext);
 
     const getData = () => {
         IdeiaService.getAll()
@@ -33,13 +35,7 @@ const Perfil = ({ navigation, route }) => {
             .catch(console.log);
     };
     useEffect(getData, []);
-    useEffect(() => {
-        console.log(
-            ideias.filter((ideia) => ideia.userId === usuarioAtual.id),
-            usuarioAtual
-        );
-        getData();
-    }, [ideias]);
+
     const editarUsuario = (usuario) => dispatch(editarUsuarioAction(usuario));
 
     const handleEditar = () => {
